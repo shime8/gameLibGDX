@@ -3,6 +3,7 @@ package com.game.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -78,6 +79,17 @@ public class Player {
         x = clamp(x, halfW, mapWidth - halfW);
         y = clamp(y, halfH, mapHeight - halfH);
     }
+    public void draw(SpriteBatch batch){
+        float w = texture.getWidth() * unitScale;
+        float h = texture.getHeight() * unitScale;
+        batch.draw(texture, x - w/2, y - h/2, w, h);
+    }
+    public void dispose() {
+        texture.dispose();
+    }
+
+
+
     private float clamp(float v, float min, float max) {
         return Math.max(min, Math.min(max, v));
     }
@@ -91,7 +103,5 @@ public class Player {
         MapProperties props = cell.getTile().getProperties();
         return props.containsKey("collidable") && (boolean) props.get("collidable");
     }
-    public void dispose() {
-        texture.dispose();
-    }
+
 }

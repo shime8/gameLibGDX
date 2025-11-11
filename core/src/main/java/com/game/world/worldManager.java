@@ -54,7 +54,7 @@ public class worldManager {
 
     }
     public void drawMap() {
-        updateCamera();
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -71,7 +71,7 @@ public class worldManager {
         shapeRenderer.dispose();
     }
 
-    private void updateCamera() {
+    public void updateCamera() {
         camera.position.set(player.x, player.y, 0);
 
         // clamp to map bounds
