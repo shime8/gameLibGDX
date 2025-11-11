@@ -29,7 +29,8 @@ public class worldManager {
     public static TiledMap map;
     TiledMapTileLayer collisionLayer;
 
-    public worldManager() {
+    public worldManager(float unitscale) {
+        this.unitScale = unitscale;
         map = new TmxMapLoader().load("maps/basicmap.tmx");
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Warstwa Kafelków 1");
 
@@ -113,7 +114,7 @@ public class worldManager {
         }
     }
 
-    private void drawShapes(){
+    public void drawShapes(){
         renderMouseHighlight();
     }
     private void renderMouseHighlight() {

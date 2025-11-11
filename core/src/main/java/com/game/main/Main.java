@@ -9,7 +9,6 @@ import com.game.player.Player;
 import com.game.tileenttities.Chest;
 import com.game.tileenttities.TileEntity;
 import com.game.tileenttities.TileEntityManager;
-import com.game.world.worldtemp;
 import com.game.world.worldManager;
 
 public class Main extends ApplicationAdapter {
@@ -23,7 +22,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         float unitscale = 1f / 32f;
         player = new Player(10,8, unitscale);
-        worldManager = new worldManager();
+        worldManager = new worldManager(unitscale);
         worldManager.player = player;
         worldManager.unitScale = unitscale;
         tileEntityMap = new ObjectMap<>();
@@ -58,6 +57,8 @@ public class Main extends ApplicationAdapter {
         batch.draw(player.texture, player.x - w/2, player.y - h/2, w, h);
 
         batch.end();
+
+        worldManager.drawShapes();
     }
 
     @Override
