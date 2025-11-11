@@ -22,18 +22,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        input();
-        logic();
-        draw();
-    }
-
-    public void input(){
-        //wasd i strzałki zrobione w Player
-    }
-    public void logic(){
         worldController.update();
-    }
-    public void draw(){
         worldRenderer.render();
     }
 

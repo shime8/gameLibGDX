@@ -43,7 +43,8 @@ public class WorldRenderer {
         mapRenderer.render();
 
         // render player
-        batch.setProjectionMatrix(camera.combined);
+
+        batch.setProjectionMatrix(camera.combined);//ustawienie batch na world a nie screen
         batch.begin();
         float w = world.player.texture.getWidth() * world.unitScale;
         float h = world.player.texture.getHeight() * world.unitScale;
@@ -83,7 +84,6 @@ public class WorldRenderer {
     }
 
     private void updateCamera() {
-        // follow player
         camera.position.set(world.player.x, world.player.y, 0);
 
         // clamp to map bounds
@@ -99,6 +99,7 @@ public class WorldRenderer {
             camera.position.y = clamp(camera.position.y, halfH, world.mapHeight - halfH);
         else
             camera.position.y = world.mapHeight / 2f;
+        //endof clamp
 
         camera.update();
     }
