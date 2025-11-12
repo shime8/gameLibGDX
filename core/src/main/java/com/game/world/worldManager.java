@@ -13,18 +13,22 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.game.UIs.UIManager;
+import com.game.items.Item;
 import com.game.player.Player;
 import com.game.tileenttities.Chest;
+import com.game.tileenttities.TileEntity;
 import com.game.tileenttities.TileEntityManager;
 
 public class worldManager {
+    public UIManager uiManager;
     public float unitScale;
     public float mapWidth, mapHeight;
     public OrthographicCamera camera;
-    private OrthogonalTiledMapRenderer mapRenderer;
-    private SpriteBatch batch;
-    private ShapeRenderer shapeRenderer;
-    private Vector3 mouseWorld = new Vector3();
+    public OrthogonalTiledMapRenderer mapRenderer;
+    public SpriteBatch batch;
+    public ShapeRenderer shapeRenderer;
+    public Vector3 mouseWorld = new Vector3();
     public Player player;
     public static TiledMap map;
     TiledMapTileLayer collisionLayer;
@@ -99,8 +103,12 @@ public class worldManager {
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
-            if(tem.getEntityAt(tileX,tileY) == null) {
-                tem.addEntity(new Chest(tileX, tileY));
+            if(tem.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null) {
+                TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
+                mouseTE.set(tileX,tileY);
+                tem.addEntity(mouseTE);
+                uiManager.mouseSlot.decreseAmount();
+                uiManager.refreshInventoryUI();
             }
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -109,7 +117,9 @@ public class worldManager {
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
             if(tem.getEntityAt(tileX,tileY) != null) {
-                tem.removeEntity(new Chest(tileX, tileY));
+                uiManager.inventory.addItem(new Item(1,tem.getEntityAt(tileX,tileY)));
+                uiManager.refreshInventoryUI();
+                tem.removeEntity(tem.getEntityAt(tileX,tileY));
             }
         }
     }

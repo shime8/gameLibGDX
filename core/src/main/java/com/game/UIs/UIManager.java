@@ -4,38 +4,47 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
+import com.game.items.Item;
+import com.game.mechanics.MouseSlot;
+import com.game.mechanics.PlayerInventory;
+import com.game.world.worldManager;
 public class UIManager {
-    private Stage stage;
-    private Skin skin;
-    private boolean paused = false;
-    private boolean inventoryOpen = false;
-    private Table pauseMenu;
-    private Table inventoryUI;
-    private PlayerInventory inventory;
+    public worldManager worldManager;
+    public Stage stage;
+    public Skin skin;
+    public boolean paused = false;
+    public boolean inventoryOpen = false;
+    public Table pauseMenu;
+    public Table inventoryUI;
+    public PlayerInventory inventory;
+    public MouseSlot mouseSlot;
+    SpriteBatch batch;
     ShapeRenderer shapeRenderer;
 
-    public UIManager() {
+    public UIManager(worldManager worldManager) {
+        this.worldManager = worldManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         // You can load a skin from assets if you have one
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         inventory = new PlayerInventory(5, 4);
+        mouseSlot = new MouseSlot();
 
         createPauseMenu();
         createInventoryUI();
         shapeRenderer = new ShapeRenderer();
+        batch = new SpriteBatch();
     }
 
     private void createPauseMenu() {
@@ -82,7 +91,7 @@ public class UIManager {
         for (int y = 0; y < inventory.getHeight(); y++) {
             for (int x = 0; x < inventory.getWidth(); x++) {
                 int index = y * inventory.getWidth() + x;
-                TextButton slot = new TextButton("", skin);
+                TextButton slot = new TextButton("",skin);
                 slot.getLabel().setColor(Color.LIGHT_GRAY);
                 slot.setColor(new Color(1, 1, 1, 0.5f));
                 slot.pad(10);
@@ -90,11 +99,7 @@ public class UIManager {
                 slot.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float px, float py) {
-                        if (inventory.getItem(index) == null) {
-                            inventory.setItem(index, "Stone");
-                        } else {
-                            inventory.removeItem(index);
-                        }
+                        inventory.setItem(index,mouseSlot.switchItem(inventory.getItem(index)));
                         refreshInventoryUI();
                     }
                 });
@@ -107,13 +112,13 @@ public class UIManager {
         inventoryUI.setVisible(false);
     }
 
-    private void refreshInventoryUI() {
+    public void refreshInventoryUI() {
         // When items change, refresh button labels
         int i = 0;
         for (Actor actor : inventoryUI.getChildren()) {
             if (actor instanceof TextButton && i < inventory.getSize()) {
-                String item = inventory.getItem(i);
-                ((TextButton) actor).setText(item == null ? "" : item.substring(0, 1));
+                Item item = inventory.getItem(i);
+                ((TextButton) actor).setText(item == null ? "" : item.name+" "+item.amount);
                 i++;
             }
         }
@@ -136,6 +141,7 @@ public class UIManager {
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
             stage.draw();
+
         }
     }
 
@@ -159,15 +165,17 @@ public class UIManager {
     public void toggleInventory() {
         inventoryOpen = !inventoryOpen;
         inventoryUI.setVisible(inventoryOpen);
+        refreshInventoryUI();
     }
 
     public boolean isPaused() {
-        return paused || inventoryOpen;
+        return paused;
     }
 
     public void dispose() {
         stage.dispose();
         skin.dispose();
         shapeRenderer.dispose();
+        batch.dispose();
     }
 }
