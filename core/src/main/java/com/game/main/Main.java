@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         float unitscale = 1f / 32f;
-        player = new Player(10,8, unitscale);
+        player = new Player(30,30, unitscale);
 
         worldManager = new worldManager(unitscale);
         worldManager.player = player;
@@ -37,7 +37,7 @@ public class Main extends ApplicationAdapter {
 
 
 
-        tileEntityManager.addEntity(new Chest(3, 3));
+        tileEntityManager.addEntity(new Chest(33, 33));
         uiManager.inventory.setItem(2, new Item(100, new Chest()));
     }
 

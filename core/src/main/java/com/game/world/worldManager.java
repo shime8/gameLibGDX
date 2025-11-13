@@ -35,7 +35,7 @@ public class worldManager {
 
     public worldManager(float unitscale) {
         this.unitScale = unitscale;
-        map = new TmxMapLoader().load("maps/basicmap.tmx");
+        map = new TmxMapLoader().load("maps/mapv1.tmx");
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Warstwa Kafelków 1");
 
         MapProperties props = map.getProperties();
