@@ -47,6 +47,10 @@ public class MouseSlot {
         if(item.amount==0){item=null;}
     }
     public void render(SpriteBatch batch, float x,float y){
-        if(item!=null)batch.draw(item.texture, x, y);
+        if(item!=null) {
+            batch.disableBlending();
+            batch.draw(item.texture, x, y);
+            batch.enableBlending();
+        }
     }
 }

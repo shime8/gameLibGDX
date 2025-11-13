@@ -21,8 +21,8 @@ public class Player {
         this.x = startX;
         this.y = startY;
         this.unitScale = unitScale;
-        this.texture = new Texture(Gdx.files.internal("player/player.png"));
-        this.hitbox = new Rectangle(x-0.5f,y-0.5f,1,1);
+        this.texture = new Texture(Gdx.files.internal("player/playerv1.png"));
+        this.hitbox = new Rectangle(x-0.25f,y-0.46f,0.5f,0.9f);
     }
 
     public void update(float dt, float mapWidth, float mapHeight, TiledMapTileLayer layer) {
@@ -41,6 +41,10 @@ public class Player {
         if (dx != 0 && dy != 0) {
             float inv = 1f / (float)Math.sqrt(2);
             dx *= inv; dy *= inv;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            dx *= 2;
+            dy *= 2;
         }
 
         float newX = x + dx * speed * dt;
@@ -68,8 +72,25 @@ public class Player {
                     isCellBlocked(layer, hitbox.x+hitbox.width, newHitbox.y) ||
                     isCellBlocked(layer, hitbox.x, newHitbox.y+newHitbox.height) ||
                     isCellBlocked(layer, hitbox.x+hitbox.width, newHitbox.y+newHitbox.height);
-            if(!blockedX){ x = newX;}
-            if(!blockedY){ y = newY;}
+            if(!blockedX){
+                x = newX; //normalny ruch x
+            }else{
+                //gdy blokada to clamp x do bloczka z blokadą
+                if(newX<x){
+                    x = (float)Math.floor(x) + hitbox.width/2f;
+                }else if(newY>x){
+                    x = (float)Math.floor(x) + 0.99f - hitbox.width/2f;
+                }
+            }
+            if(!blockedY){ y = newY; //normalny ruch y
+            }else{
+                //gdy blokada to clamp y do bloczka z blokadą
+                if(newY<y){
+                    y = (float)Math.floor(y) + hitbox.height/2f;
+                }else if(newY>y){
+                    y = (float)Math.floor(y) + 0.99f - hitbox.height/2f;
+                }
+            }
         }
 
 

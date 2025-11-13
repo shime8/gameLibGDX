@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,7 +29,6 @@ public class UIManager {
     public Table inventoryUI;
     public PlayerInventory inventory;
     public MouseSlot mouseSlot;
-    SpriteBatch batch;
     ShapeRenderer shapeRenderer;
 
     public UIManager(worldManager worldManager) {
@@ -44,7 +44,6 @@ public class UIManager {
         createPauseMenu();
         createInventoryUI();
         shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
     }
 
     private void createPauseMenu() {
@@ -144,6 +143,12 @@ public class UIManager {
 
         }
     }
+    public void renderMouseItem(SpriteBatch batch){
+        Vector2 mousePos = stage.screenToStageCoordinates(
+            new Vector2(Gdx.input.getX(), Gdx.input.getY())
+        );
+        mouseSlot.render(batch, mousePos.x, mousePos.y);
+    }
 
     private void handleInput() {
         // Toggle pause
@@ -172,10 +177,14 @@ public class UIManager {
         return paused;
     }
 
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
     public void dispose() {
         stage.dispose();
         skin.dispose();
         shapeRenderer.dispose();
-        batch.dispose();
+
     }
 }

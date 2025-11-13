@@ -2,6 +2,7 @@ package com.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -79,18 +80,18 @@ public class worldManager {
         camera.position.set(player.x, player.y, 0);
 
         // clamp to map bounds
-        float halfW = camera.viewportWidth / 2f;
-        float halfH = camera.viewportHeight / 2f;
+        //float halfW = camera.viewportWidth / 2f;
+        //float halfH = camera.viewportHeight / 2f;
 
-        if (mapWidth > camera.viewportWidth)
-            camera.position.x = clamp(camera.position.x, halfW, mapWidth - halfW);
-        else
-            camera.position.x = mapWidth / 2f;
+        //if (mapWidth > camera.viewportWidth)
+        //    camera.position.x = clamp(camera.position.x, halfW, mapWidth - halfW);
+        //else
+        //    camera.position.x = mapWidth / 2f;
 
-        if (mapHeight > camera.viewportHeight)
-            camera.position.y = clamp(camera.position.y, halfH, mapHeight - halfH);
-        else
-            camera.position.y = mapHeight / 2f;
+        //if (mapHeight > camera.viewportHeight)
+        //    camera.position.y = clamp(camera.position.y, halfH, mapHeight - halfH);
+        //else
+        //    camera.position.y = mapHeight / 2f;
         //endof clamp
 
         camera.update();
@@ -98,7 +99,7 @@ public class worldManager {
 
     public void mouseActions(TileEntityManager tem){
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
@@ -111,7 +112,7 @@ public class worldManager {
                 uiManager.refreshInventoryUI();
             }
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
@@ -122,6 +123,13 @@ public class worldManager {
                 tem.removeEntity(tem.getEntityAt(tileX,tileY));
             }
         }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.F)){
+            uiManager.inventory.addItem(new Item(10,new Chest()));
+            uiManager.refreshInventoryUI();
+        }
+
+
     }
 
     public void drawShapes(){

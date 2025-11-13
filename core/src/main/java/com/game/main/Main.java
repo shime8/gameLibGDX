@@ -2,6 +2,8 @@ package com.game.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
@@ -34,7 +36,18 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         uiManager = new UIManager(worldManager);
         worldManager.uiManager = uiManager;
-
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(uiManager.stage); // UI input
+        multiplexer.addProcessor(new InputAdapter() {
+            @Override
+            public boolean scrolled(float amountX, float amountY) {
+                // Zoom camera
+                worldManager.camera.zoom += amountY * 0.05f * worldManager.camera.zoom;
+                worldManager.camera.zoom = Math.max(0.1f, Math.min(worldManager.camera.zoom, 2f));
+                return true;
+            }
+        });
+        Gdx.input.setInputProcessor(multiplexer);
 
 
         tileEntityManager.addEntity(new Chest(33, 33));
@@ -66,14 +79,16 @@ public class Main extends ApplicationAdapter {
         worldManager.drawShapes();
 
         uiManager.render();
-        batch.begin();
-        uiManager.mouseSlot.render(batch, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-        batch.end();
+        uiManager.stage.getBatch().begin();
+        uiManager.renderMouseItem((SpriteBatch) uiManager.stage.getBatch());
+        uiManager.stage.getBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
+
         worldManager.resize(width, height);
+        uiManager.resize(width, height);
     }
 
     @Override
