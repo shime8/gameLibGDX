@@ -16,7 +16,11 @@ public class Belt extends TileEntity{
     public Belt(){
         texture = new Texture("tiles/belt.png");
         name = "Belt";
-        speed = 1f;
+        speed = 100f;
+    }
+    public Belt(ItemEntityManager itemEntityManager){
+        this();
+        this.itemEntityManager = itemEntityManager;
     }
     public Belt(int x, int y) {
         this();
@@ -24,6 +28,7 @@ public class Belt extends TileEntity{
     }
     public Belt(Belt other){
         super(other);
+        this.itemEntityManager = other.itemEntityManager;
         this.direction = other.direction;
         this.speed = other.speed;
     }

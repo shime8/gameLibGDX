@@ -62,7 +62,7 @@ public class Main extends ApplicationAdapter {
 
         tileEntityManager.addEntity(new Chest(33, 33));
         uiManager.inventory.setItem(2, new Item(100, new Chest()));
-        uiManager.inventory.setItem(3, new Item(100, new Belt()));
+        uiManager.inventory.setItem(3, new Item(100, new Belt(itemEntityManager)));
     }
 
     @Override
