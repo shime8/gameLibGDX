@@ -25,7 +25,9 @@ public abstract class TileEntity {
 
     public abstract void update(float delta);
 
-    public abstract void render(SpriteBatch batch);
+    public void render(SpriteBatch batch) {
+        batch.draw(texture, x, y, bounds.width, bounds.height);
+    }
 
     public void set(int x, int y){
         this.x = x;

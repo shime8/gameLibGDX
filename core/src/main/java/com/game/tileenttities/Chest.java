@@ -18,7 +18,4 @@ public class Chest extends TileEntity {
     }
     public void update(float delta) {
     }
-    public void render(SpriteBatch batch) {
-        batch.draw(texture, x, y, bounds.width, bounds.height);
-    }
 }

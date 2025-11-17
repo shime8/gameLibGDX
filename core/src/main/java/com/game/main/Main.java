@@ -13,6 +13,7 @@ import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 import com.game.player.Player;
+import com.game.tileenttities.Belt;
 import com.game.tileenttities.Chest;
 import com.game.tileenttities.TileEntity;
 import com.game.tileenttities.TileEntityManager;
@@ -61,6 +62,7 @@ public class Main extends ApplicationAdapter {
 
         tileEntityManager.addEntity(new Chest(33, 33));
         uiManager.inventory.setItem(2, new Item(100, new Chest()));
+        uiManager.inventory.setItem(3, new Item(100, new Belt()));
     }
 
     @Override

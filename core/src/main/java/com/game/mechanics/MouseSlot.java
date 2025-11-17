@@ -60,7 +60,7 @@ public class MouseSlot {
     public void render(SpriteBatch batch, float x,float y){
         if(item!=null) {
             batch.disableBlending();
-            batch.draw(item.texture, x, y);
+            batch.draw(item.texture, x, y, 64, 64);
             batch.enableBlending();
             font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }
