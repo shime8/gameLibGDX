@@ -1,5 +1,7 @@
 package com.game.mechanics;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.game.items.Item;
@@ -8,8 +10,13 @@ import java.util.Objects;
 
 public class MouseSlot {
     Item item;
+    BitmapFont font;
+
     public MouseSlot(){
         item = null;
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(2f);
     }
     public Item getItem(){
         return item;
@@ -51,6 +58,7 @@ public class MouseSlot {
             batch.disableBlending();
             batch.draw(item.texture, x, y);
             batch.enableBlending();
+            font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }
     }
 }

@@ -75,7 +75,7 @@ public class Player {
             if(!blockedX){
                 x = newX; //normalny ruch x
             }else{
-                //gdy blokada to clamp x do bloczka z blokadą
+                //gdy collision to clamp x do bloczka z collision
                 if(newX<x){
                     x = (float)Math.floor(x) + hitbox.width/2f;
                 }else if(newY>x){
@@ -84,7 +84,7 @@ public class Player {
             }
             if(!blockedY){ y = newY; //normalny ruch y
             }else{
-                //gdy blokada to clamp y do bloczka z blokadą
+                //gdy collision to clamp y do bloczka z collision
                 if(newY<y){
                     y = (float)Math.floor(y) + hitbox.height/2f;
                 }else if(newY>y){

@@ -23,6 +23,14 @@ public class PlayerInventory {
     public Item getItem(int index) {
         return items.get(index);
     }
+    public Item getItem(Item item){
+        for (int i = 0; i < items.size; i++) {
+            if(items.get(i) != null && Objects.equals(items.get(i).name, item.name)){
+                return items.get(i);
+            }
+        }
+        return null;
+    }
 
     public void setItem(int index, Item item) {
         items.set(index, item);
@@ -51,6 +59,14 @@ public class PlayerInventory {
 
     public void removeItem(int index) {
         items.set(index, null);
+    }
+    public void removeItem(Item item){
+        for (int i = 0; i < items.size; i++) {
+            if(items.get(i) != null && Objects.equals(items.get(i).name, item.name)){
+                items.set(i, null);
+            }
+        }
+
     }
 
     public int getWidth() {

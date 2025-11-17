@@ -21,6 +21,8 @@ import com.game.tileenttities.Chest;
 import com.game.tileenttities.TileEntity;
 import com.game.tileenttities.TileEntityManager;
 
+import java.util.Objects;
+
 public class worldManager {
     public UIManager uiManager;
     public float unitScale;
@@ -108,7 +110,12 @@ public class worldManager {
                 TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
                 tem.addEntity(mouseTE);
+                Item tempItem1 = new Item(uiManager.mouseSlot.getItem());
                 uiManager.mouseSlot.decreseAmount();
+                if(uiManager.mouseSlot.getItem()==null){
+                   uiManager.mouseSlot.switchItem(uiManager.inventory.getItem(tempItem1));
+                   uiManager.inventory.removeItem(tempItem1);
+                }
                 uiManager.refreshInventoryUI();
             }
         }
