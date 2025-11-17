@@ -14,8 +14,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.game.UIs.UIManager;
 import com.game.items.Item;
+import com.game.items.ItemEntity;
+import com.game.items.ItemEntityManager;
 import com.game.player.Player;
 import com.game.tileenttities.Chest;
 import com.game.tileenttities.TileEntity;
@@ -35,7 +38,9 @@ public class worldManager {
     public Player player;
     public static TiledMap map;
     TiledMapTileLayer collisionLayer;
-
+    public ItemEntityManager itemEntityManager;
+    public TileEntityManager tileEntityManager;
+    public float tileBreakTimer;
     public worldManager(float unitscale) {
         this.unitScale = unitscale;
         map = new TmxMapLoader().load("maps/mapv1.tmx");
@@ -99,23 +104,18 @@ public class worldManager {
         camera.update();
     }
 
-    public void mouseActions(TileEntityManager tem){
+    public void mouseActions(float dt){
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
-            if(tem.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null) {
+            if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null) {
                 TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
-                tem.addEntity(mouseTE);
-                Item tempItem1 = new Item(uiManager.mouseSlot.getItem());
-                uiManager.mouseSlot.decreseAmount();
-                if(uiManager.mouseSlot.getItem()==null){
-                   uiManager.mouseSlot.switchItem(uiManager.inventory.getItem(tempItem1));
-                   uiManager.inventory.removeItem(tempItem1);
-                }
+                tileEntityManager.addEntity(mouseTE);
+                uiManager.decreaseAndAutoGet();
                 uiManager.refreshInventoryUI();
             }
         }
@@ -124,21 +124,45 @@ public class worldManager {
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
-            if(tem.getEntityAt(tileX,tileY) != null) {
-                uiManager.inventory.addItem(new Item(1,tem.getEntityAt(tileX,tileY)));
+            if(tileEntityManager.getEntityAt(tileX,tileY) != null) {
+                uiManager.inventory.addItem(new Item(1,tileEntityManager.getEntityAt(tileX,tileY)));
                 uiManager.refreshInventoryUI();
-                tem.removeEntity(tem.getEntityAt(tileX,tileY));
+                tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));
             }
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.F)){
+    }
+    public void handleInputs(){
+        //drop item on tile
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C) && uiManager.mouseSlot.getItem()!=null) {
+            Item tempItem = new Item(uiManager.mouseSlot.getItem());
+            tempItem.amount = 1;
+
+            mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(mouseWorld);
+            ItemEntity tempItemEntity = new ItemEntity(tempItem, mouseWorld.x, mouseWorld.y);
+            Array<ItemEntity> ItemEs = itemEntityManager.getItemEntityList(mouseWorld.x, mouseWorld.y);
+            if(ItemEs==null || ItemEs.size<4){
+                itemEntityManager.addItemEntity(tempItemEntity);
+                uiManager.decreaseAndAutoGet();
+            }
+        }
+
+        //DEBUG: infinite chests
+        if(Gdx.input.isKeyPressed(Input.Keys.G)){
             uiManager.inventory.addItem(new Item(10,new Chest()));
             uiManager.refreshInventoryUI();
         }
 
-
+        if(Gdx.input.isKeyPressed(Input.Keys.F)){
+            Array<ItemEntity> TileItems = itemEntityManager.getItemEntityList(player.x, player.y);
+            if(TileItems!=null && !TileItems.isEmpty()) {
+                ItemEntity tempItemE = TileItems.first();
+                uiManager.inventory.addItem(tempItemE.item);
+                TileItems.removeIndex(0);
+            }
+        }
     }
-
     public void drawShapes(){
         renderMouseHighlight();
     }

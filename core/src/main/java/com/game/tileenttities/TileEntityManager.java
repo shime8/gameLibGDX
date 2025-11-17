@@ -1,16 +1,14 @@
 package com.game.tileenttities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class TileEntityManager {
-    private ObjectMap<GridPoint2, TileEntity> tileEntities;
+    private ObjectMap<GridPoint2, TileEntity> tileEntityMap;
 
     public TileEntityManager(ObjectMap<GridPoint2, TileEntity> tileEntities) {
-        this.tileEntities = tileEntities;
+        this.tileEntityMap = tileEntities;
     }
 
     public void addEntity(TileEntity entity) {
@@ -25,27 +23,27 @@ public class TileEntityManager {
                 batch.draw(texture, x, y, bounds.width, bounds.height);
             }
         };
-        tileEntities.put(key, temp);
+        tileEntityMap.put(key, temp);
     }
 
     public void removeEntity(TileEntity entity) {
-        tileEntities.remove(new GridPoint2(entity.x, entity.y));
+        tileEntityMap.remove(new GridPoint2(entity.x, entity.y));
     }
 
     public TileEntity getEntityAt(int tileX, int tileY) {
-        return tileEntities.get(new GridPoint2(tileX, tileY));
+        return tileEntityMap.get(new GridPoint2(tileX, tileY));
     }
 
     public void update(float delta) {
-        for (TileEntity entity : tileEntities.values()) {
+        for (TileEntity entity : tileEntityMap.values()) {
             entity.update(delta);
         }
 
     }
 
     public void render(SpriteBatch batch) {
-        for (TileEntity entity : tileEntities.values()) {
-            entity.render(batch);
+        for (TileEntity tileEntity : tileEntityMap.values()) {
+            tileEntity.render(batch);
         }
     }
 }

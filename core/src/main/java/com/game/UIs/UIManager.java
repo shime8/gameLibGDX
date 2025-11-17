@@ -13,9 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.game.items.Item;
+import com.game.items.ItemEntity;
+import com.game.items.ItemEntityManager;
 import com.game.mechanics.MouseSlot;
 import com.game.mechanics.PlayerInventory;
 import com.game.world.worldManager;
@@ -31,8 +34,10 @@ public class UIManager {
     public MouseSlot mouseSlot;
     ShapeRenderer shapeRenderer;
 
+
     public UIManager(worldManager worldManager) {
         this.worldManager = worldManager;
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -160,6 +165,9 @@ public class UIManager {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             toggleInventory();
         }
+
+
+
     }
 
     public void togglePause() {
@@ -186,5 +194,14 @@ public class UIManager {
         skin.dispose();
         shapeRenderer.dispose();
 
+    }
+
+    public void decreaseAndAutoGet() {
+        Item tempItem1 = new Item(mouseSlot.getItem());
+        mouseSlot.decreseAmount();
+        if(mouseSlot.getItem()==null){
+            mouseSlot.switchItem(inventory.getItem(tempItem1));
+            inventory.removeItem(tempItem1);
+        }
     }
 }

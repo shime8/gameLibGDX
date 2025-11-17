@@ -7,8 +7,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.game.items.Item;
+import com.game.items.ItemEntity;
+import com.game.items.ItemEntityManager;
 import com.game.player.Player;
 import com.game.tileenttities.Chest;
 import com.game.tileenttities.TileEntity;
@@ -21,6 +24,8 @@ public class Main extends ApplicationAdapter {
     private Player player;
     private ObjectMap<GridPoint2, TileEntity> tileEntityMap;
     TileEntityManager tileEntityManager;
+    private ObjectMap<GridPoint2, Array<ItemEntity>> itemEntityMap;
+    ItemEntityManager itemEntityManager;
     SpriteBatch batch;
     private UIManager uiManager;
     @Override
@@ -33,6 +38,10 @@ public class Main extends ApplicationAdapter {
         worldManager.unitScale = unitscale;
         tileEntityMap = new ObjectMap<>();
         tileEntityManager = new TileEntityManager(tileEntityMap);
+        worldManager.tileEntityManager = tileEntityManager;
+        itemEntityMap = new ObjectMap<>();
+        itemEntityManager = new ItemEntityManager(itemEntityMap);
+        worldManager.itemEntityManager = itemEntityManager;
         batch = new SpriteBatch();
         uiManager = new UIManager(worldManager);
         worldManager.uiManager = uiManager;
@@ -61,7 +70,8 @@ public class Main extends ApplicationAdapter {
 
         uiManager.update(dt);
         if (!uiManager.isPaused()) {
-            worldManager.mouseActions(tileEntityManager);
+            worldManager.mouseActions(dt);
+            worldManager.handleInputs();
             tileEntityManager.update(dt);
             worldManager.update(dt);
         }
@@ -72,6 +82,7 @@ public class Main extends ApplicationAdapter {
         worldManager.drawMap();
 
         tileEntityManager.render(batch);
+        itemEntityManager.render(batch);
         player.draw(batch);
 
         batch.end();

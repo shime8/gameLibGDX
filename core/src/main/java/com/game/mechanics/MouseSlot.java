@@ -1,5 +1,7 @@
 package com.game.mechanics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -53,6 +55,8 @@ public class MouseSlot {
         item.amount -= 1;
         if(item.amount==0){item=null;}
     }
+
+
     public void render(SpriteBatch batch, float x,float y){
         if(item!=null) {
             batch.disableBlending();
