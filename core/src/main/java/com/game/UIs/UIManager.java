@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -33,7 +34,7 @@ public class UIManager {
     public PlayerInventory inventory;
     public MouseSlot mouseSlot;
     ShapeRenderer shapeRenderer;
-
+//    public BitmapFont font;
 
     public UIManager(worldManager worldManager) {
         this.worldManager = worldManager;
@@ -49,6 +50,9 @@ public class UIManager {
         createPauseMenu();
         createInventoryUI();
         shapeRenderer = new ShapeRenderer();
+//        font = new BitmapFont();
+//        font.setColor(Color.BLACK);
+//        font.getData().setScale(2f);
     }
 
     private void createPauseMenu() {
@@ -153,6 +157,8 @@ public class UIManager {
             new Vector2(Gdx.input.getX(), Gdx.input.getY())
         );
         mouseSlot.render(batch, mousePos.x, mousePos.y);
+//        font.draw(batch,String.valueOf((int)worldManager.direction.x), mousePos.x, mousePos.y);
+//        font.draw(batch,String.valueOf((int)worldManager.direction.y), mousePos.x+32f, mousePos.y);
     }
 
     private void handleInput() {

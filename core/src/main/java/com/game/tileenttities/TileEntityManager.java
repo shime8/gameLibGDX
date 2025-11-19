@@ -13,16 +13,7 @@ public class TileEntityManager {
 
     public void addEntity(TileEntity entity) {
         GridPoint2 key = new GridPoint2(entity.x, entity.y);
-        TileEntity temp = new TileEntity(entity) {
-            @Override
-            public void update(float delta) {
-            }
-
-            @Override
-            public void render(SpriteBatch batch) {
-                batch.draw(texture, x, y, bounds.width, bounds.height);
-            }
-        };
+        TileEntity temp = entity.clone();
         tileEntityMap.put(key, temp);
     }
 

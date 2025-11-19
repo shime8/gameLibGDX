@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.game.UIs.UIManager;
@@ -20,9 +21,7 @@ import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 import com.game.player.Player;
-import com.game.tileenttities.Chest;
-import com.game.tileenttities.TileEntity;
-import com.game.tileenttities.TileEntityManager;
+import com.game.tileenttities.*;
 
 import java.util.Objects;
 
@@ -41,6 +40,7 @@ public class worldManager {
     public ItemEntityManager itemEntityManager;
     public TileEntityManager tileEntityManager;
     public float tileBreakTimer;
+    public Vector2 direction;
     public worldManager(float unitscale) {
         this.unitScale = unitscale;
         map = new TmxMapLoader().load("maps/mapv1.tmx");
@@ -60,6 +60,7 @@ public class worldManager {
         mapRenderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
         shapeRenderer = new ShapeRenderer();
+        direction = new Vector2(0,1);
     }
     public void update(float dt) {
         player.update(dt,mapWidth,mapHeight,collisionLayer);
@@ -114,6 +115,7 @@ public class worldManager {
             if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null) {
                 TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
+                if(mouseTE instanceof Directional d){d.setDirection(new Vector2(this.direction));}
                 tileEntityManager.addEntity(mouseTE);
                 uiManager.decreaseAndAutoGet();
                 uiManager.refreshInventoryUI();
@@ -154,6 +156,7 @@ public class worldManager {
             uiManager.refreshInventoryUI();
         }
 
+        //pickup items from floor
         if(Gdx.input.isKeyPressed(Input.Keys.F)){
             Array<ItemEntity> TileItems = itemEntityManager.getItemEntityList(player.x, player.y);
             if(TileItems!=null && !TileItems.isEmpty()) {
@@ -162,6 +165,16 @@ public class worldManager {
                 TileItems.removeIndex(0);
             }
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+              direction.rotate90(1);
+//            Item item = uiManager.mouseSlot.getItem();
+//            if (item != null && item.Tile instanceof Directional d) {
+//                d.setDirection(d.getDirection().rotate90(1) );
+//            }
+        }
+
+
     }
     public void drawShapes(){
         renderMouseHighlight();

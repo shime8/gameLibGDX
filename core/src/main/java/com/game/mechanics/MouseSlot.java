@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game.items.Item;
+import com.game.tileenttities.Directional;
 
 import java.util.Objects;
 
@@ -46,6 +48,7 @@ public class MouseSlot {
                 }
                 return temp;
             }
+
         }
     }
     public void decreseAmount(){
@@ -60,7 +63,7 @@ public class MouseSlot {
     public void render(SpriteBatch batch, float x,float y){
         if(item!=null) {
             batch.disableBlending();
-            batch.draw(item.texture, x, y, 64, 64);
+            batch.draw(item.sprite.getTexture(), x, y, 32, 32);
             batch.enableBlending();
             font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }
