@@ -60,7 +60,7 @@ public class worldManager {
         mapRenderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
         shapeRenderer = new ShapeRenderer();
-        direction = new Vector2(0,1);
+        direction = new Vector2(1,0);
     }
     public void update(float dt) {
         player.update(dt,mapWidth,mapHeight,collisionLayer);

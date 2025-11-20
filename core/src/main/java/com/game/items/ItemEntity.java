@@ -14,7 +14,7 @@ public class ItemEntity {
     float size;
 //    public BitmapFont font;
     public ItemEntity(Item item, float worldX, float worldY){
-        this.item = item;
+        this.item =new Item(item);
         this.item.sprite = new Sprite(item.sprite);
         this.worldX = worldX;
         this.worldY = worldY;
@@ -23,6 +23,18 @@ public class ItemEntity {
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);
+    }
+    public ItemEntity(ItemEntity itemEntity){
+        this.item = new Item(itemEntity.item);
+        this.item.sprite = new Sprite(itemEntity.item.sprite);
+        this.worldX = itemEntity.worldX;
+        this.worldY = itemEntity.worldY;
+        this.bounds = itemEntity.bounds;
+        this.size = itemEntity.size;
+//        font = new BitmapFont();
+//        font.setColor(Color.BLACK);
+//        font.getData().setScale(0.1f);
+        update();
     }
     public void update(){
         bounds = new Rectangle(worldX-size/2,worldY-size/2,size,size);
@@ -35,9 +47,9 @@ public class ItemEntity {
     public void render(SpriteBatch batch){
         if(item!=null) {
 
-            batch.disableBlending();
+//            batch.disableBlending();
             item.sprite.draw(batch);
-            batch.enableBlending();
+//            batch.enableBlending();
 //            font.draw(batch,String.valueOf((int)worldX), worldX, worldY);
 //            font.draw(batch,String.valueOf((int)worldY), worldX+2f, worldY);
         }

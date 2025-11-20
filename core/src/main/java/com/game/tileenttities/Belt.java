@@ -71,7 +71,6 @@ public class Belt extends TileEntity implements Directional{
 
     @Override
     public void setDirection(Vector2 direction) {
-
         this.direction = direction;
     }
 
