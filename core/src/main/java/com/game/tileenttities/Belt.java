@@ -10,8 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 
+import static com.game.main.Main.itemEntityManager;
+
 public class Belt extends TileEntity implements Directional{
-    ItemEntityManager itemEntityManager;
     public Vector2 direction;
     float speed;
     public Belt(){
@@ -23,11 +24,6 @@ public class Belt extends TileEntity implements Directional{
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);
     }
-    public Belt(ItemEntityManager itemEntityManager){
-        this();
-        this.itemEntityManager = itemEntityManager;
-
-    }
     public Belt(int x, int y) {
         this();
         set(x,y);
@@ -38,7 +34,6 @@ public class Belt extends TileEntity implements Directional{
     }
     public Belt(Belt other){
         super(other);
-        this.itemEntityManager = other.itemEntityManager;
         this.direction = other.direction;
         this.speed = other.speed;
         this.font = other.font;

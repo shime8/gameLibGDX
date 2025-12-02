@@ -10,9 +10,10 @@ import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 
+import static com.game.main.Main.itemEntityManager;
+import static com.game.main.Main.tileEntityManager;
+
 public class Inserter extends TileEntity implements Directional{
-    ItemEntityManager itemEntityManager;
-    TileEntityManager tileEntityManager;
     public Vector2 direction;
     float speed;
     Item item;
@@ -22,12 +23,6 @@ public class Inserter extends TileEntity implements Directional{
         sprite = new Sprite(new Texture("tiles/inserter_up.png"));
         name = "Inserter";
         speed = 1f;
-    }
-    public Inserter(ItemEntityManager itemEntityManager, TileEntityManager tileEntityManager){
-        this();
-        this.itemEntityManager = itemEntityManager;
-        this.tileEntityManager = tileEntityManager;
-
     }
     public Inserter(int x, int y) {
         this();
@@ -39,8 +34,6 @@ public class Inserter extends TileEntity implements Directional{
     }
     public Inserter(Inserter other){
         super(other);
-        this.itemEntityManager = other.itemEntityManager;
-        this.tileEntityManager = other.tileEntityManager;
         this.direction = other.direction;
         this.speed = other.speed;
         this.font = other.font;
@@ -104,9 +97,11 @@ public class Inserter extends TileEntity implements Directional{
             }else if(TEfront instanceof HasInventory){
                     // get item from inserter storage to inventory
                     this.itemEntity.item.amount = 1;
-                    ((HasInventory) TEfront).addItem(new Item(this.itemEntity.item));
-                    this.item = null;
-                    this.itemEntity = null;
+                    boolean didiadd = ((HasInventory) TEfront).addItem(new Item(this.itemEntity.item));
+                    if(didiadd) {
+                        this.item = null;
+                        this.itemEntity = null;
+                    }
             }
 
         }

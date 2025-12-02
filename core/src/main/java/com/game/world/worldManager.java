@@ -25,24 +25,21 @@ import com.game.tileenttities.*;
 
 import java.util.Objects;
 
+import static com.game.main.Main.*;
+
 public class worldManager {
-    public UIManager uiManager;
-    public float unitScale;
-    public float mapWidth, mapHeight;
-    public OrthographicCamera camera;
-    public OrthogonalTiledMapRenderer mapRenderer;
+    public static float mapWidth, mapHeight;
+    public static OrthographicCamera camera;
+    public static OrthogonalTiledMapRenderer mapRenderer;
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
-    public Vector3 mouseWorld = new Vector3();
+    public static Vector3 mouseWorld = new Vector3();
     public Player player;
     public static TiledMap map;
     TiledMapTileLayer collisionLayer;
-    public ItemEntityManager itemEntityManager;
-    public TileEntityManager tileEntityManager;
     public float tileBreakTimer;
-    public Vector2 direction;
-    public worldManager(float unitscale) {
-        this.unitScale = unitscale;
+    public static Vector2 direction;
+    public worldManager() {
         map = new TmxMapLoader().load("maps/mapv1.tmx");
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Warstwa Kafelków 1");
 

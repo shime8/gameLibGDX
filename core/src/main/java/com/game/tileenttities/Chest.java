@@ -18,8 +18,8 @@ public class Chest extends TileEntity implements HasInventory{
         super();
         sprite = new Sprite(new Texture("tiles/chest.png") );
         name = "Chest";
-        this.width = 5;
-        this.height = 3;
+        this.width = 2;
+        this.height = 2;
         this.items = new Array<>(width * height);
         for (int i = 0; i < width * height; i++) items.add(null);
 //        font = new BitmapFont();
@@ -65,7 +65,7 @@ public class Chest extends TileEntity implements HasInventory{
     }
 
     @Override
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
         boolean added = false;
         for (int i = 0; i < items.size; i++) {
             if(items.get(i) != null && Objects.equals(items.get(i).name, item.name)){
@@ -73,17 +73,18 @@ public class Chest extends TileEntity implements HasInventory{
                 temp.amount += item.amount;
                 items.set(i, temp);
                 added = true;
-                break;
+                return true;
             }
         }
         if(!added) {
             for (int i = 0; i < items.size; i++) {
                 if (items.get(i) == null) {
                     items.set(i, item);
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     @Override

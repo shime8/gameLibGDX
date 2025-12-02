@@ -19,39 +19,35 @@ import com.game.world.worldManager;
 import com.game.UIs.UIManager;
 public class Main extends ApplicationAdapter {
     //private worldtemp worldController;
-    private worldManager worldManager;
+    public static worldManager worldManager;
     private Player player;
     private ObjectMap<GridPoint2, TileEntity> tileEntityMap;
-    TileEntityManager tileEntityManager;
+    public static TileEntityManager tileEntityManager;
     private ObjectMap<GridPoint2, Array<ItemEntity>> itemEntityMap;
-    ItemEntityManager itemEntityManager;
+    public static ItemEntityManager itemEntityManager;
     SpriteBatch batch;
-    private UIManager uiManager;
+    public static UIManager uiManager;
+    public static float unitScale = 1f / 32f;
     @Override
     public void create() {
-        float unitscale = 1f / 32f;
-        player = new Player(30,30, unitscale);
+        player = new Player(30,30, unitScale);
 
-        worldManager = new worldManager(unitscale);
+        worldManager = new worldManager();
         worldManager.player = player;
-        worldManager.unitScale = unitscale;
         tileEntityMap = new ObjectMap<>();
         tileEntityManager = new TileEntityManager(tileEntityMap);
-        worldManager.tileEntityManager = tileEntityManager;
         itemEntityMap = new ObjectMap<>();
         itemEntityManager = new ItemEntityManager(itemEntityMap);
-        worldManager.itemEntityManager = itemEntityManager;
         batch = new SpriteBatch();
-        uiManager = new UIManager(worldManager);
-        worldManager.uiManager = uiManager;
+        uiManager = new UIManager();
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(uiManager.stage); // UI input
         multiplexer.addProcessor(new InputAdapter() {
             @Override
             public boolean scrolled(float amountX, float amountY) {
                 // Zoom camera
-                worldManager.camera.zoom += amountY * 0.05f * worldManager.camera.zoom;
-                worldManager.camera.zoom = Math.max(0.1f, Math.min(worldManager.camera.zoom, 2f));
+                com.game.world.worldManager.camera.zoom += amountY * 0.05f * com.game.world.worldManager.camera.zoom;
+                com.game.world.worldManager.camera.zoom = Math.max(0.1f, Math.min(com.game.world.worldManager.camera.zoom, 2f));
                 return true;
             }
         });
@@ -59,10 +55,11 @@ public class Main extends ApplicationAdapter {
 
 
         tileEntityManager.addEntity(new Chest(33, 33));
-        uiManager.inventory.setItem(1, new Item(100, new Chest()));
-        uiManager.inventory.setItem(2, new Item(100, new Belt(itemEntityManager)));
-        uiManager.inventory.setItem(3, new Item(100, new Inserter(itemEntityManager,tileEntityManager)));
-        uiManager.inventory.setItem(4, new Gear(100));
+        uiManager.inventory.setItem(0, new Item(100, new Chest()));
+        uiManager.inventory.setItem(1, new Item(100, new Belt()));
+        uiManager.inventory.setItem(2, new Item(100, new Inserter()));
+        uiManager.inventory.setItem(3, new Gear(100));
+        uiManager.inventory.setItem(4, new Item(100, new Assembler()));
     }
 
     @Override

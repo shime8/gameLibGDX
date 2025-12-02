@@ -69,7 +69,9 @@ public class MouseSlot {
             float angle = MathUtils.atan2(direction.y, direction.x) * MathUtils.radiansToDegrees;
             item.sprite.setBounds(x, y, 32, 32);
             item.sprite.setOrigin(16, 16);
-            item.sprite.setRotation(angle);
+            if(item.Tile != null && item.Tile instanceof Directional) {
+                item.sprite.setRotation(angle);
+            }
             item.sprite.draw(batch);
             font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }

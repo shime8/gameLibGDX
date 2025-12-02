@@ -24,7 +24,6 @@ import com.game.mechanics.MouseSlot;
 import com.game.mechanics.PlayerInventory;
 import com.game.world.worldManager;
 public class UIManager {
-    public worldManager worldManager;
     public Stage stage;
     public Skin skin;
     public boolean paused = false;
@@ -36,8 +35,7 @@ public class UIManager {
     ShapeRenderer shapeRenderer;
 //    public BitmapFont font;
 
-    public UIManager(worldManager worldManager) {
-        this.worldManager = worldManager;
+    public UIManager() {
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
