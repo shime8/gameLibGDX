@@ -156,7 +156,7 @@ public class UIManager {
         Vector2 mousePos = stage.screenToStageCoordinates(
             new Vector2(Gdx.input.getX(), Gdx.input.getY())
         );
-        mouseSlot.render(batch, mousePos.x, mousePos.y);
+        mouseSlot.render(batch, mousePos.x, mousePos.y, worldManager.direction);
 //        font.draw(batch,String.valueOf((int)worldManager.direction.x), mousePos.x, mousePos.y);
 //        font.draw(batch,String.valueOf((int)worldManager.direction.y), mousePos.x+32f, mousePos.y);
     }

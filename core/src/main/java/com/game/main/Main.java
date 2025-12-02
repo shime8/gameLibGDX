@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.game.items.Gear;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
@@ -61,6 +62,7 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(1, new Item(100, new Chest()));
         uiManager.inventory.setItem(2, new Item(100, new Belt(itemEntityManager)));
         uiManager.inventory.setItem(3, new Item(100, new Inserter(itemEntityManager,tileEntityManager)));
+        uiManager.inventory.setItem(4, new Gear(100));
     }
 
     @Override

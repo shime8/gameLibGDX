@@ -10,6 +10,8 @@ public class Item {
     public Sprite sprite;
     public TileEntity Tile;
 
+    public Item(){
+    }
     public Item(int amount, TileEntity Tile){
             this.amount = amount;
             this.Tile = Tile;
@@ -17,11 +19,17 @@ public class Item {
             this.name = Tile.name;
     }
     public Item(Item item){
-        this.name = item.name;
         this.amount = item.amount;
         this.Tile = item.Tile;
-        this.sprite = item.Tile.sprite;
-        this.name = item.Tile.name;
+        if(item.Tile == null){
+            this.sprite = item.sprite;
+            this.name = item.name;
+        }else {
+            this.sprite = item.Tile.sprite;
+            this.name = item.Tile.name;
+        }
+
     }
+
 
 }

@@ -107,12 +107,12 @@ public class worldManager {
 
     public void mouseActions(float dt){
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !uiManager.inventoryOpen) {
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
-            if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null) {
+            if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null && uiManager.mouseSlot.getItem().Tile != null) {
                 TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
                 if(mouseTE instanceof Directional d){d.setDirection(new Vector2(this.direction));}
@@ -121,7 +121,7 @@ public class worldManager {
                 uiManager.refreshInventoryUI();
             }
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !uiManager.inventoryOpen) {
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
@@ -136,7 +136,7 @@ public class worldManager {
     }
     public void handleInputs(){
         //drop item on tile
-        if (Gdx.input.isKeyJustPressed(Input.Keys.C) && uiManager.mouseSlot.getItem()!=null) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && uiManager.mouseSlot.getItem()!=null) {
             Item tempItem = new Item(uiManager.mouseSlot.getItem());
             tempItem.amount = 1;
 
@@ -167,7 +167,7 @@ public class worldManager {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-              direction.rotate90(1);
+              direction.rotate90(-1);
 //            Item item = uiManager.mouseSlot.getItem();
 //            if (item != null && item.Tile instanceof Directional d) {
 //                d.setDirection(d.getDirection().rotate90(1) );

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game.items.Item;
@@ -60,14 +61,18 @@ public class MouseSlot {
     }
 
 
-    public void render(SpriteBatch batch, float x,float y){
+    public void render(SpriteBatch batch, float x,float y, Vector2 direction){
         if(item!=null) {
 //            batch.disableBlending();
 //            batch.draw(item.sprite, x, y, 32, 32);
 //            batch.enableBlending();
+            float angle = MathUtils.atan2(direction.y, direction.x) * MathUtils.radiansToDegrees;
             item.sprite.setBounds(x, y, 32, 32);
+            item.sprite.setOrigin(16, 16);
+            item.sprite.setRotation(angle);
             item.sprite.draw(batch);
             font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }
     }
+
 }
