@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class ItemEntity {
     public Item item;
@@ -12,6 +13,7 @@ public class ItemEntity {
     public float worldY;
     Rectangle bounds;
     float size;
+    public Vector2 direction;
 //    public BitmapFont font;
     public ItemEntity(Item item, float worldX, float worldY){
         this.item =new Item(item);
@@ -31,6 +33,7 @@ public class ItemEntity {
         this.worldY = itemEntity.worldY;
         this.bounds = itemEntity.bounds;
         this.size = itemEntity.size;
+        this.direction = itemEntity.direction;
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);
@@ -53,5 +56,11 @@ public class ItemEntity {
 //            font.draw(batch,String.valueOf((int)worldX), worldX, worldY);
 //            font.draw(batch,String.valueOf((int)worldY), worldX+2f, worldY);
         }
+    }
+    public boolean lessThanHalf(){
+        return worldX%1<0.5 && direction.x>0
+            || worldX%1>0.5 && direction.x<0
+            || worldY%1<0.5 && direction.y>0
+            || worldY%1>0.5 && direction.y<0;
     }
 }

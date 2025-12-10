@@ -45,15 +45,23 @@ public class Belt extends TileEntity implements Directional{
     @Override
     public void update(float delta) {
         if(itemEntityManager.getItemEntityList(x, y)!=null){
+            boolean front = itemEntityManager.getItemEntityList(x+direction.x, y+direction.y) == null
+                || itemEntityManager.getItemEntityList(x+direction.x, y+direction.y).size<2;
             for (ItemEntity iteme : itemEntityManager.getItemEntityList(x, y)) {
-                int tempX = (int)Math.floor(iteme.worldX);
-                int tempY = (int)Math.floor(iteme.worldY);
 
-                iteme.worldX += direction.x * speed * delta;
-                iteme.worldY += direction.y * speed * delta;
-                iteme.update();
-                if(tempX != (int)Math.floor(iteme.worldX) || tempY != (int)Math.floor(iteme.worldY)){
-                    itemEntityManager.updateItemEntity(iteme, new GridPoint2(tempX, tempY));
+                if(iteme.direction == null || !iteme.lessThanHalf() ){
+                    iteme.direction = direction;
+                }
+                if(front || iteme.lessThanHalf()){
+                    int tempX = (int) Math.floor(iteme.worldX);
+                    int tempY = (int) Math.floor(iteme.worldY);
+
+                    iteme.worldX += iteme.direction.x * speed * delta;
+                    iteme.worldY += iteme.direction.y * speed * delta;
+                    iteme.update();
+                    if (tempX != (int) Math.floor(iteme.worldX) || tempY != (int) Math.floor(iteme.worldY)) {
+                        itemEntityManager.updateItemEntity(iteme, new GridPoint2(tempX, tempY));
+                    }
                 }
             }
         }
