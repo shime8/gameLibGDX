@@ -123,7 +123,7 @@ public class Assembler extends TileEntity implements CanCraft{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
-        if(itemsIn != null)for(Item i : itemsIn){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y);}}
+        //if(itemsIn != null)for(Item i : itemsIn){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y);}}
     }
 
 }

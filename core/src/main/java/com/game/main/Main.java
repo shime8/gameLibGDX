@@ -60,6 +60,8 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(2, new Item(100, new Inserter()));
         uiManager.inventory.setItem(3, new Gear(100));
         uiManager.inventory.setItem(4, new Item(100, new Assembler()));
+        uiManager.inventory.setItem(5, new Item(50, new Creator()));
+        uiManager.inventory.setItem(6, new Item(50, new Deleter()));
     }
 
     @Override
