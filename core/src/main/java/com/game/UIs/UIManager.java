@@ -97,20 +97,30 @@ public class UIManager {
         for (int y = 0; y < inventory.getHeight(); y++) {
             for (int x = 0; x < inventory.getWidth(); x++) {
                 int index = y * inventory.getWidth() + x;
-                TextButton slot = new TextButton("",skin);
-                slot.getLabel().setColor(Color.LIGHT_GRAY);
-                slot.setColor(new Color(1, 1, 1, 0.5f));
-                slot.pad(10);
-
+                InventorySlot slot = new InventorySlot(skin);
                 slot.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float px, float py) {
-                        inventory.setItem(index,mouseSlot.switchItem(inventory.getItem(index)));
+                        inventory.setItem(index, mouseSlot.switchItem(inventory.getItem(index)));
                         refreshInventoryUI();
                     }
                 });
+//                slot.getLabel().setColor(Color.LIGHT_GRAY);
+//                slot.setColor(new Color(1, 1, 1, 0.5f));
+//                slot.pad(10);
+//
+//                slot.addListener(new ClickListener() {
+//                    @Override
+//                    public void clicked(InputEvent event, float px, float py) {
+//                        inventory.setItem(index,mouseSlot.switchItem(inventory.getItem(index)));
+//                        refreshInventoryUI();
+//                    }
+//                });
 
-                inventoryUI.add(slot).size(64, 64).pad(5);
+                float slotSize = Gdx.graphics.getHeight() * 0.08f;
+                float slotPadding = slotSize * 0.1f;
+
+                inventoryUI.add(slot).size(slotSize, slotSize).pad(slotPadding);
             }
             inventoryUI.row();
         }
@@ -122,9 +132,9 @@ public class UIManager {
         // When items change, refresh button labels
         int i = 0;
         for (Actor actor : inventoryUI.getChildren()) {
-            if (actor instanceof TextButton && i < inventory.getSize()) {
+            if (actor instanceof InventorySlot && i < inventory.getSize()) {
                 Item item = inventory.getItem(i);
-                ((TextButton) actor).setText(item == null ? "" : item.name+" "+item.amount);
+                ((InventorySlot) actor).setItem(item);
                 i++;
             }
         }
@@ -190,14 +200,22 @@ public class UIManager {
     }
 
     public void resize(int width, int height) {
+
         stage.getViewport().update(width, height, true);
+        float slotSize = height * 0.08f;
+        float slotPadding = slotSize * 0.12f;
+
+        for (Cell<?> cell : inventoryUI.getCells()) {
+            cell.size(slotSize, slotSize).pad(slotPadding);
+        }
+
+        inventoryUI.invalidate();
     }
 
     public void dispose() {
         stage.dispose();
         skin.dispose();
         shapeRenderer.dispose();
-
     }
 
     public void decreaseAndAutoGet() {

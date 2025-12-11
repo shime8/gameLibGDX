@@ -18,11 +18,12 @@ public class Inserter extends TileEntity implements Directional{
     float speed;
     Item item;
     ItemEntity itemEntity;
+    float accumulator = 0f;
     public Inserter(){
         super();
         sprite = new Sprite(new Texture("tiles/inserter_up.png"));
         name = "Inserter";
-        speed = 1f;
+        speed = 2f;
     }
     public Inserter(int x, int y) {
         this();
@@ -39,6 +40,7 @@ public class Inserter extends TileEntity implements Directional{
         this.font = other.font;
         this.item = null;
         this.itemEntity = null;
+        accumulator = 0f;
     }
     @Override
     public TileEntity clone() {
@@ -46,7 +48,12 @@ public class Inserter extends TileEntity implements Directional{
     }
     @Override
     public void update(float delta) {
-        swing();
+        accumulator+=delta;
+        if(accumulator>1f/speed){
+            swing();
+            accumulator = 0f;
+        }
+
         if(this.itemEntity != null) {
             this.itemEntity.update();
         }
@@ -86,7 +93,7 @@ public class Inserter extends TileEntity implements Directional{
             if(TEfront == null || TEfront instanceof Belt){
                 // check if tile has item entities
                 Array<ItemEntity> IElist = itemEntityManager.getItemEntityList(new GridPoint2(x+(int)(direction.x),y+(int)(direction.y)));
-                if(IElist == null ||  IElist.isEmpty()){
+                if(IElist == null ||  IElist.isEmpty() || IElist.size<1){
                     // get itemEntity from inserter storage to Tile
                     ItemEntity IEmoved = new ItemEntity(this.itemEntity.item,x+direction.x+0.5f,y+direction.y+0.5f);
                     itemEntityManager.addItemEntity(IEmoved);
