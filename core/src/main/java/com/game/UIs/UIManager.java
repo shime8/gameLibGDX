@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,16 +23,22 @@ import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 import com.game.mechanics.MouseSlot;
 import com.game.mechanics.PlayerInventory;
+import com.game.tileenttities.Chest;
 import com.game.world.worldManager;
 public class UIManager {
     public Stage stage;
     public Skin skin;
     public boolean paused = false;
     public boolean inventoryOpen = false;
+    public boolean chestOpen = false;
     public Table pauseMenu;
+    public Table InventoryContainer;
     public Table inventoryUI;
+    public Table chestUI;
     public PlayerInventory inventory;
+    public Chest currentChest;
     public MouseSlot mouseSlot;
+    public float accumulator;
     ShapeRenderer shapeRenderer;
 //    public BitmapFont font;
 
@@ -47,10 +54,13 @@ public class UIManager {
 
         createPauseMenu();
         createInventoryUI();
+        createchestUI();
+        createInventoryContainer();
         shapeRenderer = new ShapeRenderer();
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(2f);
+        accumulator = 0f;
     }
 
     private void createPauseMenu() {
@@ -84,10 +94,15 @@ public class UIManager {
             }
         });
     }
-
+    public void createInventoryContainer(){
+        InventoryContainer = new Table();
+        InventoryContainer.setFillParent(true);
+        InventoryContainer.add(inventoryUI);
+        stage.addActor(InventoryContainer);
+        InventoryContainer.setVisible(false);
+    }
     private void createInventoryUI() {
         inventoryUI = new Table();
-        inventoryUI.setFillParent(true);
 
         Label title = new Label("Inventory", skin);
         inventoryUI.add(title).colspan(inventory.getWidth()).padBottom(10);
@@ -124,8 +139,71 @@ public class UIManager {
             }
             inventoryUI.row();
         }
-        stage.addActor(inventoryUI);
-        inventoryUI.setVisible(false);
+    }
+
+    private void createchestUI() {
+        chestUI = new Table();
+
+        Label title = new Label("Chest", skin);
+        chestUI.add(title).colspan(4).padBottom(10);
+        chestUI.row();
+
+        // Create grid
+        for (int y = 0; y < 1; y++) {
+            for (int x = 0; x < 4; x++) {
+                int index = y * 4 + x;
+                InventorySlot slot = new InventorySlot(skin);
+
+                float slotSize = Gdx.graphics.getHeight() * 0.08f;
+                float slotPadding = slotSize * 0.1f;
+
+                chestUI.add(slot).size(slotSize, slotSize).pad(slotPadding);
+            }
+            chestUI.row();
+        }
+    }
+
+    public void toggleInventory() {
+        inventoryOpen = !inventoryOpen;
+        InventoryContainer.setVisible(inventoryOpen);
+        refreshInventoryUI();
+    }
+
+    public void openChest(Chest chest) {
+        currentChest = chest;
+        inventoryOpen = true;
+        chestOpen = true;
+        // Update chest UI with click listeners for the specific chest
+        int i = 0;
+        for (Actor actor : chestUI.getChildren()) {
+            if (actor instanceof InventorySlot && i > 0) { // Skip the title label
+                int index = i - 1; // Adjust for title
+                if (index < chest.getSize()) {
+                    actor.clearListeners();
+                    actor.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float px, float py) {
+                            currentChest.setItem(index, mouseSlot.switchItem(currentChest.getItem(index)));
+                            refreshChestUI();
+                        }
+                    });
+                }
+            }
+            i++;
+        }
+        InventoryContainer.add(chestUI);
+        InventoryContainer.setVisible(true);
+        refreshInventoryUI();
+        refreshChestUI();
+    }
+
+    public void closeChest() {
+        chestOpen = false;
+        inventoryOpen = false;
+        currentChest = null;
+        InventoryContainer.setVisible(false);
+        InventoryContainer.removeActor(chestUI);
+
     }
 
     public void refreshInventoryUI() {
@@ -140,11 +218,33 @@ public class UIManager {
         }
     }
 
+    public void refreshChestUI() {
+        if (currentChest == null) return;
+
+        int i = 0;
+        int slotIndex = 0;
+        for (Actor actor : chestUI.getChildren()) {
+            if (actor instanceof InventorySlot) {
+                if (slotIndex < currentChest.getSize()) {
+                    Item item = currentChest.getItem(slotIndex);
+                    ((InventorySlot) actor).setItem(item);
+                    slotIndex++;
+                }
+            }
+        }
+    }
+
     public void update(float delta) {
+
         handleInput();
 
         if (paused || inventoryOpen) {
             stage.act(delta);
+        }
+        accumulator += delta;
+        if(accumulator>delta){
+            accumulator = accumulator%0.1f;
+            refreshChestUI();
         }
     }
 
@@ -172,27 +272,26 @@ public class UIManager {
     private void handleInput() {
         // Toggle pause
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            togglePause();
+            if (chestOpen) {
+                closeChest();
+            } else {
+                togglePause();
+            }
         }
 
-        // Toggle inventory
+        // Toggle inventory (only when chest is not open)
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-            toggleInventory();
+            if (chestOpen) {
+                closeChest();
+            } else {
+                toggleInventory();
+            }
         }
-
-
-
     }
 
     public void togglePause() {
         paused = !paused;
         pauseMenu.setVisible(paused);
-    }
-
-    public void toggleInventory() {
-        inventoryOpen = !inventoryOpen;
-        inventoryUI.setVisible(inventoryOpen);
-        refreshInventoryUI();
     }
 
     public boolean isPaused() {
@@ -209,7 +308,16 @@ public class UIManager {
             cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
+        for (Actor actor : chestUI.getChildren()) {
+            if (actor instanceof Table && actor != inventoryUI) {
+                for (Cell<?> cell : ((Table) actor).getCells()) {
+                    cell.size(slotSize, slotSize).pad(slotPadding);
+                }
+            }
+        }
+
         inventoryUI.invalidate();
+        chestUI.invalidate();
     }
 
     public void dispose() {

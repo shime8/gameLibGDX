@@ -109,6 +109,9 @@ public class worldManager {
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
+            if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Chest){
+                uiManager.openChest((Chest)tileEntityManager.getEntityAt(tileX,tileY));
+            }
             if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null && uiManager.mouseSlot.getItem().Tile != null) {
                 TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
@@ -145,12 +148,6 @@ public class worldManager {
                 itemEntityManager.addItemEntity(tempItemEntity);
                 uiManager.decreaseAndAutoGet();
             }
-        }
-
-        //DEBUG: infinite chests
-        if(Gdx.input.isKeyPressed(Input.Keys.G)){
-            uiManager.inventory.addItem(new Item(10,new Chest()));
-            uiManager.refreshInventoryUI();
         }
 
         //pickup items from floor

@@ -92,4 +92,14 @@ public class Chest extends TileEntity implements HasInventory{
         super.render(batch);
 //        for(Item i : items){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y);}}
     }
+
+    public Item getItem(int index) {
+        return items.get(index);
+    }
+    public void setItem(int index, Item item) {
+        items.set(index, item);
+    }
+    public int getSize() {
+        return width * height;
+    }
 }
