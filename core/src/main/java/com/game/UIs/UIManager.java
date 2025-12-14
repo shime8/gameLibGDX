@@ -308,12 +308,8 @@ public class UIManager {
             cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
-        for (Actor actor : chestUI.getChildren()) {
-            if (actor instanceof Table && actor != inventoryUI) {
-                for (Cell<?> cell : ((Table) actor).getCells()) {
-                    cell.size(slotSize, slotSize).pad(slotPadding);
-                }
-            }
+        for (Cell<?> cell : chestUI.getCells()) {
+            cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
         inventoryUI.invalidate();

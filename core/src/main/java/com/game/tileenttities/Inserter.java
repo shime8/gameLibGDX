@@ -19,6 +19,7 @@ public class Inserter extends TileEntity implements Directional{
     Item item;
     ItemEntity itemEntity;
     float accumulator = 0f;
+
     public Inserter(){
         super();
         sprite = new Sprite(new Texture("tiles/inserter_up.png"));
@@ -113,6 +114,8 @@ public class Inserter extends TileEntity implements Directional{
 
         }
     }
+    @Override
+    public void placingUpdate() {}
     @Override
     public Vector2 getDirection() {
         return this.direction;

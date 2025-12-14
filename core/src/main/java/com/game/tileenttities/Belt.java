@@ -11,10 +11,14 @@ import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 
 import static com.game.main.Main.itemEntityManager;
+import static com.game.main.Main.tileEntityManager;
 
 public class Belt extends TileEntity implements Directional{
     public Vector2 direction;
     float speed;
+    float accumulator = 0f;
+    TileEntity ForwardTE;
+    boolean moveForward = false;
     public Belt(){
         super();
         sprite = new Sprite(new Texture("tiles/belt.png"));
@@ -44,7 +48,12 @@ public class Belt extends TileEntity implements Directional{
     }
     @Override
     public void update(float delta) {
-        if(itemEntityManager.getItemEntityList(x, y)!=null){
+        accumulator+=delta;
+        if(accumulator>1.0f){
+            updateFrontTileEntityCheck();
+            accumulator = 0f;
+        }
+        if(itemEntityManager.getItemEntityList(x, y)!=null ){
             boolean front = itemEntityManager.getItemEntityList(x+direction.x, y+direction.y) == null
                 || itemEntityManager.getItemEntityList(x+direction.x, y+direction.y).size<2;
             for (ItemEntity iteme : itemEntityManager.getItemEntityList(x, y)) {
@@ -52,7 +61,7 @@ public class Belt extends TileEntity implements Directional{
                 if(iteme.direction == null || !iteme.lessThanHalf() ){
                     iteme.direction = direction;
                 }
-                if(front || iteme.lessThanHalf()){
+                if((moveForward && front) || iteme.lessThanHalf()){
                     int tempX = (int) Math.floor(iteme.worldX);
                     int tempY = (int) Math.floor(iteme.worldY);
 
@@ -66,7 +75,8 @@ public class Belt extends TileEntity implements Directional{
             }
         }
     }
-
+    @Override
+    public void placingUpdate() {updateFrontTileEntityCheck();}
     @Override
     public Vector2 getDirection() {
         return this.direction;
@@ -81,5 +91,14 @@ public class Belt extends TileEntity implements Directional{
     public void render(SpriteBatch batch) {
         sprite.setRotation(getAngle(direction));
         super.render(batch);
+    }
+
+    public void updateFrontTileEntityCheck(){
+        ForwardTE =  tileEntityManager.getEntityAt((int)(x+direction.x), (int)(y+direction.y));
+        if(ForwardTE != null && ForwardTE instanceof Belt){
+            moveForward = true;
+        }else{
+            moveForward = false;
+        }
     }
 }

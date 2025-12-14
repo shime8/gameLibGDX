@@ -77,7 +77,8 @@ public class Assembler extends TileEntity implements CanCraft{
             }
         }
     }
-
+    @Override
+    public void placingUpdate() {}
     @Override
     public Item getAnyItem() {
         if(itemsOut != null){

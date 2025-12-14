@@ -47,8 +47,10 @@ public class Chest extends TileEntity implements HasInventory{
     public TileEntity clone() {
         return new Chest(this);
     }
-    public void update(float delta) {
-    }
+    @Override
+    public void update(float delta) {}
+    @Override
+    public void placingUpdate() {}
 
     @Override
     public Item getAnyItem() {
