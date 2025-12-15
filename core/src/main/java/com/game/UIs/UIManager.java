@@ -54,7 +54,7 @@ public class UIManager {
 
         createPauseMenu();
         createInventoryUI();
-        createchestUI();
+        createChestUI();
         createInventoryContainer();
         shapeRenderer = new ShapeRenderer();
 //        font = new BitmapFont();
@@ -141,7 +141,7 @@ public class UIManager {
         }
     }
 
-    private void createchestUI() {
+    private void createChestUI() {
         chestUI = new Table();
 
         Label title = new Label("Chest", skin);
@@ -173,12 +173,12 @@ public class UIManager {
         currentChest = chest;
         inventoryOpen = true;
         chestOpen = true;
-        // Update chest UI with click listeners for the specific chest
+        // Update chest UI with click listeners
         int i = 0;
         for (Actor actor : chestUI.getChildren()) {
             if (actor instanceof InventorySlot && i > 0) { // Skip the title label
                 int index = i - 1; // Adjust for title
-                if (index < chest.getSize()) {
+                if (index < currentChest.getSize()) {
                     actor.clearListeners();
                     actor.addListener(new ClickListener() {
                         @Override

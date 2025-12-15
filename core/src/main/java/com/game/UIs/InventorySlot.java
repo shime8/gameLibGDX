@@ -1,6 +1,7 @@
 package com.game.UIs;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -10,13 +11,16 @@ import com.badlogic.gdx.utils.Align;
 import com.game.items.Item;
 
 public class InventorySlot extends Stack {
+    public Image BGimage;
     public Image image;
     public Label amountLabel;
 
     public InventorySlot(Skin skin) {
         super();
 
-        image = new Image(); // initially empty
+        BGimage = new Image();
+        BGimage.setDrawable(new TextureRegionDrawable(new Texture("items/itemSlot.png")));
+        image = new Image();
         amountLabel = new Label("", skin);
         amountLabel.setColor(Color.WHITE);
         amountLabel.setFontScale(1.2f);
@@ -24,6 +28,7 @@ public class InventorySlot extends Stack {
         // Align text to bottom-right
         amountLabel.setAlignment(Align.bottomRight);
 
+        add(BGimage);
         add(image);
         add(amountLabel);
     }

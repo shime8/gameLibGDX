@@ -39,6 +39,7 @@ public class worldManager {
     TiledMapTileLayer collisionLayer;
     public float tileBreakTimer;
     public static Vector2 direction;
+    public boolean justplaced = false;
     public worldManager() {
         map = new TmxMapLoader().load("maps/mapv1.tmx");
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Warstwa Kafelków 1");
@@ -109,7 +110,7 @@ public class worldManager {
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
-            if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Chest){
+            if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Chest && !justplaced){
                 uiManager.openChest((Chest)tileEntityManager.getEntityAt(tileX,tileY));
             }
             if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null && uiManager.mouseSlot.getItem().Tile != null) {
@@ -119,7 +120,10 @@ public class worldManager {
                 tileEntityManager.addEntity(mouseTE);
                 uiManager.decreaseAndAutoGet();
                 uiManager.refreshInventoryUI();
+                justplaced = true;
             }
+        }else{
+            justplaced = false;
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !uiManager.inventoryOpen) {
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
