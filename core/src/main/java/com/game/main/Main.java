@@ -13,6 +13,7 @@ import com.game.items.Gear;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
+import com.game.mechanics.RecipeManager;
 import com.game.player.Player;
 import com.game.tileenttities.*;
 import com.game.world.worldManager;
@@ -28,6 +29,7 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     public static UIManager uiManager;
     public static float unitScale = 1f / 32f;
+    public static RecipeManager recipeManager;
     @Override
     public void create() {
         player = new Player(30,30, unitScale);
@@ -38,6 +40,7 @@ public class Main extends ApplicationAdapter {
         tileEntityManager = new TileEntityManager(tileEntityMap);
         itemEntityMap = new ObjectMap<>();
         itemEntityManager = new ItemEntityManager(itemEntityMap);
+        recipeManager = new RecipeManager();
         batch = new SpriteBatch();
         uiManager = new UIManager();
         InputMultiplexer multiplexer = new InputMultiplexer();

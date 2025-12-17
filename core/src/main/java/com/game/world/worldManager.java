@@ -20,6 +20,7 @@ import com.game.UIs.UIManager;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
+import com.game.mechanics.Recipe;
 import com.game.player.Player;
 import com.game.tileenttities.*;
 
@@ -113,6 +114,9 @@ public class worldManager {
             if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Chest && !justplaced){
                 uiManager.openChest((Chest)tileEntityManager.getEntityAt(tileX,tileY));
             }
+            if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Assembler && !justplaced){
+                uiManager.openAssembler((Assembler)tileEntityManager.getEntityAt(tileX,tileY));
+            }
             if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null && uiManager.mouseSlot.getItem().Tile != null) {
                 TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
@@ -136,6 +140,8 @@ public class worldManager {
                 tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));
             }
         }
+
+
 
     }
     public void handleInputs(){
@@ -170,6 +176,12 @@ public class worldManager {
 //            if (item != null && item.Tile instanceof Directional d) {
 //                d.setDirection(d.getDirection().rotate90(1) );
 //            }
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            for (Recipe recipe : recipeManager.recipes) {
+                System.out.println(recipe);
+            }
         }
 
 

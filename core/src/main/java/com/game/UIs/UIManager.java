@@ -23,20 +23,28 @@ import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 import com.game.mechanics.MouseSlot;
 import com.game.mechanics.PlayerInventory;
+import com.game.mechanics.Recipe;
+import com.game.tileenttities.Assembler;
 import com.game.tileenttities.Chest;
 import com.game.world.worldManager;
+
+import static com.game.main.Main.recipeManager;
+
 public class UIManager {
     public Stage stage;
     public Skin skin;
     public boolean paused = false;
     public boolean inventoryOpen = false;
     public boolean chestOpen = false;
+    public boolean assemblerOpen = false;
     public Table pauseMenu;
     public Table InventoryContainer;
     public Table inventoryUI;
     public Table chestUI;
+    public Table assemblerUI;
     public PlayerInventory inventory;
     public Chest currentChest;
+    public Assembler currentAssembler;
     public MouseSlot mouseSlot;
     public float accumulator;
     ShapeRenderer shapeRenderer;
@@ -55,6 +63,7 @@ public class UIManager {
         createPauseMenu();
         createInventoryUI();
         createChestUI();
+        createAssemblerUI();
         createInventoryContainer();
         shapeRenderer = new ShapeRenderer();
 //        font = new BitmapFont();
@@ -163,6 +172,32 @@ public class UIManager {
         }
     }
 
+    private void createAssemblerUI() {
+        assemblerUI = new Table();
+
+        Label title = new Label("Assembler", skin);
+        assemblerUI.add(title).colspan(4).padBottom(10);
+        assemblerUI.row();
+
+        // Create grid
+        for (int y = 0; y < (recipeManager.length()/4)+1; y++) {
+            for (int x = 0; x < 4; x++) {
+                int index = y * 4 + x;
+                if(recipeManager.length()>index) {
+                    SelectorSlot slot = new SelectorSlot(skin);
+                    Recipe recipe = recipeManager.getRecipe(index);
+                    slot.setItem(recipe.itemsCOut.first());
+
+                    float slotSize = Gdx.graphics.getHeight() * 0.08f;
+                    float slotPadding = slotSize * 0.1f;
+
+                    assemblerUI.add(slot).size(slotSize, slotSize).pad(slotPadding);
+                }
+            }
+            assemblerUI.row();
+        }
+    }
+
     public void toggleInventory() {
         inventoryOpen = !inventoryOpen;
         InventoryContainer.setVisible(inventoryOpen);
@@ -203,6 +238,42 @@ public class UIManager {
         currentChest = null;
         InventoryContainer.setVisible(false);
         InventoryContainer.removeActor(chestUI);
+
+    }
+
+    public void openAssembler(Assembler assembler) {
+        currentAssembler = assembler;
+        inventoryOpen = true;
+        assemblerOpen = true;
+        // Update chest UI with click listeners
+        int i = 0;
+        for (Actor actor : assemblerUI.getChildren()) {
+            if (actor instanceof SelectorSlot && i > 0) { // Skip the title label
+                int index = i - 1; // Adjust for title
+                Recipe recipe = recipeManager.getRecipe(index);
+                    actor.clearListeners();
+                    actor.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float px, float py) {
+                            currentAssembler.setRecipe(recipe);
+                            refreshChestUI();
+                            closeAssembler();
+                        }
+                    });
+            }
+            i++;
+        }
+        InventoryContainer.add(assemblerUI);
+        InventoryContainer.setVisible(true);
+        refreshInventoryUI();
+    }
+
+    public void closeAssembler() {
+        assemblerOpen = false;
+        inventoryOpen = false;
+        currentAssembler = null;
+        InventoryContainer.setVisible(false);
+        InventoryContainer.removeActor(assemblerUI);
 
     }
 
@@ -274,7 +345,9 @@ public class UIManager {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (chestOpen) {
                 closeChest();
-            } else {
+            } else if(assemblerOpen){
+                closeAssembler();
+            }else{
                 togglePause();
             }
         }
@@ -283,7 +356,9 @@ public class UIManager {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (chestOpen) {
                 closeChest();
-            } else {
+            } else if(assemblerOpen){
+                closeAssembler();
+            }else{
                 toggleInventory();
             }
         }
@@ -312,8 +387,14 @@ public class UIManager {
             cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
+        for (Cell<?> cell : assemblerUI.getCells()) {
+            cell.size(slotSize, slotSize).pad(slotPadding);
+        }
+
+
         inventoryUI.invalidate();
         chestUI.invalidate();
+        assemblerUI.invalidate();
     }
 
     public void dispose() {

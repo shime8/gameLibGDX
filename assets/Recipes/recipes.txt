@@ -1,0 +1,4 @@
+null 1 ; null 1
+belt 1 ; gear 1
+inserter 1 ; gear 3
+assembler 1 ; gear 5
