@@ -21,14 +21,15 @@ public class Assembler extends TileEntity implements CanCraft{
     public BitmapFont font;
 
     public void SetCrafting(Array<Item> itemsIn, Array<Item> itemsOut){
-        this.itemsIn = itemsIn;
-        this.itemsOut = itemsOut;
+
         for (Item i : itemsIn) {
             i.amount = 0;
         }
         for (Item i : itemsOut) {
             i.amount = 0;
         }
+        this.itemsIn = itemsIn;
+        this.itemsOut = itemsOut;
     }
 
     public Assembler(){
@@ -143,23 +144,24 @@ public class Assembler extends TileEntity implements CanCraft{
         itemsIn.set(index, item);
     }
 
-    public int getSize(){
-        return 1;
-    }
     public void setRecipe(Recipe recipe){
         this.recipe = recipe;
         if(recipe!=null) {
-            Array<Item> clonedIn = new Array<>(recipe.itemsCIn.size);
-            for (Item i : recipe.itemsCIn) {
-                clonedIn.add(new Item(i));
-            }
-
-            Array<Item> clonedOut = new Array<>(recipe.itemsCOut.size);
-            for (Item i : recipe.itemsCOut) {
-                clonedOut.add(new Item(i));
-            }
-            SetCrafting(clonedIn, clonedOut);
+            Recipe cloned = clone(this.recipe);
+            SetCrafting(cloned.itemsCIn, cloned.itemsCOut);
         }
+    }
+    public Recipe clone(Recipe recipe){
+        Array<Item> clonedIn = new Array<>(recipe.itemsCIn.size);
+        for (Item i : recipe.itemsCIn) {
+            clonedIn.add(new Item(i));
+        }
+
+        Array<Item> clonedOut = new Array<>(recipe.itemsCOut.size);
+        for (Item i : recipe.itemsCOut) {
+            clonedOut.add(new Item(i));
+        }
+        return new Recipe(clonedIn, clonedOut);
     }
 
 }

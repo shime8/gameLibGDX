@@ -32,9 +32,8 @@ public class Main extends ApplicationAdapter {
     public static RecipeManager recipeManager;
     @Override
     public void create() {
-        player = new Player(30,30, unitScale);
-
         worldManager = new worldManager();
+        player = new Player(30,30, unitScale);
         worldManager.player = player;
         tileEntityMap = new ObjectMap<>();
         tileEntityManager = new TileEntityManager(tileEntityMap);

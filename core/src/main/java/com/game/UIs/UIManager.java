@@ -132,14 +132,6 @@ public class UIManager {
 //                slot.getLabel().setColor(Color.LIGHT_GRAY);
 //                slot.setColor(new Color(1, 1, 1, 0.5f));
 //                slot.pad(10);
-//
-//                slot.addListener(new ClickListener() {
-//                    @Override
-//                    public void clicked(InputEvent event, float px, float py) {
-//                        inventory.setItem(index,mouseSlot.switchItem(inventory.getItem(index)));
-//                        refreshInventoryUI();
-//                    }
-//                });
 
                 float slotSize = Gdx.graphics.getHeight() * 0.08f;
                 float slotPadding = slotSize * 0.1f;

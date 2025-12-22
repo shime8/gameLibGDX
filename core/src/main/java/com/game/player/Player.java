@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.game.world.worldManager;
 
 import java.awt.*;
 
@@ -15,6 +16,9 @@ public class Player {
     public float speed = 5f; // plytki na sekunde
     public Texture texture;
     public float unitScale;
+    float mapWidth;
+    float mapHeight ;
+    TiledMapTileLayer layer;
     Rectangle hitbox;
 
     public Player(float startX, float startY, float unitScale) {
@@ -23,9 +27,12 @@ public class Player {
         this.unitScale = unitScale;
         this.texture = new Texture(Gdx.files.internal("player/playerv1.png"));
         this.hitbox = new Rectangle(x-0.25f,y-0.46f,0.5f,0.9f);
+        this.mapWidth = worldManager.mapWidth;
+        this.mapHeight = worldManager.mapHeight;
+        this.layer = worldManager.collisionLayer;
     }
 
-    public void update(float dt, float mapWidth, float mapHeight, TiledMapTileLayer layer) {
+    public void update(float dt ) {
         float dx = 0f, dy = 0f;
 
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))

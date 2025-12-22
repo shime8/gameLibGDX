@@ -37,7 +37,7 @@ public class worldManager {
     public static Vector3 mouseWorld = new Vector3();
     public Player player;
     public static TiledMap map;
-    TiledMapTileLayer collisionLayer;
+    public static TiledMapTileLayer collisionLayer;
     public float tileBreakTimer;
     public static Vector2 direction;
     public boolean justplaced = false;
@@ -62,12 +62,9 @@ public class worldManager {
         direction = new Vector2(1,0);
     }
     public void update(float dt) {
-        player.update(dt,mapWidth,mapHeight,collisionLayer);
-
+        player.update(dt);
     }
     public void drawMap() {
-
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
