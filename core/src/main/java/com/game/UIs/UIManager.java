@@ -45,7 +45,7 @@ public class UIManager {
     public PlayerInventory inventory;
     public Chest currentChest;
     public Assembler currentAssembler;
-    public MouseSlot mouseSlot;
+    static public MouseSlot mouseSlot;
     public float accumulator;
     ShapeRenderer shapeRenderer;
 //    public BitmapFont font;

@@ -15,9 +15,11 @@ public class TileEntityManager {
         GridPoint2 key = new GridPoint2(entity.x, entity.y);
         TileEntity temp = entity.clone();
         tileEntityMap.put(key, temp);
+        temp.placeOtherTiles();
     }
 
     public void removeEntity(TileEntity entity) {
+        entity.removeOtherTiles();
         tileEntityMap.remove(new GridPoint2(entity.x, entity.y));
     }
 

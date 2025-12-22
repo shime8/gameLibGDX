@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -26,6 +27,7 @@ import com.game.tileenttities.*;
 
 import java.util.Objects;
 
+import static com.game.UIs.UIManager.mouseSlot;
 import static com.game.main.Main.*;
 
 public class worldManager {
@@ -41,6 +43,9 @@ public class worldManager {
     public float tileBreakTimer;
     public static Vector2 direction;
     public boolean justplaced = false;
+    public boolean canIPlace = false;
+
+    public TileEntity GhostTE;
     public worldManager() {
         map = new TmxMapLoader().load("maps/mapv1.tmx");
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Warstwa Kafelków 1");
@@ -60,6 +65,7 @@ public class worldManager {
 
         shapeRenderer = new ShapeRenderer();
         direction = new Vector2(1,0);
+
     }
     public void update(float dt) {
         player.update(dt);
@@ -114,8 +120,11 @@ public class worldManager {
             if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Assembler && !justplaced){
                 uiManager.openAssembler((Assembler)tileEntityManager.getEntityAt(tileX,tileY));
             }
-            if(tileEntityManager.getEntityAt(tileX,tileY) == null && uiManager.mouseSlot.getItem() != null && uiManager.mouseSlot.getItem().Tile != null) {
-                TileEntity mouseTE = uiManager.mouseSlot.getItem().Tile;
+            if(tileEntityManager.getEntityAt(tileX,tileY) instanceof AssemblerPointer && !justplaced){
+                uiManager.openAssembler(((AssemblerPointer) tileEntityManager.getEntityAt(tileX,tileY)).assembler);
+            }
+            if(canIPlace && tileEntityManager.getEntityAt(tileX,tileY) == null && mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null) {
+                TileEntity mouseTE = mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
                 if(mouseTE instanceof Directional d){d.setDirection(new Vector2(this.direction));}
                 tileEntityManager.addEntity(mouseTE);
@@ -131,10 +140,17 @@ public class worldManager {
             camera.unproject(mouseWorld);
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
-            if(tileEntityManager.getEntityAt(tileX,tileY) != null) {
-                uiManager.inventory.addItem(new Item(1,tileEntityManager.getEntityAt(tileX,tileY)));
+            if(tileEntityManager.getEntityAt(tileX,tileY) != null ) {
+                TileEntity temp;
+                if (tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup){
+                    uiManager.inventory.addItem(new Item(1,((CantPickup) tileEntityManager.getEntityAt(tileX,tileY)).pickupee()));
+                    tileEntityManager.removeEntity(((CantPickup) tileEntityManager.getEntityAt(tileX,tileY)).pickupee());
+                }else{
+                    uiManager.inventory.addItem(new Item(1,tileEntityManager.getEntityAt(tileX,tileY)));
+                    tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));
+                }
                 uiManager.refreshInventoryUI();
-                tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));
+
             }
         }
 
@@ -143,8 +159,8 @@ public class worldManager {
     }
     public void handleInputs(){
         //drop item on tile
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && uiManager.mouseSlot.getItem()!=null) {
-            Item tempItem = new Item(uiManager.mouseSlot.getItem());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && mouseSlot.getItem()!=null) {
+            Item tempItem = new Item(mouseSlot.getItem());
             tempItem.amount = 1;
 
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -186,6 +202,9 @@ public class worldManager {
     public void drawShapes(){
         renderMouseHighlight();
     }
+    public void drawbatch(SpriteBatch batch){
+        drawGhostTE(batch);
+    }
     private void renderMouseHighlight() {
         // get mouse world position
         mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -204,16 +223,56 @@ public class worldManager {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 0.3f); // semi-transparent white
-        shapeRenderer.rect(tileX, tileY, tileSize, tileSize);
+        if(tileEntityManager.getEntityAt(tileX,tileY)!=null){
+            Rectangle rect = tileEntityManager.getEntityAt(tileX,tileY).getBounds();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }else{
+            shapeRenderer.rect(tileX, tileY, tileSize, tileSize);
+        }
         shapeRenderer.end();
 
         // optional: draw border
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(tileX, tileY, tileSize, tileSize);
+        if(tileEntityManager.getEntityAt(tileX,tileY)!=null){
+            Rectangle rect = tileEntityManager.getEntityAt(tileX,tileY).getBounds();
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }else{
+            shapeRenderer.rect(tileX, tileY, tileSize, tileSize);
+        }
         shapeRenderer.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
+    }
+
+    public void drawGhostTE(SpriteBatch batch){
+        if(mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null) {
+            // get mouse world position
+            mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(mouseWorld);
+
+            // determine tile coords
+            int tileX = (int) Math.floor(mouseWorld.x);
+            int tileY = (int) Math.floor(mouseWorld.y);
+
+            if(GhostTE == null || !Objects.equals(GhostTE.name, mouseSlot.getItem().name)){
+                GhostTE = mouseSlot.getItem().Tile.clone();
+            }
+            canIPlace = true;
+            for(Vector2 tile : GhostTE.checkWhenPlacing()){
+                if(tileEntityManager.getEntityAt((int)tile.x,(int)tile.y)!=null){canIPlace=false;}
+            }
+            if(canIPlace){
+                GhostTE.sprite.setColor(new Color(0,0,0,0.5f));
+            }else{
+                GhostTE.sprite.setColor(new Color(1,0,0,1));
+            }
+            GhostTE.set(tileX, tileY);
+
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            GhostTE.sprite.draw(batch);
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
     }
 
     private float clamp(float v, float min, float max) {

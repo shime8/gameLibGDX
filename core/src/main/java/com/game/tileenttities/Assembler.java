@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.game.items.Gear;
 import com.game.items.Item;
@@ -13,6 +15,7 @@ import com.game.mechanics.Recipe;
 import java.util.Objects;
 
 import static com.game.main.Main.itemEntityManager;
+import static com.game.main.Main.tileEntityManager;
 
 public class Assembler extends TileEntity implements CanCraft{
     Recipe recipe;
@@ -36,19 +39,20 @@ public class Assembler extends TileEntity implements CanCraft{
         super();
         sprite = new Sprite(new Texture("tiles/assembler.png") );
         name = "Assembler";
-        //debug
         Array<Item> input = new Array<>();
-
         Array<Item> output = new Array<>();
 
-
+    }
+    @Override
+    public Rectangle getBounds(){
+        return new Rectangle(this.x-1,this.y-1,3,3);
     }
     public Assembler(int x, int y) {
         this();
         set(x,y);
-        sprite.setSize(bounds.width, bounds.height);
-        sprite.setOriginCenter();
-        sprite.setPosition(x, y);
+        //sprite.setSize(bounds.width, bounds.height);
+        //sprite.setOriginCenter();
+        //sprite.setPosition(x, y);
     }
     public Assembler(Assembler other){
         super(other);
@@ -147,11 +151,11 @@ public class Assembler extends TileEntity implements CanCraft{
     public void setRecipe(Recipe recipe){
         this.recipe = recipe;
         if(recipe!=null) {
-            Recipe cloned = clone(this.recipe);
+            Recipe cloned = cloneRecipe(this.recipe);
             SetCrafting(cloned.itemsCIn, cloned.itemsCOut);
         }
     }
-    public Recipe clone(Recipe recipe){
+    public Recipe cloneRecipe(Recipe recipe){
         Array<Item> clonedIn = new Array<>(recipe.itemsCIn.size);
         for (Item i : recipe.itemsCIn) {
             clonedIn.add(new Item(i));
@@ -162,6 +166,29 @@ public class Assembler extends TileEntity implements CanCraft{
             clonedOut.add(new Item(i));
         }
         return new Recipe(clonedIn, clonedOut);
+    }
+    @Override
+    public Array<Vector2> checkWhenPlacing(){
+        Array<Vector2> tiles = new Array<>();
+        for(int i=-1; i<=1; i++){
+            for(int j=-1; j<=1; j++){
+                tiles.add(new Vector2(this.x+i,this.y+j));
+            }
+        }
+        return tiles;
+    }
+
+    @Override
+    public void placeOtherTiles(){
+        for (Vector2 vector : checkWhenPlacing()){
+            if(vector.x != (float)this.x || vector.y != (float)this.y)tileEntityManager.addEntity(new AssemblerPointer(this,vector));
+        }
+    }
+    @Override
+    public void removeOtherTiles(){
+        for (Vector2 vector : checkWhenPlacing()){
+            if(vector.x != (float)this.x || vector.y != (float)this.y)tileEntityManager.removeEntity(tileEntityManager.getEntityAt((int)vector.x,(int)vector.y));
+        }
     }
 
 }
