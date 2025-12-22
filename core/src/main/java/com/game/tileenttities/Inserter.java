@@ -123,10 +123,10 @@ public class Inserter extends TileEntity implements Directional{
     @Override
     public void setDirection(Vector2 direction) {
         this.direction = direction;
+        sprite.setRotation(getAngle(direction));
     }
     @Override
     public void render(SpriteBatch batch) {
-        sprite.setRotation(getAngle(direction));
         if(this.itemEntity != null) {
             this.itemEntity.render(batch);
         }

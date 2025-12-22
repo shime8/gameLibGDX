@@ -123,6 +123,7 @@ public class worldManager {
             if(tileEntityManager.getEntityAt(tileX,tileY) instanceof AssemblerPointer && !justplaced){
                 uiManager.openAssembler(((AssemblerPointer) tileEntityManager.getEntityAt(tileX,tileY)).assembler);
             }
+            setCanIPlace();
             if(canIPlace && tileEntityManager.getEntityAt(tileX,tileY) == null && mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null) {
                 TileEntity mouseTE = mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
@@ -141,10 +142,9 @@ public class worldManager {
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
             if(tileEntityManager.getEntityAt(tileX,tileY) != null ) {
-                TileEntity temp;
-                if (tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup){
-                    uiManager.inventory.addItem(new Item(1,((CantPickup) tileEntityManager.getEntityAt(tileX,tileY)).pickupee()));
-                    tileEntityManager.removeEntity(((CantPickup) tileEntityManager.getEntityAt(tileX,tileY)).pickupee());
+                if (tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup c){
+                    uiManager.inventory.addItem(new Item(1,(c.pickupee())));
+                    tileEntityManager.removeEntity(c.pickupee());
                 }else{
                     uiManager.inventory.addItem(new Item(1,tileEntityManager.getEntityAt(tileX,tileY)));
                     tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));
@@ -220,11 +220,18 @@ public class worldManager {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+        Rectangle rect = null;
+        if(mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null && GhostTE!=null){
+            rect = GhostTE.getBounds();
+        }else if(tileEntityManager.getEntityAt(tileX,tileY)!=null){
+            rect = tileEntityManager.getEntityAt(tileX,tileY).getBounds();
+        }
+
+
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 0.3f); // semi-transparent white
-        if(tileEntityManager.getEntityAt(tileX,tileY)!=null){
-            Rectangle rect = tileEntityManager.getEntityAt(tileX,tileY).getBounds();
+        if(rect != null){
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }else{
             shapeRenderer.rect(tileX, tileY, tileSize, tileSize);
@@ -234,8 +241,7 @@ public class worldManager {
         // optional: draw border
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
-        if(tileEntityManager.getEntityAt(tileX,tileY)!=null){
-            Rectangle rect = tileEntityManager.getEntityAt(tileX,tileY).getBounds();
+        if(rect!=null){
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }else{
             shapeRenderer.rect(tileX, tileY, tileSize, tileSize);
@@ -258,20 +264,34 @@ public class worldManager {
             if(GhostTE == null || !Objects.equals(GhostTE.name, mouseSlot.getItem().name)){
                 GhostTE = mouseSlot.getItem().Tile.clone();
             }
-            canIPlace = true;
-            for(Vector2 tile : GhostTE.checkWhenPlacing()){
-                if(tileEntityManager.getEntityAt((int)tile.x,(int)tile.y)!=null){canIPlace=false;}
-            }
+            setCanIPlace();
             if(canIPlace){
-                GhostTE.sprite.setColor(new Color(0,0,0,0.5f));
+                GhostTE.sprite.setColor(new Color(1,1,1,0.5f));
             }else{
                 GhostTE.sprite.setColor(new Color(1,0,0,1));
+            }
+            if(GhostTE instanceof Directional){
+                ((Directional) GhostTE).setDirection(direction);
             }
             GhostTE.set(tileX, tileY);
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             GhostTE.sprite.draw(batch);
             Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
+    }
+    public void setCanIPlace(){
+        if(mouseSlot.getItem()!=null && mouseSlot.getItem().Tile != null){
+            mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(mouseWorld);
+            mouseSlot.getItem().Tile.set((int)mouseWorld.x,(int)mouseWorld.y);
+            boolean tempcanIPlace = true;
+            for (Vector2 tile : mouseSlot.getItem().Tile.checkWhenPlacing()) {
+                if (tileEntityManager.getEntityAt((int) tile.x, (int) tile.y) != null || isCellBlocked(tile.x, tile.y)) {
+                    tempcanIPlace = false;
+                }
+            }
+            canIPlace = tempcanIPlace;
         }
     }
 
@@ -285,5 +305,15 @@ public class worldManager {
         camera.update();
     }
 
+    static public boolean isCellBlocked(float worldX, float worldY) {
+        int tileX = (int) Math.floor(worldX);
+        int tileY = (int) Math.floor(worldY);
+
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell(tileX, tileY);
+        if (cell == null) return false;
+
+        MapProperties props = cell.getTile().getProperties();
+        return props.containsKey("collidable") && (boolean) props.get("collidable");
+    }
 
 }

@@ -18,7 +18,7 @@ public class Player {
     public float unitScale;
     float mapWidth;
     float mapHeight ;
-    TiledMapTileLayer layer;
+
     Rectangle hitbox;
 
     public Player(float startX, float startY, float unitScale) {
@@ -29,7 +29,7 @@ public class Player {
         this.hitbox = new Rectangle(x-0.25f,y-0.46f,0.5f,0.9f);
         this.mapWidth = worldManager.mapWidth;
         this.mapHeight = worldManager.mapHeight;
-        this.layer = worldManager.collisionLayer;
+
     }
 
     public void update(float dt ) {
@@ -61,24 +61,24 @@ public class Player {
         newHitbox.setCenter(newX,newY);
 
         boolean blocked =
-            isCellBlocked(layer, newHitbox.x, newHitbox.y) ||
-            isCellBlocked(layer, newHitbox.x+newHitbox.width, newHitbox.y) ||
-            isCellBlocked(layer, newHitbox.x, newHitbox.y+newHitbox.height) ||
-            isCellBlocked(layer, newHitbox.x+newHitbox.width, newHitbox.y+newHitbox.height);
+            isCellBlocked( newHitbox.x, newHitbox.y) ||
+            isCellBlocked( newHitbox.x+newHitbox.width, newHitbox.y) ||
+            isCellBlocked( newHitbox.x, newHitbox.y+newHitbox.height) ||
+            isCellBlocked( newHitbox.x+newHitbox.width, newHitbox.y+newHitbox.height);
         if(!blocked){
             x = newX;
             y = newY;
         }else{
             boolean blockedX =
-                isCellBlocked(layer, newHitbox.x, hitbox.y) ||
-                isCellBlocked(layer, newHitbox.x+newHitbox.width, hitbox.y) ||
-                isCellBlocked(layer, newHitbox.x, hitbox.y+hitbox.height) ||
-                isCellBlocked(layer, newHitbox.x+newHitbox.width, hitbox.y+newHitbox.height);
+                isCellBlocked( newHitbox.x, hitbox.y) ||
+                isCellBlocked( newHitbox.x+newHitbox.width, hitbox.y) ||
+                isCellBlocked( newHitbox.x, hitbox.y+hitbox.height) ||
+                isCellBlocked( newHitbox.x+newHitbox.width, hitbox.y+newHitbox.height);
             boolean blockedY =
-                isCellBlocked(layer, hitbox.x, newHitbox.y) ||
-                    isCellBlocked(layer, hitbox.x+hitbox.width, newHitbox.y) ||
-                    isCellBlocked(layer, hitbox.x, newHitbox.y+newHitbox.height) ||
-                    isCellBlocked(layer, hitbox.x+hitbox.width, newHitbox.y+newHitbox.height);
+                isCellBlocked( hitbox.x, newHitbox.y) ||
+                    isCellBlocked( hitbox.x+hitbox.width, newHitbox.y) ||
+                    isCellBlocked( hitbox.x, newHitbox.y+newHitbox.height) ||
+                    isCellBlocked( hitbox.x+hitbox.width, newHitbox.y+newHitbox.height);
             if(!blockedX){
                 x = newX; //normalny ruch x
             }else{
@@ -121,15 +121,8 @@ public class Player {
     private float clamp(float v, float min, float max) {
         return Math.max(min, Math.min(max, v));
     }
-    private boolean isCellBlocked(TiledMapTileLayer layer, float worldX, float worldY) {
-        int tileX = (int) Math.floor(worldX);
-        int tileY = (int) Math.floor(worldY);
-
-        TiledMapTileLayer.Cell cell = layer.getCell(tileX, tileY);
-        if (cell == null) return false;
-
-        MapProperties props = cell.getTile().getProperties();
-        return props.containsKey("collidable") && (boolean) props.get("collidable");
+    private boolean isCellBlocked(float worldX, float worldY) {
+       return worldManager.isCellBlocked(worldX,worldY);
     }
 
 }
