@@ -25,6 +25,7 @@ import com.game.mechanics.Recipe;
 import com.game.player.Player;
 import com.game.tileenttities.*;
 
+import java.awt.*;
 import java.util.Objects;
 
 import static com.game.UIs.UIManager.mouseSlot;
@@ -35,7 +36,7 @@ public class worldManager {
     public static OrthographicCamera camera;
     public static OrthogonalTiledMapRenderer mapRenderer;
     public SpriteBatch batch;
-    public ShapeRenderer shapeRenderer;
+
     public static Vector3 mouseWorld = new Vector3();
     public Player player;
     public static TiledMap map;
@@ -63,7 +64,6 @@ public class worldManager {
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, unitScale);
 
-        shapeRenderer = new ShapeRenderer();
         direction = new Vector2(1,0);
 
     }
@@ -83,7 +83,6 @@ public class worldManager {
         player.dispose();
         map.dispose();
         mapRenderer.dispose();
-        shapeRenderer.dispose();
     }
 
     public void updateCamera() {
@@ -199,16 +198,20 @@ public class worldManager {
 
 
     }
-    public void drawShapes(){
-        renderMouseHighlight();
+    public void prepareShapeR(ShapeRenderer shapeR){
+        mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mouseWorld);
+        shapeR.setProjectionMatrix(camera.combined);
+    }
+    public void drawShapes(ShapeRenderer shapeR){
+        renderMouseHighlight(shapeR);
     }
     public void drawbatch(SpriteBatch batch){
         drawGhostTE(batch);
     }
-    private void renderMouseHighlight() {
+    private void renderMouseHighlight(ShapeRenderer shapeRenderer) {
         // get mouse world position
-        mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        camera.unproject(mouseWorld);
+
 
         // determine tile coords
         int tileX = (int) Math.floor(mouseWorld.x);
@@ -228,7 +231,7 @@ public class worldManager {
         }
 
 
-        shapeRenderer.setProjectionMatrix(camera.combined);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 0.3f); // semi-transparent white
         if(rect != null){

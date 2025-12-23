@@ -6,14 +6,17 @@ import com.game.items.Item;
 public class Recipe {
     public Array<Item> itemsCIn;
     public Array<Item> itemsCOut;
+    public float time;
 
-    public Recipe(Array<Item> itemsCIn, Array<Item> itemsCOut){
+    public Recipe(Array<Item> itemsCIn, Array<Item> itemsCOut, float time){
         this.itemsCIn = itemsCIn;
         this.itemsCOut = itemsCOut;
+        this.time = time;
     }
     public Recipe(Recipe recipe){
         this.itemsCIn = recipe.itemsCIn;
         this.itemsCOut = recipe.itemsCOut;
+        this.time = recipe.time;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class Recipe {
             string.append(" N:").append(item.name);
             string.append(" A:").append(item.amount);
         }
+        string.append("T:").append(time);
         return string.toString();
     }
 }

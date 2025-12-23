@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -22,6 +23,8 @@ public class Assembler extends TileEntity implements CanCraft{
     public Array<Item> itemsIn;
     public Array<Item> itemsOut;
     public BitmapFont font;
+    public float speed;
+    public float accumulator;
 
     public void SetCrafting(Array<Item> itemsIn, Array<Item> itemsOut){
 
@@ -33,12 +36,14 @@ public class Assembler extends TileEntity implements CanCraft{
         }
         this.itemsIn = itemsIn;
         this.itemsOut = itemsOut;
+        accumulator = recipe.time/speed;
     }
 
     public Assembler(){
         super();
         sprite = new Sprite(new Texture("tiles/assembler.png") );
         name = "Assembler";
+        speed = 1f;
         Array<Item> input = new Array<>();
         Array<Item> output = new Array<>();
 
@@ -62,6 +67,8 @@ public class Assembler extends TileEntity implements CanCraft{
         font = new BitmapFont();
         font.setColor(Color.BLACK);
         font.getData().setScale(0.05f);
+        this.speed = other.speed;
+        this.accumulator = 0f;
     }
 
     @Override
@@ -71,6 +78,18 @@ public class Assembler extends TileEntity implements CanCraft{
 
     @Override
     public void update(float delta) {
+        if(canICraft()) {
+            if(accumulator <= 0.001f){
+                accumulator = recipe.time/speed;
+                craft(true);
+            }
+            accumulator -= delta;
+            System.out.println(craftProgress());
+        }
+
+    }
+
+    public boolean canICraft(){
         if(itemsIn != null && itemsOut != null){
             boolean canICraft = true;
             for (int x = 0; x < itemsIn.size; x++) {
@@ -80,7 +99,12 @@ public class Assembler extends TileEntity implements CanCraft{
                     break;
                 }
             }
-            if (canICraft) {
+            return canICraft;
+        }
+        return false;
+    }
+    public void craft(boolean canICraft){
+        if(canICraft && itemsIn != null && itemsOut != null){
                 for (int x = 0; x < itemsIn.size; x++) {
                     Item i = itemsIn.get(x);
                     i.amount -= recipe.itemsCIn.get(x).amount;
@@ -89,7 +113,7 @@ public class Assembler extends TileEntity implements CanCraft{
                     Item i = itemsOut.get(x);
                     i.amount += recipe.itemsCOut.get(x).amount;
                 }
-            }
+                accumulator = recipe.time/speed;
         }
     }
     @Override
@@ -136,11 +160,33 @@ public class Assembler extends TileEntity implements CanCraft{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
+        if(itemsOut!=null && itemsOut.first()!=null){
+            Sprite craft = itemsOut.first().sprite;
+            craft.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
+            craft.draw(batch);
+        }
         //if(itemsIn != null)for(Item i : itemsIn){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y);}}
         //if(recipe != null){font.draw(batch,String.valueOf(recipe.itemsCIn.get(0).amount), x, y-1);}
         //if(recipe != null){font.draw(batch,String.valueOf(recipe.itemsCOut.get(0).amount), x, y-2);}
 
     }
+
+    @Override
+    public void shapeRender(ShapeRenderer shapeR) {
+        Rectangle rect = new Rectangle(x - 0.5f, y + 1f, 2f, 0.25f);
+        shapeR.begin(ShapeRenderer.ShapeType.Filled);
+        if(recipe!=null) {
+            shapeR.setColor(Color.LIGHT_GRAY);
+            shapeR.rect(rect.x + rect.width * (craftProgress()), rect.y, rect.width * (1f - craftProgress()), rect.height);
+            shapeR.setColor(Color.WHITE);
+            shapeR.rect(rect.x, rect.y, rect.width * craftProgress(), rect.height);
+        }else{
+            shapeR.setColor(Color.WHITE);
+            shapeR.rect(rect.x,rect.y,rect.width,rect.height);
+        }
+        shapeR.end();
+    }
+
     public Item getItemIn(int index) {
         return itemsIn.get(index);
     }
@@ -165,7 +211,7 @@ public class Assembler extends TileEntity implements CanCraft{
         for (Item i : recipe.itemsCOut) {
             clonedOut.add(new Item(i));
         }
-        return new Recipe(clonedIn, clonedOut);
+        return new Recipe(clonedIn, clonedOut, recipe.time);
     }
     @Override
     public Array<Vector2> checkWhenPlacing(){
@@ -191,4 +237,7 @@ public class Assembler extends TileEntity implements CanCraft{
         }
     }
 
+    public float craftProgress(){
+        return Math.min(1f, Math.max(0f, 1f - ((accumulator * speed)/recipe.time)));
+    }
 }

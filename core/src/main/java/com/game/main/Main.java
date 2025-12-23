@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -18,6 +19,9 @@ import com.game.player.Player;
 import com.game.tileenttities.*;
 import com.game.world.worldManager;
 import com.game.UIs.UIManager;
+
+import static com.game.world.worldManager.camera;
+
 public class Main extends ApplicationAdapter {
     //private worldtemp worldController;
     public static worldManager worldManager;
@@ -27,6 +31,7 @@ public class Main extends ApplicationAdapter {
     private ObjectMap<GridPoint2, Array<ItemEntity>> itemEntityMap;
     public static ItemEntityManager itemEntityManager;
     SpriteBatch batch;
+    ShapeRenderer shapeRenderer;
     public static UIManager uiManager;
     public static float unitScale = 1f / 32f;
     public static RecipeManager recipeManager;
@@ -41,6 +46,8 @@ public class Main extends ApplicationAdapter {
         itemEntityManager = new ItemEntityManager(itemEntityMap);
         recipeManager = new RecipeManager();
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+
         uiManager = new UIManager();
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(uiManager.stage); // UI input
@@ -48,8 +55,8 @@ public class Main extends ApplicationAdapter {
             @Override
             public boolean scrolled(float amountX, float amountY) {
                 // Zoom camera
-                com.game.world.worldManager.camera.zoom += amountY * 0.05f * com.game.world.worldManager.camera.zoom;
-                com.game.world.worldManager.camera.zoom = Math.max(0.1f, Math.min(com.game.world.worldManager.camera.zoom, 2f));
+                camera.zoom += amountY * 0.05f * camera.zoom;
+                camera.zoom = Math.max(0.1f, Math.min(camera.zoom, 2f));
                 return true;
             }
         });
@@ -90,7 +97,9 @@ public class Main extends ApplicationAdapter {
         worldManager.drawbatch(batch);
         batch.end();
 
-        worldManager.drawShapes();
+        worldManager.prepareShapeR(shapeRenderer);
+        worldManager.drawShapes(shapeRenderer);
+        tileEntityManager.shapeRender(shapeRenderer);
 
         uiManager.render();
         uiManager.stage.getBatch().begin();

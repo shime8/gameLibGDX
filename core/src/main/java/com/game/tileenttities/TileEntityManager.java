@@ -1,6 +1,7 @@
 package com.game.tileenttities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -37,6 +38,11 @@ public class TileEntityManager {
     public void render(SpriteBatch batch) {
         for (TileEntity tileEntity : tileEntityMap.values()) {
             tileEntity.render(batch);
+        }
+    }
+    public void shapeRender(ShapeRenderer shapeR) {
+        for (TileEntity tileEntity : tileEntityMap.values()) {
+            tileEntity.shapeRender(shapeR);
         }
     }
 }

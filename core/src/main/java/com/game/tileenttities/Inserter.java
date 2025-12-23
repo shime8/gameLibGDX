@@ -49,10 +49,10 @@ public class Inserter extends TileEntity implements Directional{
     }
     @Override
     public void update(float delta) {
-        accumulator+=delta;
-        if(accumulator>1f/speed){
-            swing();
+        accumulator-=delta;
+        if(accumulator<=0f){
             accumulator = 0f;
+            swing();
         }
 
         if(this.itemEntity != null) {
@@ -100,6 +100,7 @@ public class Inserter extends TileEntity implements Directional{
                     itemEntityManager.addItemEntity(IEmoved);
                     this.item = null;
                     this.itemEntity = null;
+                    accumulator = 1f/speed;
                 }
 
             }else if(TEfront instanceof HasInventory){
@@ -109,6 +110,7 @@ public class Inserter extends TileEntity implements Directional{
                     if(didiadd) {
                         this.item = null;
                         this.itemEntity = null;
+                        accumulator = 1f/speed;
                     }
             }
 

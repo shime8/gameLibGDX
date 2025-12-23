@@ -3,6 +3,7 @@ package com.game.tileenttities;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -35,6 +36,7 @@ public abstract class TileEntity {
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
     }
+    public void shapeRender(ShapeRenderer shapeR){}
 
     public void set(int x, int y){
         this.x = x;

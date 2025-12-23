@@ -36,7 +36,9 @@ public class RecipeManager {
 
                 Array<Item> itemsCIn = StringsToItemArrays(io[1]);
                 Array<Item> itemsCOut = StringsToItemArrays(io[0]);
-                recipes.add(new Recipe(itemsCIn,itemsCOut));
+                float time = Float.parseFloat(io[2]);
+                if(time==0.0f){time=1f;}
+                recipes.add(new Recipe(itemsCIn,itemsCOut,time));
             }
 
         } catch (IOException e) {
