@@ -4,10 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class NullItem extends Item{
-    public NullItem(int amount){
+
+    public NullItem(){
         this.name = "NullItem";
-        this.amount = amount;
         this.sprite =  new Sprite(new Texture("items/nullitem.png"));
+        this.amount = 0;
+    }
+    public NullItem(int amount){
+        this();
+        this.amount = amount;
+
     }
 
     public NullItem(Item item) {

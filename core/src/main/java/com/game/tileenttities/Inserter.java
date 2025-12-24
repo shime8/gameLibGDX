@@ -116,8 +116,7 @@ public class Inserter extends TileEntity implements Directional{
 
         }
     }
-    @Override
-    public void placingUpdate() {}
+
     @Override
     public Vector2 getDirection() {
         return this.direction;

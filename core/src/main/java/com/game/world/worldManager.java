@@ -123,10 +123,15 @@ public class worldManager {
                 uiManager.openAssembler(((AssemblerPointer) tileEntityManager.getEntityAt(tileX,tileY)).assembler);
             }
             setCanIPlace();
-            if(canIPlace && tileEntityManager.getEntityAt(tileX,tileY) == null && mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null) {
+            if(canIPlace &&
+                mouseSlot.getItem() != null &&
+                mouseSlot.getItem().Tile != null &&
+                !(mouseSlot.getItem().Tile instanceof CantPlace) &&
+                (tileEntityManager.getEntityAt(tileX,tileY) == null || (mouseSlot.getItem().Tile instanceof Miner && tileEntityManager.getEntityAt(tileX,tileY) instanceof Mineable)) ) {
                 TileEntity mouseTE = mouseSlot.getItem().Tile;
                 mouseTE.set(tileX,tileY);
                 if(mouseTE instanceof Directional d){d.setDirection(new Vector2(this.direction));}
+                if(mouseTE instanceof Miner && tileEntityManager.getEntityAt(tileX,tileY) instanceof Mineable){tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));}
                 tileEntityManager.addEntity(mouseTE);
                 uiManager.decreaseAndAutoGet();
                 uiManager.refreshInventoryUI();
@@ -141,12 +146,20 @@ public class worldManager {
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
             if(tileEntityManager.getEntityAt(tileX,tileY) != null ) {
-                if (tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup c){
+                if(tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup c1 && c1.pickupee() == null){
+
+                }else if (tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup c){
                     uiManager.inventory.addItem(new Item(1,(c.pickupee())));
                     tileEntityManager.removeEntity(c.pickupee());
                 }else{
                     uiManager.inventory.addItem(new Item(1,tileEntityManager.getEntityAt(tileX,tileY)));
-                    tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX,tileY));
+                    if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Miner m && m.minee != null){
+                        TileEntity ore = m.minee;
+                        tileEntityManager.removeEntity(m);
+                        tileEntityManager.addEntity(ore);
+                    }else {
+                        tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX, tileY));
+                    }
                 }
                 uiManager.refreshInventoryUI();
 
@@ -255,7 +268,7 @@ public class worldManager {
     }
 
     public void drawGhostTE(SpriteBatch batch){
-        if(mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null) {
+        if(mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null && !(mouseSlot.getItem().Tile instanceof CantPlace)) {
             // get mouse world position
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouseWorld);
@@ -290,7 +303,9 @@ public class worldManager {
             mouseSlot.getItem().Tile.set((int)mouseWorld.x,(int)mouseWorld.y);
             boolean tempcanIPlace = true;
             for (Vector2 tile : mouseSlot.getItem().Tile.checkWhenPlacing()) {
-                if (tileEntityManager.getEntityAt((int) tile.x, (int) tile.y) != null || isCellBlocked(tile.x, tile.y)) {
+                if ((tileEntityManager.getEntityAt((int) tile.x, (int) tile.y) != null
+                    && !(mouseSlot.getItem().Tile instanceof Miner && tileEntityManager.getEntityAt((int) tile.x, (int) tile.y) instanceof Mineable))
+                    || isCellBlocked(tile.x, tile.y)) {
                     tempcanIPlace = false;
                 }
             }

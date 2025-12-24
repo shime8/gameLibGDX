@@ -64,6 +64,7 @@ public class Main extends ApplicationAdapter {
 
 
         tileEntityManager.addEntity(new Chest(33, 33));
+        tileEntityManager.addEntity(new MetalOre(20, 40));
         uiManager.inventory.setItem(0, new Item(100, new Chest()));
         uiManager.inventory.setItem(1, new Item(100, new Belt()));
         uiManager.inventory.setItem(2, new Item(100, new Inserter()));
@@ -71,6 +72,7 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(4, new Item(100, new Assembler()));
         uiManager.inventory.setItem(5, new Item(50, new Creator()));
         uiManager.inventory.setItem(6, new Item(50, new Deleter()));
+        uiManager.inventory.setItem(7, new Item(50, new Miner()));
     }
 
     @Override

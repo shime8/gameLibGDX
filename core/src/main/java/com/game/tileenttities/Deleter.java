@@ -42,8 +42,7 @@ public class Deleter extends TileEntity implements HasInventory{
 
     @Override
     public void update(float delta) {}
-    @Override
-    public void placingUpdate() {}
+
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);

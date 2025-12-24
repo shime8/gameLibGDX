@@ -49,8 +49,7 @@ public class Chest extends TileEntity implements HasInventory{
     }
     @Override
     public void update(float delta) {}
-    @Override
-    public void placingUpdate() {}
+
 
     @Override
     public Item getAnyItem() {

@@ -1,4 +1,7 @@
 null 1 ; null 1 ;0.0
-belt 1 ; gear 1 ;0.5
-inserter 1 ; gear 3;1.0
-assembler 1 ; gear 5;3.0
+plate 1 ; metalOre 1;0.25
+rod 2 ; plate 1 ;0.5
+gear 1 ; plate 2 ;1.0
+belt 1 ; gear 1, plate 1 ;0.5
+inserter 1 ; gear 2, rod 2;1.0
+assembler 1 ; gear 3, plate 3;3.0

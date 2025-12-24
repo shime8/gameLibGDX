@@ -39,10 +39,6 @@ public class AssemblerPointer extends TileEntity implements CanCraft,CantPickup 
 
     }
 
-    @Override
-    public void placingUpdate() {
-
-    }
 
     @Override
     public Item getAnyItem() {

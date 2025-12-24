@@ -82,8 +82,10 @@ public class Assembler extends TileEntity implements CanCraft{
             if(accumulator <= 0.001f){
                 accumulator = recipe.time/speed;
                 craft(true);
+            }else{
+                accumulator -= delta;
             }
-            accumulator -= delta;
+
             System.out.println(craftProgress());
         }
 
@@ -116,8 +118,6 @@ public class Assembler extends TileEntity implements CanCraft{
                 accumulator = recipe.time/speed;
         }
     }
-    @Override
-    public void placingUpdate() {}
     @Override
     public Item getAnyItem() {
         if(itemsOut != null){
@@ -175,13 +175,13 @@ public class Assembler extends TileEntity implements CanCraft{
     public void shapeRender(ShapeRenderer shapeR) {
         Rectangle rect = new Rectangle(x - 0.5f, y + 1f, 2f, 0.25f);
         shapeR.begin(ShapeRenderer.ShapeType.Filled);
-        if(recipe!=null) {
+        if(recipe!=null && craftProgress()!=0f) {
             shapeR.setColor(Color.LIGHT_GRAY);
             shapeR.rect(rect.x + rect.width * (craftProgress()), rect.y, rect.width * (1f - craftProgress()), rect.height);
             shapeR.setColor(Color.WHITE);
             shapeR.rect(rect.x, rect.y, rect.width * craftProgress(), rect.height);
         }else{
-            shapeR.setColor(Color.WHITE);
+            shapeR.setColor(Color.LIGHT_GRAY);
             shapeR.rect(rect.x,rect.y,rect.width,rect.height);
         }
         shapeR.end();

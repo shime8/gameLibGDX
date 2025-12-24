@@ -32,7 +32,7 @@ public abstract class TileEntity {
     }
     public abstract TileEntity clone();
     public abstract void update(float delta);
-    public abstract void placingUpdate();
+    public void placingUpdate(){};
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
     }

@@ -1,9 +1,7 @@
 package com.game.mechanics;
 
 import com.badlogic.gdx.utils.Array;
-import com.game.items.Gear;
-import com.game.items.Item;
-import com.game.items.NullItem;
+import com.game.items.*;
 import com.game.tileenttities.*;
 
 import java.io.BufferedReader;
@@ -72,6 +70,9 @@ public class RecipeManager {
         itemMap.put("creator", new Item(0, new Creator()));
         itemMap.put("deleter", new Item(0, new Deleter()));
         itemMap.put("inserter", new Item(0, new Inserter()));
+        itemMap.put("metalOre", new Item(0, new MetalOre()));
+        itemMap.put("plate", new Plate(0));
+        itemMap.put("rod", new Rod(0));
         Item item = itemMap.get(string);
 
         if (item == null) {
