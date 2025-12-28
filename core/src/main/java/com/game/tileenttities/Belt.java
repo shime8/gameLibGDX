@@ -14,6 +14,7 @@ import static com.game.main.Main.itemEntityManager;
 import static com.game.main.Main.tileEntityManager;
 
 public class Belt extends TileEntity implements Directional{
+    int nextBeltItemAmount = 1;
     public Vector2 direction;
     float speed;
     float accumulator = 0f;
@@ -55,7 +56,7 @@ public class Belt extends TileEntity implements Directional{
         }
         if(itemEntityManager.getItemEntityList(x, y)!=null ){
             boolean front = itemEntityManager.getItemEntityList(x+direction.x, y+direction.y) == null
-                || itemEntityManager.getItemEntityList(x+direction.x, y+direction.y).size<2;
+                || itemEntityManager.getItemEntityList(x+direction.x, y+direction.y).size<nextBeltItemAmount;
             for (ItemEntity iteme : itemEntityManager.getItemEntityList(x, y)) {
 
                 if(iteme.direction == null || !iteme.lessThanHalf() ){

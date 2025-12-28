@@ -86,13 +86,17 @@ public class Assembler extends TileEntity implements CanCraft{
                 accumulator -= delta;
             }
 
-            System.out.println(craftProgress());
+            //System.out.println(craftProgress());
         }
 
     }
 
     public boolean canICraft(){
         if(itemsIn != null && itemsOut != null){
+            if(itemsOut.first() != null && itemsOut.first().amount>=maxIOitems){
+                return false;
+            }
+
             boolean canICraft = true;
             for (int x = 0; x < itemsIn.size; x++) {
                 Item i = itemsIn.get(x);
@@ -141,6 +145,9 @@ public class Assembler extends TileEntity implements CanCraft{
         if(itemsIn != null){
             for (int i = 0; i < itemsIn.size; i++) {
                 if (itemsIn.get(i) != null && Objects.equals(itemsIn.get(i).name, item.name)) {
+                    if(itemsIn.get(i).amount>=maxIOitems){
+                        return false;
+                    }
                     Item temp = itemsIn.get(i);
                     temp.amount += item.amount;
                     itemsIn.set(i, temp);
@@ -162,6 +169,7 @@ public class Assembler extends TileEntity implements CanCraft{
         super.render(batch);
         if(itemsOut!=null && itemsOut.first()!=null){
             Sprite craft = itemsOut.first().sprite;
+            if(itemsOut.first().Tile != null){craft = itemsOut.first().Tile.sprite;}
             craft.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
             craft.draw(batch);
         }
@@ -238,6 +246,10 @@ public class Assembler extends TileEntity implements CanCraft{
     }
 
     public float craftProgress(){
-        return Math.min(1f, Math.max(0f, 1f - ((accumulator * speed)/recipe.time)));
+        if(itemsOut.first().amount>=maxIOitems){
+            return 1;
+        }else {
+            return Math.min(1f, Math.max(0f, 1f - ((accumulator * speed) / recipe.time)));
+        }
     }
 }
