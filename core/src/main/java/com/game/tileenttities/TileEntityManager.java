@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.Comparator;
 
+import static com.game.main.Main.worldManager;
+
 public class TileEntityManager {
     ObjectMap<GridPoint2, TileEntity> tileEntityMap;
     Array<ObjectMap.Entry<GridPoint2, TileEntity>> TemSorted;
@@ -45,11 +47,17 @@ public class TileEntityManager {
 //        for (TileEntity tileEntity : tileEntityMap.values()) {
 //            tileEntity.render(batch);
 //        }
+        boolean PlayerRendered = false;
         for (ObjectMap.Entry<GridPoint2, TileEntity> entry : TemSorted) {
 //            GridPoint2 point = entry.key;
             TileEntity tile = entry.value;
+            if(!PlayerRendered && tile.getSpriteY()+0.6f<worldManager.player.y){
+                worldManager.player.draw(batch);
+                PlayerRendered = true;
+            }
             tile.render(batch);
         }
+        if(!PlayerRendered){worldManager.player.draw(batch);}
     }
     public void shapeRender(ShapeRenderer shapeR) {
         for (TileEntity tileEntity : tileEntityMap.values()) {
@@ -70,9 +78,13 @@ public class TileEntityManager {
 
         TemSorted.sort(
             Comparator
-                .comparingInt((ObjectMap.Entry<GridPoint2, TileEntity> a) -> a.key.y)
+                .comparingDouble((ObjectMap.Entry<GridPoint2, TileEntity> a) -> -a.value.getSpriteY())
                 .thenComparingInt(a -> a.key.x)
         );
+    }
+
+    public boolean isEmpty(){
+        return (tileEntityMap.isEmpty());
     }
 
 }

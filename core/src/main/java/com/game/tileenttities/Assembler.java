@@ -252,4 +252,9 @@ public class Assembler extends TileEntity implements CanCraft{
             return Math.min(1f, Math.max(0f, 1f - ((accumulator * speed) / recipe.time)));
         }
     }
+
+    @Override
+    public float getSpriteY() {
+        return y+1;
+    }
 }

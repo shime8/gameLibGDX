@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.game.items.Item;
 
@@ -16,7 +17,7 @@ public class Chest extends TileEntity implements HasInventory{
 //    public BitmapFont font;
     public Chest(){
         super();
-        sprite = new Sprite(new Texture("tiles/chest.png") );
+        sprite = new Sprite(new Texture("tiles/silo.png") );
         name = "Chest";
         this.width = 2;
         this.height = 2;
@@ -102,5 +103,10 @@ public class Chest extends TileEntity implements HasInventory{
     }
     public int getSize() {
         return width * height;
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(this.x, this.y, 1, 4);
     }
 }

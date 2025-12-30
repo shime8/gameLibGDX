@@ -104,7 +104,7 @@ public class Main extends ApplicationAdapter {
 
         tileEntityManager.render(batch);
         itemEntityManager.render(batch);
-        player.draw(batch);
+        if(tileEntityManager.isEmpty()){player.draw(batch);}
         worldManager.drawbatch(batch);
         batch.end();
 

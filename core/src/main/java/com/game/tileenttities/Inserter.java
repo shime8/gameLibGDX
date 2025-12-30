@@ -127,8 +127,6 @@ public class Inserter extends TileEntity implements Directional{
     }
     @Override
     public void render(SpriteBatch batch) {
-
-        System.out.println(this.itemEntity);
         super.render(batch);
         if(this.itemEntity != null) {
             this.itemEntity.render(batch);
