@@ -2,10 +2,11 @@ package com.game.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.game.UIs.TypeToString;
 
 public class Rod extends Item{
     public Rod(){
-        this.name = "Rod";
+        this.name = TypeToString.get(TypeToString.Dictionary.Rod);
         this.sprite =  new Sprite(new Texture("items/MetalRod.png"));
         this.amount = 0;
     }

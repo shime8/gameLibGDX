@@ -2,11 +2,12 @@ package com.game.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.game.UIs.TypeToString;
 import com.game.tileenttities.TileEntity;
 
 public class Gear extends Item {
     public Gear(){
-        this.name = "Gear";
+        this.name = TypeToString.get(TypeToString.Dictionary.Gear);
         this.sprite =  new Sprite(new Texture("items/gear.png"));
         this.amount = 0;
     }

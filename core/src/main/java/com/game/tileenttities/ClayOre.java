@@ -2,13 +2,14 @@ package com.game.tileenttities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.game.UIs.TypeToString;
 
 public class ClayOre extends TileEntity implements Mineable, CantPickup, CantPlace{
 
     public ClayOre(){
         super();
         sprite = new Sprite(new Texture("tiles/Clay.png") );
-        name = "ClayOre";
+        name = TypeToString.get(TypeToString.Dictionary.Clay);
     }
     public ClayOre(int x, int y){
         this();

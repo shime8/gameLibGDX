@@ -77,9 +77,9 @@ public class UIManager {
         pauseMenu = new Table();
         pauseMenu.setFillParent(true);
 
-        Label pauseLabel = new Label("Game Paused", skin);
-        TextButton resumeButton = new TextButton("Resume", skin);
-        TextButton quitButton = new TextButton("Quit", skin);
+        Label pauseLabel = new Label(TypeToString.get(TypeToString.Dictionary.Pause), skin);
+        TextButton resumeButton = new TextButton(TypeToString.get(TypeToString.Dictionary.Resume), skin);
+        TextButton quitButton = new TextButton(TypeToString.get(TypeToString.Dictionary.BackToMenu), skin);
 
         pauseMenu.add(pauseLabel).pad(10);
         pauseMenu.row();
@@ -114,7 +114,7 @@ public class UIManager {
     private void createInventoryUI() {
         inventoryUI = new Table();
 
-        Label title = new Label("Inventory", skin);
+        Label title = new Label(TypeToString.get(TypeToString.Dictionary.Inventory), skin);
         inventoryUI.add(title).colspan(inventory.getWidth()).padBottom(10);
         inventoryUI.row();
 
@@ -146,7 +146,7 @@ public class UIManager {
     private void createChestUI() {
         chestUI = new Table();
 
-        Label title = new Label("Chest", skin);
+        Label title = new Label(TypeToString.get(TypeToString.Dictionary.Chest), skin);
         chestUI.add(title).colspan(4).padBottom(10);
         chestUI.row();
 
@@ -168,7 +168,7 @@ public class UIManager {
     private void createAssemblerUI() {
         assemblerUI = new Table();
 
-        Label title = new Label("Assembler", skin);
+        Label title = new Label(TypeToString.get(TypeToString.Dictionary.Assembler), skin);
         assemblerUI.add(title).colspan(4).padBottom(10);
         assemblerUI.row();
 

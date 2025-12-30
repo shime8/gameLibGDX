@@ -2,13 +2,14 @@ package com.game.tileenttities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.game.UIs.TypeToString;
 
 public class MetalOre extends TileEntity implements Mineable, CantPickup, CantPlace{
 
     public MetalOre(){
         super();
         sprite = new Sprite(new Texture("tiles/MetalOre.png") );
-        name = "MetalOre";
+        name = TypeToString.get(TypeToString.Dictionary.MetalOre);
     }
     public MetalOre(int x, int y){
         this();

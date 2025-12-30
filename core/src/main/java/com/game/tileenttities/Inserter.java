@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.game.UIs.TypeToString;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
@@ -22,7 +23,7 @@ public class Inserter extends TileEntity implements Directional{
     public Inserter(){
         super();
         sprite = new Sprite(new Texture("tiles/inserter_up.png"));
-        name = "Inserter";
+        name = TypeToString.get(TypeToString.Dictionary.Inserter);
         speed = 2f;
     }
     public Inserter(int x, int y) {

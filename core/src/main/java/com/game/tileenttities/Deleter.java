@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.game.UIs.TypeToString;
 import com.game.items.Item;
 
 public class Deleter extends TileEntity implements HasInventory{
@@ -11,7 +12,7 @@ public class Deleter extends TileEntity implements HasInventory{
     public Deleter(){
         super();
         sprite = new Sprite(new Texture("tiles/deleter.png") );
-        name = "Deleter";
+        name = TypeToString.get(TypeToString.Dictionary.Deleter);
     }
     public Deleter(int x, int y) {
         this();

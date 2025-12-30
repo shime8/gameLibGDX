@@ -3,12 +3,13 @@ package com.game.tileenttities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.game.UIs.TypeToString;
 
 public class LongInserter extends Inserter{
     public LongInserter(){
         super();
         sprite = new Sprite(new Texture("tiles/LongInserter_up.png"));
-        name = "LongInserter";
+        name = TypeToString.get(TypeToString.Dictionary.LongInserter);
         speed = 2f;
     }
     public LongInserter(int x, int y) {

@@ -3,6 +3,7 @@ package com.game.tileenttities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.game.UIs.TypeToString;
 import com.game.items.Item;
 import com.game.items.Sand;
 
@@ -16,7 +17,7 @@ public class Miner extends TileEntity implements HasInventory{
     public Miner(){
         super();
         sprite = new Sprite(new Texture("tiles/Miner.png") );
-        name = "Miner";
+        name = TypeToString.get(TypeToString.Dictionary.Miner);
         accumulator = 0f;
         //speed = 1f;
     }

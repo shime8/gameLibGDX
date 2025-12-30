@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.game.UIs.TypeToString;
 import com.game.items.Item;
 
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class Chest extends TileEntity implements HasInventory{
     public Chest(){
         super();
         sprite = new Sprite(new Texture("tiles/silo.png") );
-        name = "Chest";
+        name = TypeToString.get(TypeToString.Dictionary.Chest);
         this.width = 2;
         this.height = 2;
         this.items = new Array<>(width * height);

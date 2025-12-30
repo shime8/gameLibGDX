@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.game.UIs.TypeToString;
 import com.game.items.Gear;
 import com.game.items.Item;
 
@@ -12,7 +13,7 @@ public class Creator extends TileEntity implements HasInventory{
     public Creator(){
         super();
         sprite = new Sprite(new Texture("tiles/InfiniMiner.png") );
-        name = "Creator";
+        name = TypeToString.get(TypeToString.Dictionary.Creator);
     }
     public Creator(int x, int y) {
         this();

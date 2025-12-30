@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
+import com.game.UIs.TypeToString;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 
@@ -23,7 +24,7 @@ public class Belt extends TileEntity implements Directional{
     public Belt(){
         super();
         sprite = new Sprite(new Texture("tiles/belt.png"));
-        name = "Belt";
+        name = TypeToString.get(TypeToString.Dictionary.Belt);
         speed = 2f;
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);

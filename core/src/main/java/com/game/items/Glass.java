@@ -2,10 +2,11 @@ package com.game.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.game.UIs.TypeToString;
 
 public class Glass extends Item {
     public Glass(){
-        this.name = "Glass";
+        this.name = TypeToString.get(TypeToString.Dictionary.Glass);
         this.sprite =  new Sprite(new Texture("items/glass.png"));
         this.amount = 0;
     }

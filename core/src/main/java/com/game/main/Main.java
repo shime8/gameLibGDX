@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.game.UIs.MainMenu;
+import com.game.UIs.TypeToString;
 import com.game.items.Gear;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
@@ -35,8 +37,10 @@ public class Main extends ApplicationAdapter {
     public static UIManager uiManager;
     public static float unitScale = 1f / 32f;
     public static RecipeManager recipeManager;
+    public boolean stuffAdded = false;
     @Override
     public void create() {
+        TypeToString.init("Languages/PL.txt");
         worldManager = new worldManager();
         player = new Player(30,30, unitScale);
         worldManager.player = player;
@@ -49,6 +53,11 @@ public class Main extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
 
         uiManager = new UIManager();
+
+        MainMenu.create();
+
+    }
+    public void createGameparts(){
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(uiManager.stage); // UI input
         multiplexer.addProcessor(new InputAdapter() {
@@ -61,7 +70,6 @@ public class Main extends ApplicationAdapter {
             }
         });
         Gdx.input.setInputProcessor(multiplexer);
-
 
         tileEntityManager.addEntity(new Chest(33, 33));
         tileEntityManager.addEntity(new MetalOre(20, 39));
@@ -81,11 +89,33 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(6, new Item(50, new Deleter()));
         uiManager.inventory.setItem(7, new Item(50, new Miner()));
         uiManager.inventory.setItem(8, new Item(50, new LongInserter()));
-
+        stuffAdded = true;
     }
 
     @Override
     public void render() {
+        if (MainMenu.isWaiting()) {
+            MainMenu.render();
+            return; // Exit early
+        }
+
+        String selection = MainMenu.wait_for_selection();
+        if (selection != null) {
+            switch (selection) {
+                case "PLAY":
+                    if(!stuffAdded)createGameparts();
+                    // Game plays
+                    break;
+                case "OPTIONS":
+                    // options
+                    return;
+                case "EXIT":
+                    Gdx.app.exit();
+                    return;
+            }
+        }
+
+
         //inputs and update
         float dt = Gdx.graphics.getDeltaTime();
 
@@ -116,11 +146,12 @@ public class Main extends ApplicationAdapter {
         uiManager.stage.getBatch().begin();
         uiManager.renderMouseItem((SpriteBatch) uiManager.stage.getBatch());
         uiManager.stage.getBatch().end();
+
     }
 
     @Override
     public void resize(int width, int height) {
-
+        if (MainMenu.isWaiting()) MainMenu.resize(width,height);
         worldManager.resize(width, height);
         uiManager.resize(width, height);
     }
@@ -130,5 +161,6 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
         worldManager.dispose();
         uiManager.dispose();
+        MainMenu.dispose();
     }
 }
