@@ -68,6 +68,10 @@ public class Main extends ApplicationAdapter {
         tileEntityManager.addEntity(new MetalOre(20, 40));
         tileEntityManager.addEntity(new MetalOre(20, 41));
 
+        tileEntityManager.addEntity(new ClayOre(20, 44));
+        tileEntityManager.addEntity(new ClayOre(20, 45));
+        tileEntityManager.addEntity(new ClayOre(20, 46));
+
         uiManager.inventory.setItem(0, new Item(100, new Chest()));
         uiManager.inventory.setItem(1, new Item(100, new Belt()));
         uiManager.inventory.setItem(2, new Item(100, new Inserter()));

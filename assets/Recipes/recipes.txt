@@ -5,3 +5,5 @@ gear 1 ; plate 2 ;1.0
 belt 1 ; gear 1, plate 1 ;0.5
 inserter 1 ; gear 2, rod 2;1.0
 assembler 1 ; gear 3, plate 3;3.0
+brick 1 ; clay 1 ;0.5
+glass 1 ; sand 1 ;1.0

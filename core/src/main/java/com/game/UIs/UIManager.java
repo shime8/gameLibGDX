@@ -29,6 +29,7 @@ import com.game.tileenttities.Chest;
 import com.game.world.worldManager;
 
 import static com.game.main.Main.recipeManager;
+import static com.game.main.Main.tileEntityManager;
 
 public class UIManager {
     public Stage stage;
@@ -250,6 +251,7 @@ public class UIManager {
                             currentAssembler.setRecipe(recipe);
                             refreshChestUI();
                             closeAssembler();
+                            tileEntityManager.sort();
                         }
                     });
             }

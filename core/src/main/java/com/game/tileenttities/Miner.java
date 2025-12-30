@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.items.Item;
+import com.game.items.Sand;
 
 import static com.game.main.Main.tileEntityManager;
 
@@ -45,15 +46,13 @@ public class Miner extends TileEntity implements HasInventory{
 
     @Override
     public void update(float delta) {
-        if(minee != null){
+        //if(minee != null){
             accumulator += delta;
             if(accumulator > 1f){
                 makeItem();
                 accumulator = 0f;
             }
-
-
-        }
+        //}
     }
 
     @Override
@@ -83,7 +82,11 @@ public class Miner extends TileEntity implements HasInventory{
         if(item != null && item.amount<5){
             item.amount += 1;
         }else{
-            item = new Item(1,minee.clone());
+            if(minee != null) {
+                item = new Item(1, minee.clone());
+            }else{
+                item = new Sand(1);
+            }
         }
     }
 }

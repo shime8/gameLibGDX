@@ -73,6 +73,10 @@ public class RecipeManager {
         itemMap.put("metalOre", new Item(0, new MetalOre()));
         itemMap.put("plate", new Plate(0));
         itemMap.put("rod", new Rod(0));
+        itemMap.put("clay", new Item(0, new ClayOre()));
+        itemMap.put("brick", new Brick(0));
+        itemMap.put("sand", new Sand(0));
+        itemMap.put("glass", new Glass(0));
         Item item = itemMap.get(string);
 
         if (item == null) {

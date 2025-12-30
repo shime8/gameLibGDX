@@ -38,7 +38,7 @@ public class Chest extends TileEntity implements HasInventory{
         super(other);
         this.width = other.width;
         this.height = other.height;
-        this.items = other.items;
+        this.items = new Array<>(other.items);
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);

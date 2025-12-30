@@ -10,8 +10,7 @@ import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 
-import static com.game.main.Main.itemEntityManager;
-import static com.game.main.Main.tileEntityManager;
+import static com.game.main.Main.*;
 
 public class Inserter extends TileEntity implements Directional{
     public Vector2 direction;
@@ -94,7 +93,7 @@ public class Inserter extends TileEntity implements Directional{
             if(TEfront == null || TEfront instanceof Belt){
                 // check if tile has item entities
                 Array<ItemEntity> IElist = itemEntityManager.getItemEntityList(new GridPoint2(x+(int)(direction.x),y+(int)(direction.y)));
-                if(IElist == null ||  IElist.isEmpty() || IElist.size<1){
+                if(IElist == null ||  IElist.isEmpty() /*|| IElist.size<1*/){
                     // get itemEntity from inserter storage to Tile
                     ItemEntity IEmoved = new ItemEntity(this.itemEntity.item,x+direction.x+0.5f,y+direction.y+0.5f);
                     itemEntityManager.addItemEntity(IEmoved);
@@ -128,9 +127,13 @@ public class Inserter extends TileEntity implements Directional{
     }
     @Override
     public void render(SpriteBatch batch) {
+
+        System.out.println(this.itemEntity);
+        super.render(batch);
         if(this.itemEntity != null) {
             this.itemEntity.render(batch);
         }
-        super.render(batch);
+
+
     }
 }
