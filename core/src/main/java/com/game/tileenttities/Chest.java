@@ -31,9 +31,6 @@ public class Chest extends TileEntity implements HasInventory{
     public Chest(int x, int y) {
         this();
         set(x,y);
-        sprite.setSize(bounds.width, bounds.height);
-        sprite.setOriginCenter();
-        sprite.setPosition(x, y);
 
     }
     public Chest(Chest other){

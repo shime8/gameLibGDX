@@ -104,4 +104,5 @@ public class Belt extends TileEntity implements Directional{
             moveForward = false;
         }
     }
+    public float getSpriteY() {return y+1;}
 }

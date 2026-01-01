@@ -66,6 +66,7 @@ public class worldManager {
 
         direction = new Vector2(1,0);
 
+
     }
     public void update(float dt) {
         player.update(dt);
@@ -197,6 +198,7 @@ public class worldManager {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
               direction.rotate90(-1);
+              mouseSlot.setDirection();
 //            Item item = uiManager.mouseSlot.getItem();
 //            if (item != null && item.Tile instanceof Directional d) {
 //                d.setDirection(d.getDirection().rotate90(1) );

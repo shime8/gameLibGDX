@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -50,6 +51,9 @@ public class UIManager {
     public float accumulator;
     ShapeRenderer shapeRenderer;
 //    public BitmapFont font;
+    public BitmapFont tooltipFont;
+    private String hoveredItemName = null;
+    private Vector2 tooltipPosition = new Vector2();
 
     public UIManager() {
 
@@ -61,12 +65,16 @@ public class UIManager {
         inventory = new PlayerInventory(5, 4);
         mouseSlot = new MouseSlot();
 
+
         createPauseMenu();
         createInventoryUI();
         createChestUI();
         createAssemblerUI();
         createInventoryContainer();
         shapeRenderer = new ShapeRenderer();
+        tooltipFont = new BitmapFont();
+        tooltipFont.setColor(Color.WHITE);
+        tooltipFont.getData().setScale(1.5f);
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(2f);
@@ -100,7 +108,9 @@ public class UIManager {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                //Gdx.app.exit();
+                togglePause();
+                MainMenu.create();
             }
         });
     }
@@ -130,6 +140,25 @@ public class UIManager {
                         refreshInventoryUI();
                     }
                 });
+                slot.addListener(new InputListener() {
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        Item item = inventory.getItem(index);
+                        if (item != null) {
+                            hoveredItemName = item.name;
+                        }
+                    }
+                    @Override
+                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                        hoveredItemName = null;
+                    }
+                    @Override
+                    public boolean mouseMoved(InputEvent event, float x, float y) {
+                        tooltipPosition.set(Gdx.input.getX(), Gdx.input.getY());
+                        return false;
+                    }
+                });
+
 //                slot.getLabel().setColor(Color.LIGHT_GRAY);
 //                slot.setColor(new Color(1, 1, 1, 0.5f));
 //                slot.pad(10);
@@ -195,6 +224,9 @@ public class UIManager {
         inventoryOpen = !inventoryOpen;
         InventoryContainer.setVisible(inventoryOpen);
         refreshInventoryUI();
+        if (!inventoryOpen) {
+            hoveredItemName = null;
+        }
     }
 
     public void openChest(Chest chest) {
@@ -215,6 +247,24 @@ public class UIManager {
                             refreshChestUI();
                         }
                     });
+                    actor.addListener(new InputListener() {
+                        @Override
+                        public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                            Item item = currentChest.getItem(index);
+                            if (item != null) {
+                                hoveredItemName = item.name;
+                            }
+                        }
+                        @Override
+                        public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                            hoveredItemName = null;
+                        }
+                        @Override
+                        public boolean mouseMoved(InputEvent event, float x, float y) {
+                            tooltipPosition.set(Gdx.input.getX(), Gdx.input.getY());
+                            return false;
+                        }
+                    });
                 }
             }
             i++;
@@ -231,6 +281,7 @@ public class UIManager {
         currentChest = null;
         InventoryContainer.setVisible(false);
         InventoryContainer.removeActor(chestUI);
+        hoveredItemName = null;
 
     }
 
@@ -254,6 +305,24 @@ public class UIManager {
                             tileEntityManager.sort();
                         }
                     });
+                actor.addListener(new InputListener() {
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        Item item = recipe.itemsCOut.first();
+                        if (item != null) {
+                            hoveredItemName = item.name;
+                        }
+                    }
+                    @Override
+                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                        hoveredItemName = null;
+                    }
+                    @Override
+                    public boolean mouseMoved(InputEvent event, float x, float y) {
+                        tooltipPosition.set(Gdx.input.getX(), Gdx.input.getY());
+                        return false;
+                    }
+                });
             }
             i++;
         }
@@ -330,10 +399,33 @@ public class UIManager {
             new Vector2(Gdx.input.getX(), Gdx.input.getY())
         );
         mouseSlot.render(batch, mousePos.x, mousePos.y, worldManager.direction);
+        renderTooltip(batch,mousePos);
 //        font.draw(batch,String.valueOf((int)worldManager.direction.x), mousePos.x, mousePos.y);
 //        font.draw(batch,String.valueOf((int)worldManager.direction.y), mousePos.x+32f, mousePos.y);
     }
+    public void renderTooltip(SpriteBatch batch,Vector2 mousePos){
+        if (hoveredItemName != null && inventoryOpen) {
+            float tooltipX = mousePos.x + 15;
+            float tooltipY = mousePos.y + 15;
+            // Draw background for tooltip
+            batch.end();
 
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0, 0, 0, 0.8f);
+            com.badlogic.gdx.graphics.g2d.GlyphLayout layout = new com.badlogic.gdx.graphics.g2d.GlyphLayout();
+            layout.setText(tooltipFont, hoveredItemName);
+            float padding = 8;
+            shapeRenderer.rect(tooltipX - padding, tooltipY - padding,
+                layout.width + padding * 2, layout.height + padding * 2);
+            shapeRenderer.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+
+            batch.begin();
+            tooltipFont.draw(batch, hoveredItemName, tooltipX, tooltipY + layout.height);
+        }
+    }
     private void handleInput() {
         // Toggle pause
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -385,6 +477,25 @@ public class UIManager {
             cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
+        float buttonWidth = 1 + width * 0.2f;
+        float buttonHeight = 1 + height * 0.08f;
+        float buttonPadding = 1 + height * 0.02f;
+
+        for (Cell<?> cell : pauseMenu.getCells()) {
+            if (cell.getActor() instanceof TextButton) {
+                cell.width(buttonWidth).height(buttonHeight).pad(buttonPadding);
+            } else {
+                // Keep padding for the label
+                cell.pad(buttonPadding);
+            }
+        }
+
+        float fontScale = 1 + height / 1080f;
+        tooltipFont.getData().setScale(1.5f * fontScale);
+        if (skin.has("default-font", BitmapFont.class)) {
+            BitmapFont defaultFont = skin.getFont("default-font");
+            defaultFont.getData().setScale(fontScale);
+        }
 
         inventoryUI.invalidate();
         chestUI.invalidate();
@@ -395,6 +506,7 @@ public class UIManager {
         stage.dispose();
         skin.dispose();
         shapeRenderer.dispose();
+        tooltipFont.dispose();
     }
 
     public void decreaseAndAutoGet() {

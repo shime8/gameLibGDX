@@ -4,12 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.game.UIs.TypeToString;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
+import com.game.world.worldManager;
 
 import static com.game.main.Main.*;
 
@@ -29,14 +31,10 @@ public class Inserter extends TileEntity implements Directional{
     public Inserter(int x, int y) {
         this();
         set(x,y);
-        sprite.setSize(bounds.width, bounds.height);
-        sprite.setOriginCenter();
-        sprite.setPosition(x, y);
-
     }
     public Inserter(Inserter other){
         super(other);
-        this.direction = other.direction;
+        setDirection(other.direction);
         this.speed = other.speed;
         this.font = other.font;
         this.item = null;
@@ -62,7 +60,12 @@ public class Inserter extends TileEntity implements Directional{
     public void swing(){
         TileEntity TEfront = tileEntityManager.getEntityAt(x+(int)(direction.x),y+(int)(direction.y));
         TileEntity TEback = tileEntityManager.getEntityAt(x-(int)(direction.x),y-(int)(direction.y));
+        checkFront(TEfront);
+        checkBack(TEback);
+        swap();
 
+    }
+    public void checkBack(TileEntity TEback){
         //////////////////////////// check back
         if(this.item==null && this.itemEntity==null){
             if (TEback == null || TEback instanceof Belt) {
@@ -72,6 +75,7 @@ public class Inserter extends TileEntity implements Directional{
                     // get itemEntity to inserter storage
                     this.itemEntity = IElist.first();
                     IElist.removeValue(this.itemEntity, true);
+                    accumulator = 1f/speed;
                 }
 
             } else if (TEback instanceof HasInventory) {
@@ -80,16 +84,22 @@ public class Inserter extends TileEntity implements Directional{
                 if (item != null) {
                     // get item to inserter storage
                     this.item = item;
+                    accumulator = 1f/speed;
                 }
             }
         }
-        if( this.item != null || this.itemEntity != null){
+    }
+    public void swap(){
+        if( this.item != null ^ this.itemEntity != null) {
             //........................ swap
-            if(this.itemEntity == null){
-                this.itemEntity = new ItemEntity(this.item,x+0.5f,y);
+            if (this.itemEntity == null) {
+                this.itemEntity = new ItemEntity(this.item, x + 0.5f, y);
             }
-            this.itemEntity = new ItemEntity(this.itemEntity.item,x+0.5f,y);
-
+            this.itemEntity = new ItemEntity(this.itemEntity.item, x + 0.5f, y);
+        }
+    }
+    public void checkFront(TileEntity TEfront){
+        if( this.item != null || this.itemEntity != null){
             //-----------------------check front
             if(TEfront == null || TEfront instanceof Belt){
                 // check if tile has item entities
@@ -104,14 +114,14 @@ public class Inserter extends TileEntity implements Directional{
                 }
 
             }else if(TEfront instanceof HasInventory){
-                    // get item from inserter storage to inventory
-                    this.itemEntity.item.amount = 1;
-                    boolean didiadd = ((HasInventory) TEfront).addItem(new Item(this.itemEntity.item));
-                    if(didiadd) {
-                        this.item = null;
-                        this.itemEntity = null;
-                        accumulator = 1f/speed;
-                    }
+                // get item from inserter storage to inventory
+                this.itemEntity.item.amount = 1;
+                boolean didiadd = ((HasInventory) TEfront).addItem(new Item(this.itemEntity.item));
+                if(didiadd) {
+                    this.item = null;
+                    this.itemEntity = null;
+                    accumulator = 1f/speed;
+                }
             }
 
         }
@@ -124,6 +134,9 @@ public class Inserter extends TileEntity implements Directional{
     @Override
     public void setDirection(Vector2 direction) {
         this.direction = direction;
+//        sprite.setSize(3f, 1f);
+//        sprite.setOriginCenter();
+//        sprite.setPosition(getBounds().x-Math.abs(direction.y), getBounds().y+Math.abs(direction.y));
         sprite.setRotation(getAngle(direction));
     }
     @Override
@@ -132,7 +145,13 @@ public class Inserter extends TileEntity implements Directional{
         if(this.itemEntity != null) {
             this.itemEntity.render(batch);
         }
-
-
     }
+//    @Override
+//    public Rectangle getBounds() {
+////        if(direction==null){
+////            return new Rectangle(this.x, this.y, 1, 1);
+////        }else {
+//            return new Rectangle(this.x - (int)Math.abs(direction.x), this.y - (int)Math.abs(direction.y), 1f + (int)(Math.abs(direction.x) *2) ,1f + (int)(Math.abs(direction.y)*2));
+////        }
+//    }
 }

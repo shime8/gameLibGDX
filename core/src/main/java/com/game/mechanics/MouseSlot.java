@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game.items.Item;
 import com.game.tileenttities.Directional;
+import com.game.world.worldManager;
 
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ public class MouseSlot {
         }else{
             if(this.item==null){
                 this.item = item;
+                setDirection();
                 return null;
             }else{
                 Item temp = new Item(this.item);
@@ -46,10 +48,16 @@ public class MouseSlot {
                     this.item = null;
                 }else{
                     this.item = item;
+                    setDirection();
                 }
                 return temp;
             }
 
+        }
+    }
+    public void setDirection(){
+        if (this.item != null && this.item.Tile != null && this.item.Tile instanceof Directional){
+            ((Directional) this.item.Tile).setDirection(worldManager.direction);
         }
     }
     public void decreseAmount(){

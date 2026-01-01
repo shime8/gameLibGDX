@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.game.main.Main;
 
 public class MainMenu {
     public static Stage stage;
@@ -30,11 +31,12 @@ public class MainMenu {
         create(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
     public static void create(float width, float height) {
+        Main.stuffAdded = false;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         // Load textures
-        background = new Texture("ui/menu_bg.png");
+        background = new Texture("ui/HQBG.png");
         buttonTexture = new Texture("ui/button_unpressed.png");
         buttonPressedTexture = new Texture("ui/button_pressed.png");
 

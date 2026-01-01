@@ -37,7 +37,7 @@ public class Main extends ApplicationAdapter {
     public static UIManager uiManager;
     public static float unitScale = 1f / 32f;
     public static RecipeManager recipeManager;
-    public boolean stuffAdded = false;
+    public static boolean stuffAdded = false;
     @Override
     public void create() {
         TypeToString.init("Languages/PL.txt");
