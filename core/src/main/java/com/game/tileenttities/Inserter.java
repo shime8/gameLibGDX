@@ -21,7 +21,9 @@ public class Inserter extends TileEntity implements Directional{
     Item item;
     ItemEntity itemEntity;
     float accumulator = 0f;
-
+    float swingAccumulator = 0f;
+    TileEntity TEfront;
+    TileEntity TEback;
     public Inserter(){
         super();
         sprite = new Sprite(new Texture("tiles/inserter_up.png"));
@@ -39,7 +41,10 @@ public class Inserter extends TileEntity implements Directional{
         this.font = other.font;
         this.item = null;
         this.itemEntity = null;
+        this.TEback = null;
+        this.TEfront = null;
         accumulator = 0f;
+        swingAccumulator = 0f;
     }
     @Override
     public TileEntity clone() {
@@ -50,7 +55,16 @@ public class Inserter extends TileEntity implements Directional{
         accumulator-=delta;
         if(accumulator<=0f){
             accumulator = 0f;
-            swing();
+            swingAccumulator += delta;
+            updateTE();
+            if(swingAccumulator>0.5f/speed){
+                checkFront(TEfront);
+                swingAccumulator = 0;
+            }else{
+                checkBack(TEback);
+                swap();
+            }
+
         }
 
         if(this.itemEntity != null) {
@@ -58,12 +72,15 @@ public class Inserter extends TileEntity implements Directional{
         }
     }
     public void swing(){
-        TileEntity TEfront = tileEntityManager.getEntityAt(x+(int)(direction.x),y+(int)(direction.y));
-        TileEntity TEback = tileEntityManager.getEntityAt(x-(int)(direction.x),y-(int)(direction.y));
+        updateTE();
         checkFront(TEfront);
         checkBack(TEback);
         swap();
 
+    }
+    public void updateTE(){
+        TEfront = tileEntityManager.getEntityAt(x+(int)(direction.x),y+(int)(direction.y));
+        TEback = tileEntityManager.getEntityAt(x-(int)(direction.x),y-(int)(direction.y));
     }
     public void checkBack(TileEntity TEback){
         //////////////////////////// check back
