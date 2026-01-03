@@ -182,7 +182,7 @@ public class Assembler extends TileEntity implements CanCraft{
 
     @Override
     public void shapeRender(ShapeRenderer shapeR) {
-        Rectangle rect = new Rectangle(x - 0.5f, y + 1.5f, 2f, 0.25f);
+        Rectangle rect = new Rectangle(x - 0.5f, y + 2f, 2f, 0.25f);
         shapeR.begin(ShapeRenderer.ShapeType.Filled);
         if(recipe!=null && craftProgress()!=0f) {
             shapeR.setColor(Color.LIGHT_GRAY);

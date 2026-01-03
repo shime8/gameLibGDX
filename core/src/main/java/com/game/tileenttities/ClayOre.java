@@ -33,4 +33,5 @@ public class ClayOre extends TileEntity implements Mineable, CantPickup, CantPla
     public TileEntity pickupee() {
         return null;
     }
+    public float getSpriteY() {return y+1;}
 }

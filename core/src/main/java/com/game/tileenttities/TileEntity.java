@@ -59,7 +59,7 @@ public abstract class TileEntity {
     public Rectangle getBounds() {
         return new Rectangle(this.x, this.y, 1, 1);
     }
-
+    public Rectangle getCollisionBox() {return new Rectangle(this.x, this.y, 1, 1);}
     public float getSpriteY(){
         return y;
     }

@@ -90,4 +90,6 @@ public class Miner extends TileEntity implements HasInventory{
             }
         }
     }
+
+    public float getSpriteY() {return y+0.9f;}
 }

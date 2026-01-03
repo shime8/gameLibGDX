@@ -15,9 +15,10 @@ public class Player {
     public float x, y;
     public float speed = 5f; // plytki na sekunde
     public Texture texture;
+    public float displayWidth;
     public float unitScale;
     float mapWidth;
-    float mapHeight ;
+    float mapHeight;
 
     Rectangle hitbox;
 
@@ -25,8 +26,9 @@ public class Player {
         this.x = startX;
         this.y = startY;
         this.unitScale = unitScale;
-        this.texture = new Texture(Gdx.files.internal("player/playerv1.png"));
+        this.texture = new Texture(Gdx.files.internal("player/HQ Player.png"));
         this.hitbox = new Rectangle(x-0.25f,y-0.46f,0.5f,0.9f);
+        this.displayWidth = 32f; // in pixels
         this.mapWidth = worldManager.mapWidth;
         this.mapHeight = worldManager.mapHeight;
 
@@ -102,14 +104,14 @@ public class Player {
 
 
         // Clamp gracza do mapy
-        float halfW = (texture.getWidth() * unitScale) / 2f;
-        float halfH = (texture.getHeight() * unitScale) / 2f;
+        float halfW = (this.displayWidth * unitScale) / 2f;
+        float halfH = (texture.getHeight() * unitScale * this.displayWidth) / (2f * texture.getWidth());
         x = clamp(x, halfW, mapWidth - halfW);
         y = clamp(y, halfH, mapHeight - halfH);
     }
     public void draw(SpriteBatch batch){
-        float w = texture.getWidth() * unitScale;
-        float h = texture.getHeight() * unitScale;
+        float w = this.displayWidth * unitScale;
+        float h = (texture.getHeight() * unitScale * this.displayWidth) / texture.getWidth();
         batch.draw(texture, x - w/2, y - h/2, w, h);
     }
     public void dispose() {
