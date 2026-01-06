@@ -1,5 +1,7 @@
 package com.game.mechanics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.game.items.*;
 import com.game.tileenttities.*;
@@ -7,6 +9,7 @@ import com.game.tileenttities.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,15 +25,13 @@ public class RecipeManager {
     }
     public void setRecipes(){
         recipes = new Array<>();
-        String filePath = "C:\\Users\\Szymin\\IdeaProjects\\gameLibGDX\\assets\\Recipes\\recipes.txt";
+        FileHandle fileHandle = Gdx.files.internal("Recipes/recipes.txt");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(fileHandle.read()))) {
             String line;
 
             while ((line = br.readLine()) != null) {
-
-
-                 String[] io = line.split(";");
+                String[] io = line.split(";");
 
                 Array<Item> itemsCIn = StringsToItemArrays(io[1]);
                 Array<Item> itemsCOut = StringsToItemArrays(io[0]);

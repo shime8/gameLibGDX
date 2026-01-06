@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.game.world.worldManager;
 
 import java.awt.*;
@@ -15,10 +16,13 @@ public class Player {
     public float x, y;
     public float speed = 5f; // plytki na sekunde
     public Texture texture;
+    public Array<Texture> Animation;
     public float displayWidth;
     public float unitScale;
     float mapWidth;
     float mapHeight;
+    float AnimAcumulator;
+    int AnimCounter;
 
     Rectangle hitbox;
 
@@ -27,11 +31,17 @@ public class Player {
         this.y = startY;
         this.unitScale = unitScale;
         this.texture = new Texture(Gdx.files.internal("player/HQ Player.png"));
+        this.Animation = new Array<>();
+        this.Animation.add(new Texture(Gdx.files.internal("player/HQ Player.png")));
+        this.Animation.add(new Texture(Gdx.files.internal("player/HQ Player_2.png")));
+        this.Animation.add(new Texture(Gdx.files.internal("player/HQ Player.png")));
+        this.Animation.add(new Texture(Gdx.files.internal("player/HQ Player_3.png")));
         this.hitbox = new Rectangle(x-0.25f,y-0.46f,0.5f,0.9f);
         this.displayWidth = 32f; // in pixels
         this.mapWidth = worldManager.mapWidth;
         this.mapHeight = worldManager.mapHeight;
-
+        this.AnimAcumulator = 0;
+        this.AnimCounter = 0;
     }
 
     public void update(float dt ) {
@@ -45,6 +55,20 @@ public class Player {
             dy = 1f;
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))
             dy = -1f;
+
+        // animacja
+        if(dx != 0 || dy != 0){
+            AnimAcumulator += dt;
+            if(AnimAcumulator > (1f/4f)){
+                AnimAcumulator = AnimAcumulator % (1f/4f);
+                AnimCounter += 1;
+                AnimCounter = AnimCounter % 4;
+                this.texture = Animation.get(this.AnimCounter);
+            }
+        }else{
+            this.texture = this.Animation.first();
+            AnimAcumulator = 0;
+        }
 
         // normalizacja skosu
         if (dx != 0 && dy != 0) {
