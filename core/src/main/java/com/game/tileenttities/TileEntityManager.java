@@ -9,13 +9,11 @@ import com.game.items.ItemEntity;
 
 import java.util.Comparator;
 
-import static com.game.main.Main.itemEntityManager;
-import static com.game.main.Main.worldManager;
+import static com.game.main.Main.*;
 
 public class TileEntityManager {
     ObjectMap<GridPoint2, TileEntity> tileEntityMap;
     Array<ObjectMap.Entry<GridPoint2, TileEntity>> TemSorted;
-
     public TileEntityManager(ObjectMap<GridPoint2, TileEntity> tileEntities) {
         this.tileEntityMap = tileEntities;
     }
@@ -54,31 +52,33 @@ public class TileEntityManager {
 //            GridPoint2 point = entry.key;
             TileEntity tile = entry.value;
             if(!PlayerRendered && tile.getSpriteY()+0.6f<worldManager.player.y){
-                renderItemsOnBelts(batch,true);
                 worldManager.player.draw(batch);
                 PlayerRendered = true;
-                tile.render(batch);
-
-            }else{
-                tile.render(batch);
             }
-
-
+            tile.render(batch);
+            renderItemsOnBelts(batch, tile);
         }
-        if(!PlayerRendered){
-            renderItemsOnBelts(batch,true);
-            worldManager.player.draw(batch);
-        }
+        if(!PlayerRendered){worldManager.player.draw(batch);}
     }
-    public void renderItemsOnBelts(SpriteBatch batch, boolean UpDirection){
-        for (TileEntity tileEntity : tileEntityMap.values()) {
-            if(tileEntity instanceof Belt b && itemEntityManager.getItemEntityList(b.x, b.y)!=null ){
-                if (UpDirection ? b.y >= worldManager.player.y-1.1f : b.y < worldManager.player.y+1) {
-                    for (ItemEntity ie : itemEntityManager.getItemEntityList(b.x, b.y)) {
-                        if(UpDirection || ie.worldY <= worldManager.player.y-0.5f)ie.render(batch);
+    int[][] directionsForBelts = {
+        {-1, 0},
+        { 1, 0},
+        { 0, 1},
+        { 0,-1}
+    };
+    public void renderItemsOnBelts(SpriteBatch batch, TileEntity tile){
+        if(tile instanceof Belt b && itemEntityManager.getItemEntityList(b.x, b.y)!=null){
+            for (ItemEntity ie : itemEntityManager.getItemEntityList(b.x, b.y)) {
+                ie.render(batch);
+            }
+            for (int[] d : directionsForBelts) {
+                int x = d[0];
+                int y = d[1];
+                if(tileEntityManager.getEntityAt(b.x+x,b.y+y) instanceof Belt bb && itemEntityManager.getItemEntityList(bb.x, bb.y)!=null){
+                    for (ItemEntity ie : itemEntityManager.getItemEntityList(bb.x, bb.y)) {
+                        ie.render(batch);
                     }
                 }
-
             }
         }
     }

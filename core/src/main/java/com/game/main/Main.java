@@ -140,7 +140,7 @@ public class Main extends ApplicationAdapter {
 
         itemEntityManager.renderOnGround(batch);
         tileEntityManager.render(batch);
-        tileEntityManager.renderItemsOnBelts(batch,false);
+        //tileEntityManager.renderItemsOnBelts(batch,false);
         if(tileEntityManager.isEmpty()){player.draw(batch);}
         worldManager.drawbatch(batch);
         batch.end();
