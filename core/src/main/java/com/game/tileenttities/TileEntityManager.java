@@ -73,7 +73,7 @@ public class TileEntityManager {
     public void renderItemsOnBelts(SpriteBatch batch, boolean UpDirection){
         for (TileEntity tileEntity : tileEntityMap.values()) {
             if(tileEntity instanceof Belt b && itemEntityManager.getItemEntityList(b.x, b.y)!=null ){
-                if (UpDirection ? b.y >= worldManager.player.y-1 : b.y < worldManager.player.y+1) {
+                if (UpDirection ? b.y >= worldManager.player.y-1.1f : b.y < worldManager.player.y+1) {
                     for (ItemEntity ie : itemEntityManager.getItemEntityList(b.x, b.y)) {
                         if(UpDirection || ie.worldY <= worldManager.player.y-0.5f)ie.render(batch);
                     }
