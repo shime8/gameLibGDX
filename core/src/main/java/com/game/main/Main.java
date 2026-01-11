@@ -80,21 +80,21 @@ public class Main extends ApplicationAdapter {
         Array<Item> LHrecipe = new Array<>();
         LHrecipe.add(new Brick(20));
         LHrecipe.add(new Glass(20));
-        LHrecipe.add(new Item(5, new Assembler()));
+        LHrecipe.add(new NewItem(5, new Assembler()));
         BuildPlace LHBP = new BuildPlace(20,54);
         LHBP.setBuild(new LightHouse(20,54));
         LHBP.setRecipe(LHrecipe);
         tileEntityManager.addEntity(LHBP);
         //for testing
-        uiManager.inventory.setItem(0, new Item(50, new Chest()));
-        uiManager.inventory.setItem(1, new Item(50, new Belt()));
-        uiManager.inventory.setItem(2, new Item(50, new Inserter()));
+        uiManager.inventory.setItem(0, new NewItem(50, new Chest()));
+        uiManager.inventory.setItem(1, new NewItem(50, new Belt()));
+        uiManager.inventory.setItem(2, new NewItem(50, new Inserter()));
         uiManager.inventory.setItem(3, new Gear(50));
-        uiManager.inventory.setItem(4, new Item(50, new Assembler()));
-        uiManager.inventory.setItem(5, new Item(50, new Creator()));
-        uiManager.inventory.setItem(6, new Item(50, new Deleter()));
-        uiManager.inventory.setItem(7, new Item(50, new Miner()));
-        uiManager.inventory.setItem(8, new Item(50, new LongInserter()));
+        uiManager.inventory.setItem(4, new NewItem(50, new Assembler()));
+        uiManager.inventory.setItem(5, new NewItem(50, new Creator()));
+        uiManager.inventory.setItem(6, new NewItem(50, new Deleter()));
+        uiManager.inventory.setItem(7, new NewItem(50, new Miner()));
+        uiManager.inventory.setItem(8, new NewItem(50, new LongInserter()));
         stuffAdded = true;
     }
 
@@ -138,8 +138,9 @@ public class Main extends ApplicationAdapter {
         worldManager.updateCamera();
         worldManager.drawMap();
 
+        itemEntityManager.renderOnGround(batch);
         tileEntityManager.render(batch);
-        itemEntityManager.render(batch);
+        tileEntityManager.renderItemsOnBelts(batch,false);
         if(tileEntityManager.isEmpty()){player.draw(batch);}
         worldManager.drawbatch(batch);
         batch.end();

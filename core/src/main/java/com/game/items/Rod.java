@@ -7,10 +7,10 @@ import com.game.UIs.TypeToString;
 public class Rod extends Item{
     public Rod(){
         super();
-        this.name = TypeToString.get(TypeToString.Dictionary.Rod);
         this.sprite =  new Sprite(new Texture("items/MetalRod.png"));
         this.amount = 0;
     }
+    @Override
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Rod);}
     public Rod(int amount){
         this();
@@ -18,4 +18,5 @@ public class Rod extends Item{
     }
 
     public Rod(Item item) { super(item); }
+    public Item clone(){return new Rod(this);};
 }

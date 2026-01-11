@@ -21,6 +21,7 @@ import com.game.UIs.UIManager;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
+import com.game.items.NewItem;
 import com.game.mechanics.Recipe;
 import com.game.player.Player;
 import com.game.tileenttities.*;
@@ -150,15 +151,24 @@ public class worldManager {
                 if(tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup c1 && c1.pickupee() == null){
 
                 }else if (tileEntityManager.getEntityAt(tileX,tileY) instanceof CantPickup c){
-                    uiManager.inventory.addItem(new Item(1,(c.pickupee())));
+                    uiManager.inventory.addItem(new NewItem(1,(c.pickupee())));
                     tileEntityManager.removeEntity(c.pickupee());
                 }else{
-                    uiManager.inventory.addItem(new Item(1,tileEntityManager.getEntityAt(tileX,tileY)));
+                    uiManager.inventory.addItem(new NewItem(1,tileEntityManager.getEntityAt(tileX,tileY)));
                     if(tileEntityManager.getEntityAt(tileX,tileY) instanceof Miner m && m.minee != null){
                         TileEntity ore = m.minee;
+                        ore.x = m.x;
+                        ore.y = m.y;
                         tileEntityManager.removeEntity(m);
                         tileEntityManager.addEntity(ore);
                     }else {
+                        if (tileEntityManager.getEntityAt(tileX, tileY) instanceof HasInventory InventoryTile) {
+                            if (InventoryTile.ItemsOnBreak() != null && !InventoryTile.ItemsOnBreak().isEmpty()) {
+                                for (Item item : InventoryTile.ItemsOnBreak()) {
+                                    if (item != null) uiManager.inventory.addItem(item);
+                                }
+                            }
+                        }
                         tileEntityManager.removeEntity(tileEntityManager.getEntityAt(tileX, tileY));
                     }
                 }
@@ -173,7 +183,7 @@ public class worldManager {
     public void handleInputs(){
         //drop item on tile
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && mouseSlot.getItem()!=null) {
-            Item tempItem = new Item(mouseSlot.getItem());
+            Item tempItem = mouseSlot.getItem().clone();
             tempItem.amount = 1;
 
             mouseWorld.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -279,7 +289,7 @@ public class worldManager {
             int tileX = (int) Math.floor(mouseWorld.x);
             int tileY = (int) Math.floor(mouseWorld.y);
 
-            if(GhostTE == null || !Objects.equals(GhostTE.name, mouseSlot.getItem().name)){
+            if(GhostTE == null || !Objects.equals(GhostTE.getname(), mouseSlot.getItem().getname())){
                 GhostTE = mouseSlot.getItem().Tile.clone();
             }
             setCanIPlace();

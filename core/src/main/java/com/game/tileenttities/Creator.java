@@ -13,7 +13,6 @@ public class Creator extends TileEntity implements HasInventory{
     public Creator(){
         super();
         sprite = new Sprite(new Texture("tiles/InfiniMiner.png") );
-        name = TypeToString.get(TypeToString.Dictionary.Creator);
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Creator);}
     public Creator(int x, int y) {
@@ -49,5 +48,11 @@ public class Creator extends TileEntity implements HasInventory{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
+    }
+    @Override
+    public Array<Item> ItemsOnBreak() {
+        Array<Item> items = new Array<>();
+        items.add(new Gear(1));
+        return items;
     }
 }

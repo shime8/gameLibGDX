@@ -9,7 +9,6 @@ public class MetalOre extends TileEntity implements Mineable, CantPickup, CantPl
     public MetalOre(){
         super();
         sprite = new Sprite(new Texture("tiles/MetalOre.png") );
-        name = TypeToString.get(TypeToString.Dictionary.MetalOre);
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.MetalOre);}
     public MetalOre(int x, int y){

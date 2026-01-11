@@ -65,20 +65,20 @@ public class RecipeManager {
         Map<String, Item> itemMap = new HashMap<>();
 
         itemMap.put("gear", new Gear(0));
-        itemMap.put("assembler", new Item(0, new Assembler()));
-        itemMap.put("belt", new Item(0, new Belt()));
-        itemMap.put("chest", new Item(0, new Chest()));
-        itemMap.put("creator", new Item(0, new Creator()));
-        itemMap.put("deleter", new Item(0, new Deleter()));
-        itemMap.put("inserter", new Item(0, new Inserter()));
-        itemMap.put("metalOre", new Item(0, new MetalOre()));
+        itemMap.put("assembler", new NewItem(0, new Assembler()));
+        itemMap.put("belt", new NewItem(0, new Belt()));
+        itemMap.put("chest", new NewItem(0, new Chest()));
+        itemMap.put("creator", new NewItem(0, new Creator()));
+        itemMap.put("deleter", new NewItem(0, new Deleter()));
+        itemMap.put("inserter", new NewItem(0, new Inserter()));
+        itemMap.put("metalOre", new NewItem(0, new MetalOre()));
         itemMap.put("plate", new Plate(0));
         itemMap.put("rod", new Rod(0));
-        itemMap.put("clay", new Item(0, new ClayOre()));
+        itemMap.put("clay", new NewItem(0, new ClayOre()));
         itemMap.put("brick", new Brick(0));
         itemMap.put("sand", new Sand(0));
         itemMap.put("glass", new Glass(0));
-        itemMap.put("silo", new Item(0, new Silo()));
+        itemMap.put("silo", new NewItem(0, new Silo()));
         Item item = itemMap.get(string);
 
         if (item == null) {

@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public abstract class TileEntity {
-    public String name;
     public int x, y;
     public Rectangle bounds;
     public Sprite sprite;
@@ -28,7 +27,6 @@ public abstract class TileEntity {
         this.y = other.y;
         this.bounds = new Rectangle(other.getBounds());
         this.sprite = new Sprite(other.sprite);
-        this.name = other.name;
     }
     abstract public String getname();
     public abstract TileEntity clone();

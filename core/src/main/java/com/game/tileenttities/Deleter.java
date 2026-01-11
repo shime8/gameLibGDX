@@ -5,15 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.game.UIs.TypeToString;
+import com.game.items.Gear;
 import com.game.items.Item;
 
 public class Deleter extends TileEntity implements HasInventory{
 
     public Deleter(){
         super();
-        sprite = new Sprite(new Texture("tiles/deleter.png") );
-        name = TypeToString.get(TypeToString.Dictionary.Deleter);
-    }
+        sprite = new Sprite(new Texture("tiles/deleter.png") );}
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Deleter);}
     public Deleter(int x, int y) {
         this();
@@ -48,5 +47,9 @@ public class Deleter extends TileEntity implements HasInventory{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
+    }
+    @Override
+    public Array<Item> ItemsOnBreak() {
+        return null;
     }
 }

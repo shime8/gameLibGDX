@@ -9,7 +9,6 @@ public class LongInserter extends Inserter{
     public LongInserter(){
         super();
         sprite = new Sprite(new Texture("tiles/LongInserter_up.png"));
-        name = TypeToString.get(TypeToString.Dictionary.LongInserter);
         speed = 2f;
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.LongInserter);}

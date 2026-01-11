@@ -10,7 +10,6 @@ public class LightHouse extends TileEntity implements CantPickup{
     public LightHouse(){
         super();
         sprite = new Sprite(new Texture("tiles/LightHousen.png"));
-        name = TypeToString.get(TypeToString.Dictionary.LightHouse);
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);

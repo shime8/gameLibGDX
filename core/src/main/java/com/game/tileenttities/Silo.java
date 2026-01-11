@@ -10,7 +10,6 @@ public class Silo extends Chest{
     public Silo(){
         super();
         sprite = new Sprite(new Texture("tiles/silo.png") );
-        name = TypeToString.get(TypeToString.Dictionary.Silo);
         this.size = 4;
         this.items = new Array<>(size);
         for (int i = 0; i < size; i++) items.add(null);

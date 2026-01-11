@@ -23,12 +23,12 @@ public class Recipe {
     public String toString() {
         StringBuilder string = new StringBuilder("itemsIn");
         for (Item item : itemsCIn){
-            string.append(" N:").append(item.name);
+            string.append(" N:").append(item.getname());
             string.append(" A:").append(item.amount);
         }
         string.append(" itemsOut");
         for (Item item : itemsCOut){
-            string.append(" N:").append(item.name);
+            string.append(" N:").append(item.getname());
             string.append(" A:").append(item.amount);
         }
         string.append("T:").append(time);

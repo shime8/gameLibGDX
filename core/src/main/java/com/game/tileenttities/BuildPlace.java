@@ -22,8 +22,6 @@ public class BuildPlace extends TileEntity{
     public BuildPlace(){
         super();
         sprite = new Sprite(new Texture("tiles/BuildPlace.png"));
-        //name = TypeToString.get(TypeToString.Dictionary.BuildPlace);
-        name = "BuildPlace";
         Recipe = new Array<>();
         font = new BitmapFont();
         font.setColor(Color.BLACK);
@@ -42,6 +40,9 @@ public class BuildPlace extends TileEntity{
         this.Recipe = other.Recipe;
         this.font = other.font;
         accumulator = 0f;
+    }
+    public String getname(){
+            return "BuildPlace";
     }
     public void setBuild(TileEntity t){
         WhatToBuild = t;
@@ -72,7 +73,7 @@ public class BuildPlace extends TileEntity{
                 if(Items!=null && !Items.isEmpty() && Recipe!=null && !Recipe.isEmpty()) {
                     for (ItemEntity ie : Items) {
                         for (Item ir : Recipe) {
-                            if (ir.name.equals(ie.item.name) && ir.amount > 0) {
+                            if (ir.getname().equals(ie.item.getname()) && ir.amount > 0) {
                                 itemEntityManager.removeItemEntity(ie);
                                 ir.amount -= 1;
                             }
@@ -128,7 +129,7 @@ public class BuildPlace extends TileEntity{
         if(WhatToBuild == null) {
             return new Rectangle(this.x-1, this.y-1, 3, 3);
         }else{
-            return WhatToBuild.getBounds();
+            return WhatToBuild.getHighlightBounds();
         }
     }
 

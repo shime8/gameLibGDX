@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
+import com.game.items.NewItem;
 import com.game.mechanics.MouseSlot;
 import com.game.mechanics.PlayerInventory;
 import com.game.mechanics.Recipe;
@@ -145,7 +146,7 @@ public class UIManager {
                     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                         Item item = inventory.getItem(index);
                         if (item != null) {
-                            hoveredItemName = item.name;
+                            hoveredItemName = item.getname();
                         }
                     }
                     @Override
@@ -243,7 +244,7 @@ public class UIManager {
                         public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                             Item item = currentChest.getItem(finalIndex);
                             if (item != null) {
-                                hoveredItemName = item.name;
+                                hoveredItemName = item.getname();
                             }
                         }
 
@@ -306,7 +307,7 @@ public class UIManager {
                     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                         Item item = recipe.itemsCOut.first();
                         if (item != null) {
-                            hoveredItemName = item.name;
+                            hoveredItemName = item.getname();
                         }
                     }
                     @Override
@@ -506,7 +507,7 @@ public class UIManager {
     }
 
     public void decreaseAndAutoGet() {
-        Item tempItem1 = new Item(mouseSlot.getItem());
+        Item tempItem1 = mouseSlot.getItem().clone();
         mouseSlot.decreseAmount();
         if(mouseSlot.getItem()==null){
             mouseSlot.switchItem(inventory.getItem(tempItem1));

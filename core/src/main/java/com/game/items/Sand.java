@@ -7,10 +7,10 @@ import com.game.UIs.TypeToString;
 public class Sand extends Item {
     public Sand(){
         super();
-        this.name = TypeToString.get(TypeToString.Dictionary.Sand);
         this.sprite =  new Sprite(new Texture("items/sand.png"));
         this.amount = 0;
     }
+    @Override
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Sand);}
     public Sand(int amount){
         this();
@@ -20,5 +20,6 @@ public class Sand extends Item {
     public Sand(Item item) {
         super(item);
     }
+    public Item clone(){return new Sand(this);};
 
 }

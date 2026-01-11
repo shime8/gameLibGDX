@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.game.UIs.TypeToString;
 import com.game.items.Item;
+import com.game.items.NewItem;
 
 import java.util.Objects;
 
@@ -19,7 +20,6 @@ public class Chest extends TileEntity implements HasInventory{
     public Chest(){
         super();
         sprite = new Sprite(new Texture("tiles/chest.png") );
-        name = TypeToString.get(TypeToString.Dictionary.Chest);
         this.size = 1;
         this.items = new Array<>(size);
         for (int i = 0; i < size; i++) items.add(null);
@@ -53,7 +53,7 @@ public class Chest extends TileEntity implements HasInventory{
     public Item getAnyItem() {
         for (int i = 0; i < items.size; i++) {
             if(items.get(i) != null){
-                Item item = new Item(items.get(i));
+                Item item = items.get(i).clone();
                 items.get(i).amount--;
                 if(items.get(i).amount == 0){items.set(i,null);}
                 item.amount = 1;
@@ -67,7 +67,7 @@ public class Chest extends TileEntity implements HasInventory{
     public boolean addItem(Item item) {
         boolean added = false;
         for (int i = 0; i < items.size; i++) {
-            if(items.get(i) != null && Objects.equals(items.get(i).name, item.name)){
+            if(items.get(i) != null && Objects.equals(items.get(i).getname(), item.getname())){
                 Item temp = items.get(i);
                 temp.amount += item.amount;
                 if(temp.amount<=temp.StackSize) {
@@ -109,6 +109,15 @@ public class Chest extends TileEntity implements HasInventory{
     @Override
     public float getSpriteY(){
         return y+0.6f;
+    }
+
+    @Override
+    public Array<Item> ItemsOnBreak() {
+        if(items!=null) {
+            return items;
+        }else{
+            return null;
+        }
     }
 
 }

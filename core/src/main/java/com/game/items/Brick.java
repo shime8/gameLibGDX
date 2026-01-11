@@ -7,10 +7,10 @@ import com.game.UIs.TypeToString;
 public class Brick extends Item {
     public Brick(){
         super();
-        this.name = TypeToString.get(TypeToString.Dictionary.Brick);
         this.sprite =  new Sprite(new Texture("items/brick.png"));
         this.amount = 0;
     }
+    @Override
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Brick);}
     public Brick(int amount){
         this();
@@ -20,5 +20,5 @@ public class Brick extends Item {
     public Brick(Item item) {
         super(item);
     }
-
+    public Item clone(){return new Brick(this);};
 }

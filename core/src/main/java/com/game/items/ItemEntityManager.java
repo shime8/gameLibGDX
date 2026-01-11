@@ -42,7 +42,7 @@ public class ItemEntityManager {
         addItemEntity(itemEntity);
     }
 
-    public void render(SpriteBatch batch){
+    public void renderOnGround(SpriteBatch batch){
         for (Array<ItemEntity> itemEntityArray : itemEntityMap.values()) {
             for (ItemEntity itemEntity : itemEntityArray) {
                 itemEntity.render(batch);

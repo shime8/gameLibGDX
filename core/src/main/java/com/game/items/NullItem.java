@@ -8,10 +8,10 @@ public class NullItem extends Item{
 
     public NullItem(){
         super();
-        this.name = TypeToString.get(TypeToString.Dictionary.NullItem);
         this.sprite =  new Sprite(new Texture("items/nullitem.png"));
         this.amount = 0;
     }
+    @Override
     public String getname(){return TypeToString.get(TypeToString.Dictionary.NullItem);}
     public NullItem(int amount){
         this();
@@ -22,4 +22,5 @@ public class NullItem extends Item{
     public NullItem(Item item) {
         super(item);
     }
+    public Item clone(){return new NullItem(this);};
 }

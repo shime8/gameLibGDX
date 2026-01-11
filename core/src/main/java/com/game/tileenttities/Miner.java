@@ -3,8 +3,11 @@ package com.game.tileenttities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.game.UIs.TypeToString;
+import com.game.items.Gear;
 import com.game.items.Item;
+import com.game.items.NewItem;
 import com.game.items.Sand;
 
 import static com.game.main.Main.tileEntityManager;
@@ -17,7 +20,6 @@ public class Miner extends TileEntity implements HasInventory{
     public Miner(){
         super();
         sprite = new Sprite(new Texture("tiles/Miner.png") );
-        name = TypeToString.get(TypeToString.Dictionary.Miner);
         accumulator = 0f;
         //speed = 1f;
     }
@@ -68,7 +70,7 @@ public class Miner extends TileEntity implements HasInventory{
     @Override
     public Item getAnyItem() {
         if(item!=null && item.amount>0){
-            Item item = new Item(this.item);
+            Item item = this.item.clone();
             this.item.amount--;
             item.amount = 1;
             return item;
@@ -85,7 +87,7 @@ public class Miner extends TileEntity implements HasInventory{
             item.amount += 1;
         }else{
             if(minee != null) {
-                item = new Item(1, minee.clone());
+                item = new NewItem(1, minee.clone());
             }else{
                 item = new Sand(1);
             }
@@ -93,4 +95,10 @@ public class Miner extends TileEntity implements HasInventory{
     }
 
     public float getSpriteY() {return y+0.9f;}
+    @Override
+    public Array<Item> ItemsOnBreak() {
+        Array<Item> items = new Array<>();
+        items.add(item);
+        return items;
+    }
 }

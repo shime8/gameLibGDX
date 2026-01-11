@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game.items.Item;
+import com.game.items.NewItem;
 import com.game.tileenttities.Directional;
 import com.game.world.worldManager;
 
@@ -32,7 +33,7 @@ public class MouseSlot {
             if(this.item==null){
                 return null;
             }else{
-                Item temp = new Item(this.item);
+                Item temp = this.item.clone();
                 this.item = null;
                 return temp;
             }
@@ -42,8 +43,8 @@ public class MouseSlot {
                 setDirection();
                 return null;
             }else{
-                Item temp = new Item(this.item);
-                if(Objects.equals(this.item.name, item.name)) {
+                Item temp = this.item.clone();
+                if(Objects.equals(this.item.getname(), item.getname())) {
                     temp.amount += item.amount;
                     this.item = null;
                 }else{

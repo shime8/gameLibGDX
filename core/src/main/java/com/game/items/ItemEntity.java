@@ -16,7 +16,7 @@ public class ItemEntity {
     public Vector2 direction;
 //    public BitmapFont font;
     public ItemEntity(Item item, float worldX, float worldY){
-        this.item =new Item(item);
+        this.item =item.clone();
         this.item.sprite = new Sprite(item.sprite);
         this.worldX = worldX;
         this.worldY = worldY;
@@ -27,7 +27,7 @@ public class ItemEntity {
 //        font.getData().setScale(0.1f);
     }
     public ItemEntity(ItemEntity itemEntity){
-        this.item = new Item(itemEntity.item);
+        this.item = itemEntity.item.clone();
         this.item.sprite = new Sprite(itemEntity.item.sprite);
         this.worldX = itemEntity.worldX;
         this.worldY = itemEntity.worldY;
@@ -43,6 +43,7 @@ public class ItemEntity {
         if(this.item != null){
             return this.item.getname();
         }else{
+            System.out.println("SumtingWentWong itemEntity");
             return "NameNotSet";
         }
     }

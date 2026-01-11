@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.game.items.ItemEntity;
 
 import java.util.Comparator;
 
+import static com.game.main.Main.itemEntityManager;
 import static com.game.main.Main.worldManager;
 
 public class TileEntityManager {
@@ -52,12 +54,33 @@ public class TileEntityManager {
 //            GridPoint2 point = entry.key;
             TileEntity tile = entry.value;
             if(!PlayerRendered && tile.getSpriteY()+0.6f<worldManager.player.y){
+                renderItemsOnBelts(batch,true);
                 worldManager.player.draw(batch);
                 PlayerRendered = true;
+                tile.render(batch);
+
+            }else{
+                tile.render(batch);
             }
-            tile.render(batch);
+
+
         }
-        if(!PlayerRendered){worldManager.player.draw(batch);}
+        if(!PlayerRendered){
+            renderItemsOnBelts(batch,true);
+            worldManager.player.draw(batch);
+        }
+    }
+    public void renderItemsOnBelts(SpriteBatch batch, boolean UpDirection){
+        for (TileEntity tileEntity : tileEntityMap.values()) {
+            if(tileEntity instanceof Belt b && itemEntityManager.getItemEntityList(b.x, b.y)!=null ){
+                if (UpDirection ? b.y >= worldManager.player.y-1 : b.y < worldManager.player.y+1) {
+                    for (ItemEntity ie : itemEntityManager.getItemEntityList(b.x, b.y)) {
+                        if(UpDirection || ie.worldY <= worldManager.player.y-0.5f)ie.render(batch);
+                    }
+                }
+
+            }
+        }
     }
     public void shapeRender(ShapeRenderer shapeR) {
         for (TileEntity tileEntity : tileEntityMap.values()) {

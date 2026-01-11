@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.game.UIs.TypeToString;
 import com.game.items.Gear;
 import com.game.items.Item;
+import com.game.items.NewItem;
 import com.game.mechanics.Recipe;
 
 import java.util.Objects;
@@ -45,7 +46,6 @@ public class Assembler extends TileEntity implements CanCraft{
     public Assembler(){
         super();
         sprite = new Sprite(new Texture("tiles/assembler.png") );
-        name = TypeToString.get(TypeToString.Dictionary.Assembler);
         speed = 1f;
         Array<Item> input = new Array<>();
         Array<Item> output = new Array<>();
@@ -137,7 +137,7 @@ public class Assembler extends TileEntity implements CanCraft{
         if(itemsOut != null){
             for (int i = 0; i < itemsOut.size; i++) {
                 if (itemsOut.get(i) != null && itemsOut.get(i).amount != 0) {
-                    Item item = new Item(itemsOut.get(i));
+                    Item item = itemsOut.get(i).clone();
                     itemsOut.get(i).amount--;
 //                    if (itemsOut.get(i).amount == 0) {
 //                        itemsOut.set(i, null);
@@ -154,7 +154,7 @@ public class Assembler extends TileEntity implements CanCraft{
     public boolean addItem(Item item) {
         if(itemsIn != null){
             for (int i = 0; i < itemsIn.size; i++) {
-                if (itemsIn.get(i) != null && Objects.equals(itemsIn.get(i).name, item.name)) {
+                if (itemsIn.get(i) != null && Objects.equals(itemsIn.get(i).getname(), item.getname())) {
                     if(itemsIn.get(i).amount>=maxIitems){
                         return false;
                     }
@@ -230,12 +230,12 @@ public class Assembler extends TileEntity implements CanCraft{
     public Recipe cloneRecipe(Recipe recipe){
         Array<Item> clonedIn = new Array<>(recipe.itemsCIn.size);
         for (Item i : recipe.itemsCIn) {
-            clonedIn.add(new Item(i));
+            clonedIn.add(i.clone());
         }
 
         Array<Item> clonedOut = new Array<>(recipe.itemsCOut.size);
         for (Item i : recipe.itemsCOut) {
-            clonedOut.add(new Item(i));
+            clonedOut.add(i.clone());
         }
         return new Recipe(clonedIn, clonedOut, recipe.time);
     }
@@ -274,5 +274,23 @@ public class Assembler extends TileEntity implements CanCraft{
     @Override
     public float getSpriteY() {
         return y+1;
+    }
+
+    @Override
+    public Array<Item> ItemsOnBreak() {
+        Array<Item> items = new Array<>();
+        if(itemsIn!=null){
+            for (Item item : itemsIn) {
+                if (item.amount > 0 && !item.getname().equals(TypeToString.get(TypeToString.Dictionary.NullItem)))
+                    items.add(item);
+            }
+        }
+        if(itemsOut!=null){
+            for (Item item : itemsOut) {
+                if (item.amount > 0 && !item.getname().equals(TypeToString.get(TypeToString.Dictionary.NullItem)))
+                    items.add(item);
+            }
+        }
+        return items;
     }
 }

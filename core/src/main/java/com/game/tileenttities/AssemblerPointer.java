@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.game.items.Item;
 
 public class AssemblerPointer extends TileEntity implements CanCraft,CantPickup {
@@ -28,7 +29,9 @@ public class AssemblerPointer extends TileEntity implements CanCraft,CantPickup 
         super(other);
         this.assembler = other.assembler;
     }
-
+    public String getname(){
+            return "AssemblerPointer";
+    }
     @Override
     public TileEntity clone() {
         return new AssemblerPointer(this);
@@ -49,6 +52,12 @@ public class AssemblerPointer extends TileEntity implements CanCraft,CantPickup 
     public boolean addItem(Item item) {
         return assembler.addItem(item);
     }
+
+    @Override
+    public Array<Item> ItemsOnBreak() {
+        return assembler.ItemsOnBreak();
+    }
+
     public void render(SpriteBatch batch){
 
     }
