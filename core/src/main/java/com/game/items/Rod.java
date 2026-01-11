@@ -6,10 +6,12 @@ import com.game.UIs.TypeToString;
 
 public class Rod extends Item{
     public Rod(){
+        super();
         this.name = TypeToString.get(TypeToString.Dictionary.Rod);
         this.sprite =  new Sprite(new Texture("items/MetalRod.png"));
         this.amount = 0;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Rod);}
     public Rod(int amount){
         this();
         this.amount = amount;

@@ -6,10 +6,12 @@ import com.game.UIs.TypeToString;
 
 public class Brick extends Item {
     public Brick(){
+        super();
         this.name = TypeToString.get(TypeToString.Dictionary.Brick);
         this.sprite =  new Sprite(new Texture("items/brick.png"));
         this.amount = 0;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Brick);}
     public Brick(int amount){
         this();
         this.amount = amount;

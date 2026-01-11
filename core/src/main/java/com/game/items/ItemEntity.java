@@ -39,6 +39,13 @@ public class ItemEntity {
 //        font.getData().setScale(0.1f);
         update();
     }
+    public String getname(){
+        if(this.item != null){
+            return this.item.getname();
+        }else{
+            return "NameNotSet";
+        }
+    }
     public void update(){
         bounds = new Rectangle(worldX-size/2,worldY-size/2,size,size);
         if (item.sprite != null) {

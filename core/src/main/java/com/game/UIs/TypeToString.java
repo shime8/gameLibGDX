@@ -78,11 +78,13 @@ public class TypeToString {
         Assembler,
         Belt,
         Chest,
+        Silo,
         Creator,
         Deleter,
         Inserter,
         LongInserter,
-        Miner
+        Miner,
+        LightHouse
     }
 }
 

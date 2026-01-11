@@ -240,9 +240,9 @@ public class worldManager {
 
         Rectangle rect = null;
         if(mouseSlot.getItem() != null && mouseSlot.getItem().Tile != null && GhostTE!=null){
-            rect = GhostTE.getBounds();
+            rect = GhostTE.getHighlightBounds();
         }else if(tileEntityManager.getEntityAt(tileX,tileY)!=null){
-            rect = tileEntityManager.getEntityAt(tileX,tileY).getBounds();
+            rect = tileEntityManager.getEntityAt(tileX,tileY).getHighlightBounds();
         }
 
 

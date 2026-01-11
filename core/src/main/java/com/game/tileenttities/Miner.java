@@ -39,6 +39,7 @@ public class Miner extends TileEntity implements HasInventory{
         this.minee = other.minee;
         this.accumulator = 0f;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Miner);}
 
     @Override
     public TileEntity clone() {
@@ -80,7 +81,7 @@ public class Miner extends TileEntity implements HasInventory{
         return false;
     }
     public void makeItem(){
-        if(item != null && item.amount<5){
+        if(item != null && item.amount<item.StackSize){
             item.amount += 1;
         }else{
             if(minee != null) {

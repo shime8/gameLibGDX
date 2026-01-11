@@ -11,6 +11,7 @@ public class ClayOre extends TileEntity implements Mineable, CantPickup, CantPla
         sprite = new Sprite(new Texture("tiles/Clay.png") );
         name = TypeToString.get(TypeToString.Dictionary.Clay);
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Clay);}
     public ClayOre(int x, int y){
         this();
         set(x,y);

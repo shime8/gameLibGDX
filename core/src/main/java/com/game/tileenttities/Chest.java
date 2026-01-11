@@ -13,21 +13,21 @@ import com.game.items.Item;
 import java.util.Objects;
 
 public class Chest extends TileEntity implements HasInventory{
-    public int width, height;
+    public int size;
     public Array<Item> items;
 //    public BitmapFont font;
     public Chest(){
         super();
-        sprite = new Sprite(new Texture("tiles/silo.png") );
+        sprite = new Sprite(new Texture("tiles/chest.png") );
         name = TypeToString.get(TypeToString.Dictionary.Chest);
-        this.width = 2;
-        this.height = 2;
-        this.items = new Array<>(width * height);
-        for (int i = 0; i < width * height; i++) items.add(null);
+        this.size = 1;
+        this.items = new Array<>(size);
+        for (int i = 0; i < size; i++) items.add(null);
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Chest);}
     public Chest(int x, int y) {
         this();
         set(x,y);
@@ -35,8 +35,7 @@ public class Chest extends TileEntity implements HasInventory{
     }
     public Chest(Chest other){
         super(other);
-        this.width = other.width;
-        this.height = other.height;
+        this.size = other.size;
         this.items = new Array<>(other.items);
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
@@ -71,9 +70,14 @@ public class Chest extends TileEntity implements HasInventory{
             if(items.get(i) != null && Objects.equals(items.get(i).name, item.name)){
                 Item temp = items.get(i);
                 temp.amount += item.amount;
-                items.set(i, temp);
-                added = true;
-                return true;
+                if(temp.amount<=temp.StackSize) {
+                    items.set(i, temp);
+                    added = true;
+                    return true;
+                }else{
+                    item.amount = temp.amount - temp.StackSize;
+                    temp.amount = temp.StackSize;
+                }
             }
         }
         if(!added) {
@@ -100,11 +104,11 @@ public class Chest extends TileEntity implements HasInventory{
         items.set(index, item);
     }
     public int getSize() {
-        return width * height;
+        return size;
+    }
+    @Override
+    public float getSpriteY(){
+        return y+0.6f;
     }
 
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle(this.x, this.y, 1, 4);
-    }
 }

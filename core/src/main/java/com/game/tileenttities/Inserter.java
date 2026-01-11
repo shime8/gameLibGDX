@@ -30,6 +30,7 @@ public class Inserter extends TileEntity implements Directional{
         name = TypeToString.get(TypeToString.Dictionary.Inserter);
         speed = 2f;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Inserter);}
     public Inserter(int x, int y) {
         this();
         set(x,y);

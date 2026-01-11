@@ -57,6 +57,7 @@ public class AssemblerPointer extends TileEntity implements CanCraft,CantPickup 
     public Rectangle getBounds() {
         return assembler.getBounds();
     }
+    public Rectangle getHighlightBounds() {return assembler.getHighlightBounds();}
 
     @Override
     public TileEntity pickupee(){

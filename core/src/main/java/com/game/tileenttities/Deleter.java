@@ -14,6 +14,7 @@ public class Deleter extends TileEntity implements HasInventory{
         sprite = new Sprite(new Texture("tiles/deleter.png") );
         name = TypeToString.get(TypeToString.Dictionary.Deleter);
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Deleter);}
     public Deleter(int x, int y) {
         this();
         set(x,y);

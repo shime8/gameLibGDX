@@ -1,5 +1,6 @@
 package com.game.tileenttities;
 
 public interface CanCraft extends HasInventory{
-    int maxIOitems = 5;
+    int defaultmaxIitems = 5;
+    int defaultmaxOitems = 5;
 }

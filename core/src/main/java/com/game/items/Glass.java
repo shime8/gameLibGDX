@@ -6,10 +6,12 @@ import com.game.UIs.TypeToString;
 
 public class Glass extends Item {
     public Glass(){
+        super();
         this.name = TypeToString.get(TypeToString.Dictionary.Glass);
         this.sprite =  new Sprite(new Texture("items/glass.png"));
         this.amount = 0;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Glass);}
     public Glass(int amount){
         this();
         this.amount = amount;

@@ -15,6 +15,7 @@ public class Creator extends TileEntity implements HasInventory{
         sprite = new Sprite(new Texture("tiles/InfiniMiner.png") );
         name = TypeToString.get(TypeToString.Dictionary.Creator);
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Creator);}
     public Creator(int x, int y) {
         this();
         set(x,y);

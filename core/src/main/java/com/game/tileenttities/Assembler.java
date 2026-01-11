@@ -26,6 +26,8 @@ public class Assembler extends TileEntity implements CanCraft{
     public BitmapFont font;
     public float speed;
     public float accumulator;
+    int maxIitems;
+    int maxOitems;
 
     public void SetCrafting(Array<Item> itemsIn, Array<Item> itemsOut){
 
@@ -47,12 +49,16 @@ public class Assembler extends TileEntity implements CanCraft{
         speed = 1f;
         Array<Item> input = new Array<>();
         Array<Item> output = new Array<>();
+        maxIitems = defaultmaxIitems;
+        maxOitems = defaultmaxOitems;
 
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Assembler);}
     @Override
     public Rectangle getBounds(){
-        return new Rectangle(this.x-1,this.y-1,3,3);
+        return new Rectangle(this.x-1,this.y-1,3,3.25f);
     }
+    public Rectangle getHighlightBounds() {return new Rectangle(this.x-1, this.y-1, 3, 3);}
     public Assembler(int x, int y) {
         this();
         set(x,y);
@@ -68,8 +74,11 @@ public class Assembler extends TileEntity implements CanCraft{
         font = new BitmapFont();
         font.setColor(Color.BLACK);
         font.getData().setScale(0.05f);
+        font.setUseIntegerPositions(false);
         this.speed = other.speed;
         this.accumulator = 0f;
+        maxIitems = defaultmaxIitems;
+        maxOitems = defaultmaxOitems;
     }
 
     @Override
@@ -94,7 +103,7 @@ public class Assembler extends TileEntity implements CanCraft{
 
     public boolean canICraft(){
         if(itemsIn != null && itemsOut != null){
-            if(itemsOut.first() != null && itemsOut.first().amount>=maxIOitems){
+            if(itemsOut.first() != null && itemsOut.first().amount>=maxOitems){
                 return false;
             }
 
@@ -146,7 +155,7 @@ public class Assembler extends TileEntity implements CanCraft{
         if(itemsIn != null){
             for (int i = 0; i < itemsIn.size; i++) {
                 if (itemsIn.get(i) != null && Objects.equals(itemsIn.get(i).name, item.name)) {
-                    if(itemsIn.get(i).amount>=maxIOitems){
+                    if(itemsIn.get(i).amount>=maxIitems){
                         return false;
                     }
                     Item temp = itemsIn.get(i);
@@ -174,9 +183,11 @@ public class Assembler extends TileEntity implements CanCraft{
             craft.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
             craft.draw(batch);
         }
-        //if(itemsIn != null)for(Item i : itemsIn){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y);}}
-        //if(recipe != null){font.draw(batch,String.valueOf(recipe.itemsCIn.get(0).amount), x, y-1);}
-        //if(recipe != null){font.draw(batch,String.valueOf(recipe.itemsCOut.get(0).amount), x, y-2);}
+//        float ydiff = 0;
+//        if(itemsIn != null)for(Item i : itemsIn){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y-2-ydiff);ydiff+=0.5f;}}
+//        if(itemsOut != null)for(Item i : itemsOut){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y-2-ydiff);ydiff+=0.5f;}}
+//        if(recipe != null){font.draw(batch,String.valueOf(recipe.itemsCIn.get(0).amount), x, y-2-ydiff);ydiff+=0.5f;}
+//        if(recipe != null){font.draw(batch,String.valueOf(recipe.itemsCOut.get(0).amount), x, y-2-ydiff);}
 
     }
 
@@ -207,7 +218,13 @@ public class Assembler extends TileEntity implements CanCraft{
         this.recipe = recipe;
         if(recipe!=null) {
             Recipe cloned = cloneRecipe(this.recipe);
+            for(Item item : cloned.itemsCIn){
+                if(item.amount*2>maxIitems){
+                    maxIitems = item.amount*2;
+                }
+            }
             SetCrafting(cloned.itemsCIn, cloned.itemsCOut);
+
         }
     }
     public Recipe cloneRecipe(Recipe recipe){
@@ -247,7 +264,7 @@ public class Assembler extends TileEntity implements CanCraft{
     }
 
     public float craftProgress(){
-        if(itemsOut.first().amount>=maxIOitems){
+        if(itemsOut.first().amount>=maxOitems){
             return 1;
         }else {
             return Math.min(1f, Math.max(0f, 1f - ((accumulator * speed) / recipe.time)));

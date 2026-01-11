@@ -7,10 +7,12 @@ import com.game.UIs.TypeToString;
 public class NullItem extends Item{
 
     public NullItem(){
+        super();
         this.name = TypeToString.get(TypeToString.Dictionary.NullItem);
         this.sprite =  new Sprite(new Texture("items/nullitem.png"));
         this.amount = 0;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.NullItem);}
     public NullItem(int amount){
         this();
         this.amount = amount;

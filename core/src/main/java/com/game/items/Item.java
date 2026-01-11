@@ -9,16 +9,26 @@ public class Item {
     public int amount;
     public Sprite sprite;
     public TileEntity Tile;
-
+    public int StackSize;
     public Item(){
+        StackSize = 50;
     }
     public Item(int amount, TileEntity Tile){
+        this();
             this.amount = amount;
             this.Tile = Tile;
             this.sprite = Tile.sprite;
             this.name = Tile.name;
     }
+    public String getname(){
+        if(this.Tile != null){
+            return this.Tile.getname();
+        }else{
+            return "NameNotSet";
+        }
+    }
     public Item(Item item){
+        this();
         this.amount = item.amount;
         this.Tile = item.Tile;
         if(item.Tile == null){

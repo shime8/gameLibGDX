@@ -173,25 +173,7 @@ public class UIManager {
     }
 
     private void createChestUI() {
-        chestUI = new Table();
-
-        Label title = new Label(TypeToString.get(TypeToString.Dictionary.Chest), skin);
-        chestUI.add(title).colspan(4).padBottom(10);
-        chestUI.row();
-
-        // Create grid
-        for (int y = 0; y < 1; y++) {
-            for (int x = 0; x < 4; x++) {
-                int index = y * 4 + x;
-                InventorySlot slot = new InventorySlot(skin);
-
-                float slotSize = Gdx.graphics.getHeight() * 0.08f;
-                float slotPadding = slotSize * 0.1f;
-
-                chestUI.add(slot).size(slotSize, slotSize).pad(slotPadding);
-            }
-            chestUI.row();
-        }
+        //no longer needed but keeping it for future
     }
 
     private void createAssemblerUI() {
@@ -230,45 +212,58 @@ public class UIManager {
     }
 
     public void openChest(Chest chest) {
+        chestUI = new Table();
+
+        Label title = new Label(TypeToString.get(TypeToString.Dictionary.Chest), skin);
+        chestUI.add(title).colspan(4).padBottom(10);
+        chestUI.row();
         currentChest = chest;
         inventoryOpen = true;
         chestOpen = true;
-        // Update chest UI with click listeners
-        int i = 0;
-        for (Actor actor : chestUI.getChildren()) {
-            if (actor instanceof InventorySlot && i > 0) { // Skip the title label
-                int index = i - 1; // Adjust for title
-                if (index < currentChest.getSize()) {
-                    actor.clearListeners();
-                    actor.addListener(new ClickListener() {
+        // Create grid
+        int index = 0;
+        for (int y = 0; y < (currentChest.getSize()/4)+1; y++) {
+            for (int x = 0; x < 4; x++) {
+                index = y*4 + x;
+                if(index < currentChest.getSize()){
+                    InventorySlot slot = new InventorySlot(skin);
+                    float slotSize = Gdx.graphics.getHeight() * 0.08f;
+                    float slotPadding = slotSize * 0.1f;
+                    slot.clearListeners();
+                    int finalIndex = index;
+                    slot.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float px, float py) {
-                            currentChest.setItem(index, mouseSlot.switchItem(currentChest.getItem(index)));
+                            currentChest.setItem(finalIndex, mouseSlot.switchItem(currentChest.getItem(finalIndex)));
                             refreshChestUI();
                         }
                     });
-                    actor.addListener(new InputListener() {
+                    slot.addListener(new InputListener() {
                         @Override
                         public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                            Item item = currentChest.getItem(index);
+                            Item item = currentChest.getItem(finalIndex);
                             if (item != null) {
                                 hoveredItemName = item.name;
                             }
                         }
+
                         @Override
                         public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                             hoveredItemName = null;
                         }
+
                         @Override
                         public boolean mouseMoved(InputEvent event, float x, float y) {
                             tooltipPosition.set(Gdx.input.getX(), Gdx.input.getY());
                             return false;
                         }
                     });
+                    chestUI.add(slot).size(slotSize, slotSize).pad(slotPadding);
                 }
             }
-            i++;
+            chestUI.row();
         }
+
         InventoryContainer.add(chestUI);
         InventoryContainer.setVisible(true);
         refreshInventoryUI();
@@ -281,6 +276,7 @@ public class UIManager {
         currentChest = null;
         InventoryContainer.setVisible(false);
         InventoryContainer.removeActor(chestUI);
+        chestUI = null;
         hoveredItemName = null;
 
     }
@@ -469,7 +465,7 @@ public class UIManager {
             cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
-        for (Cell<?> cell : chestUI.getCells()) {
+        if(chestUI!=null)for (Cell<?> cell : chestUI.getCells()) {
             cell.size(slotSize, slotSize).pad(slotPadding);
         }
 
@@ -498,7 +494,7 @@ public class UIManager {
         }
 
         inventoryUI.invalidate();
-        chestUI.invalidate();
+        if(chestUI!=null)chestUI.invalidate();
         assemblerUI.invalidate();
     }
 

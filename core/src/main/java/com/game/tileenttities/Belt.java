@@ -30,12 +30,10 @@ public class Belt extends TileEntity implements Directional{
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.Belt);}
     public Belt(int x, int y) {
         this();
         set(x,y);
-        sprite.setSize(bounds.width, bounds.height);
-        sprite.setOriginCenter();
-        sprite.setPosition(x, y);
 
     }
     public Belt(Belt other){

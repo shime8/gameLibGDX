@@ -30,6 +30,7 @@ public abstract class TileEntity {
         this.sprite = new Sprite(other.sprite);
         this.name = other.name;
     }
+    abstract public String getname();
     public abstract TileEntity clone();
     public abstract void update(float delta);
     public void placingUpdate(){};
@@ -59,9 +60,10 @@ public abstract class TileEntity {
     public Rectangle getBounds() {
         return new Rectangle(this.x, this.y, 1, 1);
     }
+    public Rectangle getHighlightBounds(){ return getBounds();}
     public Rectangle getCollisionBox() {return new Rectangle(this.x, this.y, 1, 1);}
     public float getSpriteY(){
-        return y;
+        return y+0.2f;
     }
     public void placeOtherTiles(){
 

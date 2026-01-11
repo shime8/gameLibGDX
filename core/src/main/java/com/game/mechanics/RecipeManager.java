@@ -78,6 +78,7 @@ public class RecipeManager {
         itemMap.put("brick", new Brick(0));
         itemMap.put("sand", new Sand(0));
         itemMap.put("glass", new Glass(0));
+        itemMap.put("silo", new Item(0, new Silo()));
         Item item = itemMap.get(string);
 
         if (item == null) {

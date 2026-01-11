@@ -22,3 +22,5 @@ Deleter=Deleter
 Inserter=Inserter
 LongInserter=LongInserter
 Miner=Miner
+Silo=Silo
+LightHouse=LightHouse

@@ -12,10 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.game.UIs.MainMenu;
 import com.game.UIs.TypeToString;
-import com.game.items.Gear;
-import com.game.items.Item;
-import com.game.items.ItemEntity;
-import com.game.items.ItemEntityManager;
+import com.game.items.*;
 import com.game.mechanics.RecipeManager;
 import com.game.player.Player;
 import com.game.tileenttities.*;
@@ -80,11 +77,20 @@ public class Main extends ApplicationAdapter {
         tileEntityManager.addEntity(new ClayOre(20, 45));
         tileEntityManager.addEntity(new ClayOre(20, 46));
 
-        uiManager.inventory.setItem(0, new Item(100, new Chest()));
-        uiManager.inventory.setItem(1, new Item(100, new Belt()));
-        uiManager.inventory.setItem(2, new Item(100, new Inserter()));
-        uiManager.inventory.setItem(3, new Gear(100));
-        uiManager.inventory.setItem(4, new Item(100, new Assembler()));
+        Array<Item> LHrecipe = new Array<>();
+        LHrecipe.add(new Brick(20));
+        LHrecipe.add(new Glass(20));
+        LHrecipe.add(new Item(5, new Assembler()));
+        BuildPlace LHBP = new BuildPlace(20,54);
+        LHBP.setBuild(new LightHouse(20,54));
+        LHBP.setRecipe(LHrecipe);
+        tileEntityManager.addEntity(LHBP);
+        //for testing
+        uiManager.inventory.setItem(0, new Item(50, new Chest()));
+        uiManager.inventory.setItem(1, new Item(50, new Belt()));
+        uiManager.inventory.setItem(2, new Item(50, new Inserter()));
+        uiManager.inventory.setItem(3, new Gear(50));
+        uiManager.inventory.setItem(4, new Item(50, new Assembler()));
         uiManager.inventory.setItem(5, new Item(50, new Creator()));
         uiManager.inventory.setItem(6, new Item(50, new Deleter()));
         uiManager.inventory.setItem(7, new Item(50, new Miner()));

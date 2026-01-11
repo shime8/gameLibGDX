@@ -12,6 +12,7 @@ public class LongInserter extends Inserter{
         name = TypeToString.get(TypeToString.Dictionary.LongInserter);
         speed = 2f;
     }
+    public String getname(){return TypeToString.get(TypeToString.Dictionary.LongInserter);}
     public LongInserter(int x, int y) {
         this();
         set(x,y);
