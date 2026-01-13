@@ -17,6 +17,7 @@ public class Miner extends TileEntity implements HasInventory{
     public TileEntity minee;
     Item item;
     float accumulator;
+    float AnimAccumulator;
     public Miner(){
         super();
         sprite = new Sprite(new Texture("tiles/Miner.png") );
@@ -40,6 +41,7 @@ public class Miner extends TileEntity implements HasInventory{
         super(other);
         this.minee = other.minee;
         this.accumulator = 0f;
+        this.AnimAccumulator = 0f;
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Miner);}
 
@@ -51,12 +53,20 @@ public class Miner extends TileEntity implements HasInventory{
     @Override
     public void update(float delta) {
         //if(minee != null){
-            accumulator += delta;
-            if(accumulator > 1f){
-                makeItem();
-                accumulator = 0f;
-            }
+        accumulator += delta;
+        if(accumulator > 1f){
+            makeItem();
+            accumulator = 0f;
+        }
         //}
+        AnimAccumulator += delta;
+        while(AnimAccumulator > 0.628f){
+            AnimAccumulator -= 0.628f;
+        }
+        if(item==null || item.amount<item.StackSize/10f){
+            sprite.setScale(1,1+0.05f*(float)(Math.sin(AnimAccumulator*60f)));
+        }
+
     }
 
     @Override
@@ -83,9 +93,10 @@ public class Miner extends TileEntity implements HasInventory{
         return false;
     }
     public void makeItem(){
-        if(item != null && item.amount<item.StackSize){
+        if(item != null && item.amount<item.StackSize/10f){
             item.amount += 1;
-        }else{
+        }
+        if(item == null){
             if(minee != null) {
                 item = new NewItem(1, minee.clone());
             }else{
