@@ -64,7 +64,6 @@ public class Assembler extends TileEntity implements CanCraft{
         CraftIn = new Array<>();
         maxIitems = defaultmaxIitems;
         maxOitems = defaultmaxOitems;
-
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.Assembler);}
     @Override
@@ -86,7 +85,7 @@ public class Assembler extends TileEntity implements CanCraft{
         this.setRecipe(other.recipe);
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-        font.getData().setScale(0.05f);
+        font.getData().setScale(0.02f);
         font.setUseIntegerPositions(false);
         this.speed = other.speed;
         this.accumulator = 0f;
@@ -209,8 +208,9 @@ public class Assembler extends TileEntity implements CanCraft{
                 }else{
                     CraftIn.get(i).setColor(1.0f, 1.0f, 1.0f, 1.0f);
                 }
-                CraftIn.get(i).setBounds(x + 0.2f - ((CraftIn.size-1)*0.35f) + i*0.7f, y + 0.9f, 0.6f, 0.6f);
+                CraftIn.get(i).setBounds(x + 0.2f - ((CraftIn.size-1)*0.35f) + i*0.7f, y + 1f, 0.6f, 0.6f);
                 CraftIn.get(i).draw(batch);
+                font.draw(batch, ""+recipe.itemsCIn.get(i).amount,x + 0.7f - ((CraftIn.size-1)*0.35f) + i*0.7f, y + 1.2f);
             }
         }
 //        float ydiff = 0;
@@ -321,7 +321,6 @@ public class Assembler extends TileEntity implements CanCraft{
                     items.add(item);
             }
         }
-        System.out.println(items);
         return items;
     }
 }

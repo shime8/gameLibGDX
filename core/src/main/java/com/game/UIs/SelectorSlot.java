@@ -9,10 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.game.items.Item;
+import com.game.mechanics.Recipe;
 
 public class SelectorSlot extends Stack{
     public Image BGimage;
     public Image image;
+    public Recipe recipe;
 
     public SelectorSlot(Skin skin) {
         super();
@@ -30,5 +32,9 @@ public class SelectorSlot extends Stack{
             return;
         }
         image.setDrawable(new TextureRegionDrawable(item.sprite.getTexture()));  // item.icon
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

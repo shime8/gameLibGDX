@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -55,6 +56,7 @@ public class UIManager {
 //    public BitmapFont font;
     public BitmapFont tooltipFont;
     private String hoveredItemName = null;
+    private Recipe displayingRecipe = null;
     private Vector2 tooltipPosition = new Vector2();
 
     public UIManager() {
@@ -194,6 +196,7 @@ public class UIManager {
                     SelectorSlot slot = new SelectorSlot(skin);
                     Recipe recipe = recipeManager.getRecipe(index);
                     slot.setItem(recipe.itemsCOut.first());
+                    slot.setRecipe(recipe);
 
                     float slotSize = Gdx.graphics.getHeight() * 0.08f;
                     float slotPadding = slotSize * 0.1f;
@@ -316,11 +319,13 @@ public class UIManager {
                         Item item = recipe.itemsCOut.first();
                         if (item != null) {
                             hoveredItemName = item.getname();
+                            displayingRecipe = ((SelectorSlot) actor).recipe;
                         }
                     }
                     @Override
                     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                         hoveredItemName = null;
+                        displayingRecipe = null;
                     }
                     @Override
                     public boolean mouseMoved(InputEvent event, float x, float y) {
@@ -410,6 +415,7 @@ public class UIManager {
     }
     public void renderTooltip(SpriteBatch batch,Vector2 mousePos){
         if (hoveredItemName != null && inventoryOpen) {
+            float scale = Gdx.graphics.getHeight()/1080f;
             float tooltipX = mousePos.x + 15;
             float tooltipY = mousePos.y + 15;
             // Draw background for tooltip
@@ -429,6 +435,26 @@ public class UIManager {
 
             batch.begin();
             tooltipFont.draw(batch, hoveredItemName, tooltipX, tooltipY + layout.height);
+            if(assemblerOpen && displayingRecipe != null){
+                float slotSize= 80*scale;
+                float slotPadding = 20*scale;
+                batch.end();
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(0, 0, 0, 0.8f);
+                layout.setText(tooltipFont, hoveredItemName);
+                shapeRenderer.rect(tooltipX - padding, tooltipY - padding * 2 - slotSize - slotPadding,
+                    (slotSize+slotPadding)*displayingRecipe.itemsCIn.size + padding * 4, slotSize + slotPadding + padding);
+                shapeRenderer.end();
+                Gdx.gl.glDisable(GL20.GL_BLEND);
+
+                batch.begin();
+                for (int i = 0; i<displayingRecipe.itemsCIn.size; i++){
+                    batch.draw(displayingRecipe.itemsCIn.get(i).sprite.getTexture(), tooltipX + (i*(slotSize+slotPadding)), tooltipY - slotSize - padding, slotSize,slotSize);
+                    tooltipFont.draw(batch, ""+displayingRecipe.itemsCIn.get(i).amount, tooltipX + slotSize + (i*(slotSize+slotPadding)), tooltipY - (slotSize-10));
+                }
+            }
         }
     }
     private void handleInput() {
