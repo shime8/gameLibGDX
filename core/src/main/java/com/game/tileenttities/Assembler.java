@@ -29,7 +29,8 @@ public class Assembler extends TileEntity implements CanCraft{
     public float accumulator;
     int maxIitems;
     int maxOitems;
-
+    Sprite CraftOut;
+    Array<Sprite> CraftIn;
     public void SetCrafting(Array<Item> itemsIn, Array<Item> itemsOut){
 
         for (Item i : itemsIn) {
@@ -41,14 +42,23 @@ public class Assembler extends TileEntity implements CanCraft{
         this.itemsIn = itemsIn;
         this.itemsOut = itemsOut;
         accumulator = recipe.time/speed;
+        CraftIn = new Array<>();
+        for (Item i : itemsIn){
+            if (i.Tile != null) {
+                CraftIn.add(i.Tile.sprite);
+            }else{
+                CraftIn.add(i.sprite);
+            }
+        }
+        CraftOut = itemsOut.first().sprite;
+
     }
 
     public Assembler(){
         super();
         sprite = new Sprite(new Texture("tiles/assembler.png") );
         speed = 1f;
-        Array<Item> input = new Array<>();
-        Array<Item> output = new Array<>();
+        CraftIn = new Array<>();
         maxIitems = defaultmaxIitems;
         maxOitems = defaultmaxOitems;
 
@@ -79,6 +89,7 @@ public class Assembler extends TileEntity implements CanCraft{
         this.accumulator = 0f;
         maxIitems = defaultmaxIitems;
         maxOitems = defaultmaxOitems;
+        CraftIn = new Array<>();
     }
 
     @Override
@@ -177,11 +188,19 @@ public class Assembler extends TileEntity implements CanCraft{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
-        if(itemsOut!=null && itemsOut.first()!=null){
-            Sprite craft = itemsOut.first().sprite;
-            if(itemsOut.first().Tile != null){craft = itemsOut.first().Tile.sprite;}
-            craft.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
-            craft.draw(batch);
+        if(itemsOut!=null && itemsOut.first()!=null && itemsIn!=null && itemsIn.first()!=null){
+            if(itemsOut.first().Tile != null){CraftOut = itemsOut.first().Tile.sprite;}
+            CraftOut.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
+            CraftOut.draw(batch);
+            for(int i = 0; i<CraftIn.size; i++){
+                if(itemsIn.get(i).amount<recipe.itemsCIn.get(i).amount){
+                    CraftIn.get(i).setColor(1.0f, 0.1f, 0.1f, 1.0f);
+                }else{
+                    CraftIn.get(i).setColor(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                CraftIn.get(i).setBounds(x + 0.2f - ((CraftIn.size-1)*0.35f) + i*0.7f, y + 0.9f, 0.6f, 0.6f);
+                CraftIn.get(i).draw(batch);
+            }
         }
 //        float ydiff = 0;
 //        if(itemsIn != null)for(Item i : itemsIn){if(i != null){font.draw(batch,String.valueOf(i.amount), x, y-2-ydiff);ydiff+=0.5f;}}

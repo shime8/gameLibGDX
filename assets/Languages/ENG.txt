@@ -24,3 +24,4 @@ LongInserter=LongInserter
 Miner=Miner
 Silo=Silo
 LightHouse=LightHouse
+LangSwitch=Switch to PL

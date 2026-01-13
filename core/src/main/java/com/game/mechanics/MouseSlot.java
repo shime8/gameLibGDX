@@ -44,9 +44,15 @@ public class MouseSlot {
                 return null;
             }else{
                 Item temp = this.item.clone();
-                if(Objects.equals(this.item.getname(), item.getname())) {
+                if(Objects.equals(this.item.getname(), item.getname()) && (temp.amount!=temp.StackSize && item.amount!=item.StackSize) ) {
                     temp.amount += item.amount;
-                    this.item = null;
+                    if(temp.amount>temp.StackSize){
+                        this.item.amount = temp.amount - temp.StackSize;
+                        temp.amount = temp.StackSize;
+                    }else{
+                        this.item = null;
+                    }
+
                 }else{
                     this.item = item;
                     setDirection();

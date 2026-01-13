@@ -35,9 +35,11 @@ public class Main extends ApplicationAdapter {
     public static float unitScale = 1f / 32f;
     public static RecipeManager recipeManager;
     public static boolean stuffAdded = false;
+    public String Language;
     @Override
     public void create() {
         TypeToString.init("Languages/PL.txt");
+        Language = "PL";
         worldManager = new worldManager();
         player = new Player(30,30, unitScale);
         worldManager.player = player;
@@ -104,22 +106,43 @@ public class Main extends ApplicationAdapter {
             MainMenu.render();
             return; // Exit early
         }
-
-        String selection = MainMenu.wait_for_selection();
-        if (selection != null) {
-            switch (selection) {
-                case "PLAY":
-                    if(!stuffAdded)createGameparts();
-                    // Game plays
-                    break;
-                case "OPTIONS":
-                    // options
-                    return;
-                case "EXIT":
-                    Gdx.app.exit();
-                    return;
-            }
+        String selection = MainMenu.selectedOption;
+        if(selection==null){
+            MainMenu.reset();
+            return;
         }
+        switch (selection) {
+            case "PLAY":
+                if (!stuffAdded) createGameparts();
+                break;
+            case "OPTIONS":
+                System.out.println("hello");
+                MainMenu.reset();
+                MainMenu.createOptions();
+                // options
+                return;
+            case "BACK":
+                MainMenu.reset();
+                MainMenu.create();
+                // back to main menu
+                return;
+            case "LANG_SWITCH":
+                if (Language.equals("PL")) {
+                    TypeToString.init("Languages/ENG.txt");
+                    Language = "EN";
+                } else if (Language.equals("EN")) {
+                    TypeToString.init("Languages/PL.txt");
+                    Language = "PL";
+                }
+                MainMenu.reset();
+                MainMenu.createOptions();
+                // lang switch
+                return;
+            case "EXIT":
+                Gdx.app.exit();
+                return;
+        }
+
 
 
         //inputs and update

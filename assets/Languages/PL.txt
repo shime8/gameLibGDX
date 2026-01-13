@@ -24,3 +24,4 @@ LongInserter=Dlugi Podajnik
 Miner=Koparka
 Silo=Silos
 LightHouse=Latarnia Morska
+LangSwitch=Zmiana na ENG

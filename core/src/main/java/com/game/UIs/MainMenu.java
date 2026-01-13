@@ -23,14 +23,16 @@ public class MainMenu {
     static Texture buttonPressedTexture;
     static BitmapFont font;
 
-    static volatile boolean waiting = true;
-    static volatile String selectedOption = null;
-
+    public static boolean waiting = true;
+    public static volatile String selectedOption = null;
+    static boolean options;
 
     public static void create(){
+        waiting = true;
         create(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
     public static void create(float width, float height) {
+        options = false;
         Main.stuffAdded = false;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -98,6 +100,66 @@ public class MainMenu {
         waiting = true;
         selectedOption = null;
     }
+    public static void createOptions(){
+        createOptions(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+    public static void createOptions(float width, float height) {
+        options = true;
+        Main.stuffAdded = false;
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+        // Load textures
+        background = new Texture("ui/HQBG.png");
+        buttonTexture = new Texture("ui/button_unpressed.png");
+        buttonPressedTexture = new Texture("ui/button_pressed.png");
+
+        // Create font
+        font = new BitmapFont(); // Default font, or load custom: new BitmapFont(Gdx.files.internal("myfont.fnt"))
+        font.getData().setScale(2f); // Make text bigger
+        font.setColor(Color.WHITE);
+
+        // Add background
+        Image bg = new Image(background);
+        bg.setSize(width, height);
+        stage.addActor(bg);
+
+        // Create Play button with text
+        TextButton backBtn = createTextButton(TypeToString.get(TypeToString.Dictionary.BackToMenu), buttonTexture, buttonPressedTexture);
+        backBtn.setWidth(backBtn.getWidth()*1.2f);
+        backBtn.setPosition(
+            Gdx.graphics.getWidth() / 2f - backBtn.getWidth() / 2f,
+            Gdx.graphics.getHeight() / 2f + 100
+        );
+        backBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedOption = "BACK";
+                waiting = false;
+            }
+        });
+        stage.addActor(backBtn);
+
+        // Create Options button with text
+        TextButton langBtn = createTextButton(TypeToString.get(TypeToString.Dictionary.LangSwitch), buttonTexture, buttonPressedTexture);
+        langBtn.setWidth(langBtn.getWidth()*1.5f);
+        langBtn.setPosition(
+            Gdx.graphics.getWidth() / 2f - langBtn.getWidth() / 2f,
+            Gdx.graphics.getHeight() / 2f
+        );
+
+        langBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedOption = "LANG_SWITCH";
+                waiting = false;
+            }
+        });
+        stage.addActor(langBtn);
+
+        waiting = true;
+        selectedOption = null;
+    }
 
     private static TextButton createTextButton(String text, Texture normal, Texture pressed) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -141,6 +203,16 @@ public class MainMenu {
 
     public static void resize(int width, int height) {
             dispose();
-            create(width,height);
+            if(options){
+                createOptions(width,height);
+            }else{
+                create(width,height);
+            }
     }
+    public static void reset(){
+        MainMenu.waiting = true;
+        MainMenu.selectedOption = null;
+        stage = null;
+    }
+
 }
