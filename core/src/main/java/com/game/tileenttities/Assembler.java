@@ -59,8 +59,8 @@ public class Assembler extends TileEntity implements CanCraft{
 
     public Assembler(){
         super();
-        sprite = new Sprite(new Texture("tiles/assembler.png") );
-        speed = 1f;
+        sprite = new Sprite(new Texture("tiles/Assembler.png") );
+        speed = 0.5f;
         CraftIn = new Array<>();
         maxIitems = defaultmaxIitems;
         maxOitems = defaultmaxOitems;

@@ -24,7 +24,7 @@ public class Belt extends TileEntity implements Directional{
     public Belt(){
         super();
         sprite = new Sprite(new Texture("tiles/belt.png"));
-        speed = 2f;
+        speed = 3f;
 //        font = new BitmapFont();
 //        font.setColor(Color.BLACK);
 //        font.getData().setScale(0.1f);

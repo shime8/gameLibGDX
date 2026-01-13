@@ -79,6 +79,21 @@ public class RecipeManager {
         itemMap.put("sand", new Sand(0));
         itemMap.put("glass", new Glass(0));
         itemMap.put("silo", new NewItem(0, new Silo()));
+        itemMap.put("casing", new Casing(0));
+        itemMap.put("cement", new Cement(0));
+        itemMap.put("circuitBoard", new CircuitBoard(0));
+        itemMap.put("glassTile", new GlassTile(0));
+        itemMap.put("motorPart", new MotorPart(0));
+        itemMap.put("motor", new Motor(0));
+        itemMap.put("reflector", new Reflector(0));
+        itemMap.put("reinforcedWall", new ReinforcedWall(0));
+        itemMap.put("roofTile", new RoofTile(0));
+        itemMap.put("solarCell", new SolarCell(0));
+        itemMap.put("brickTile", new BrickTile(0));
+        itemMap.put("assemblerT2", new NewItem(0,new AssemblerT2()));
+        itemMap.put("fastInserter", new NewItem(0,new FastInserter()));
+        itemMap.put("fastBelt", new NewItem(0,new FastBelt()));
+        itemMap.put("wire", new Wire(0));
         Item item = itemMap.get(string);
 
         if (item == null) {

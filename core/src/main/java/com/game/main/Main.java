@@ -94,7 +94,7 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(2, new NewItem(50, new Inserter()));
         uiManager.inventory.setItem(3, new Gear(50));
         uiManager.inventory.setItem(4, new NewItem(50, new Assembler()));
-        uiManager.inventory.setItem(5, new NewItem(50, new Creator()));
+        //uiManager.inventory.setItem(5, new NewItem(50, new Creator()));
         uiManager.inventory.setItem(6, new NewItem(50, new Deleter()));
         uiManager.inventory.setItem(7, new NewItem(50, new Miner()));
         uiManager.inventory.setItem(8, new NewItem(50, new LongInserter()));

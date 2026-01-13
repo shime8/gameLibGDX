@@ -20,7 +20,7 @@ public class LongInserter extends Inserter{
         sprite.setPosition(x, y);
 
     }
-    public LongInserter(Inserter other){
+    public LongInserter(LongInserter other){
         super(other);
         this.direction = other.direction;
         this.speed = other.speed;

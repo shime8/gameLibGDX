@@ -1,11 +1,27 @@
 null 1 ; null 1 ;0.0
-plate 1 ; metalOre 1;0.25
-rod 2 ; plate 1 ;0.5
-gear 1 ; plate 2 ;1.0
-belt 1 ; gear 1, plate 1 ;0.5
-inserter 1 ; gear 2, rod 2;1.0
-chest 1 ; plate 4 ;2.0
+plate 1 ; metalOre 1;0.5
+rod 2 ; plate 1 ;1.0
+gear 1 ; plate 2 ;2.0
+belt 1 ; gear 1, plate 1 ;1.0
+inserter 1 ; gear 2, rod 2;2.0
+chest 1 ; plate 4 ;3.0
 silo 1 ; plate 6, rod 4;4.0
-assembler 1 ; gear 3, plate 3;3.0
-brick 1 ; clay 1 ;0.5
+deleter 1 ; plate 4; 2.0
+assembler 1 ; gear 3, plate 3;4.0
+wire 2; rod 1; 1.0
+casing 1; wire 3, plate 2; 1.0
+circuitBoard 1; wire 3, glass 2; 1.0
+motorPart 1; gear 1, rod 2; 1.0
+motor 1; casing 1, motorPart 1, circuitBoard 1; 4.0
+assemblerT2 1 ; assembler 1, motor 1; 4.0
+fastInserter 2; inserter 2, motor 1; 4.0
+fastBelt 4; belt 4, motor 1; 4.0
+brick 1 ; clay 1 ;1.0
 glass 1 ; sand 1 ;1.0
+brickTile 1 ; brick 4, rod 2 ; 4.0
+cement 1 ; clay 2, sand 2; 2.0
+reinforcedWall 1; brickTile 2, cement 2; 8.0
+reflector 1; glass 2, casing 1; 2.0
+solarCell 1; glass 2, circuitBoard 1; 2.0
+roofTile 1; solarCell 2, brickTile 2; 4.0
+glassTile 1; glass 4, plate 2, rod 4; 4.0

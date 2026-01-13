@@ -78,15 +78,31 @@ public class TypeToString {
         Clay,
         Brick,
         Assembler,
+        AssemblerT2,
         Belt,
+        FastBelt,
         Chest,
         Silo,
         Creator,
         Deleter,
         Inserter,
         LongInserter,
+        FastInserter,
         Miner,
-        LightHouse
+        LightHouse,
+        Casing,
+        Motor,
+        MotorPart,
+        CircuitBoard,
+        Reflector,
+        Cement,
+        BrickTile,
+        SolarCell,
+        RoofTile,
+        GlassTile,
+        ReinforcedWall,
+        Wire
+
     }
 }
 
