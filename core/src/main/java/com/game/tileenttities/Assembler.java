@@ -13,12 +13,12 @@ import com.game.UIs.TypeToString;
 import com.game.items.Gear;
 import com.game.items.Item;
 import com.game.items.NewItem;
+import com.game.items.NullItem;
 import com.game.mechanics.Recipe;
 
 import java.util.Objects;
 
-import static com.game.main.Main.itemEntityManager;
-import static com.game.main.Main.tileEntityManager;
+import static com.game.main.Main.*;
 
 public class Assembler extends TileEntity implements CanCraft{
     Recipe recipe;
@@ -27,12 +27,15 @@ public class Assembler extends TileEntity implements CanCraft{
     public BitmapFont font;
     public float speed;
     public float accumulator;
+    public float  AnimAccumulator;
     int maxIitems;
     int maxOitems;
     Sprite CraftOut;
     Array<Sprite> CraftIn;
     public void SetCrafting(Array<Item> itemsIn, Array<Item> itemsOut){
-
+        for (Item item : ItemsOnBreak()) {
+            if (item != null) uiManager.inventory.addItem(item);
+        }
         for (Item i : itemsIn) {
             i.amount = 0;
         }
@@ -106,8 +109,16 @@ public class Assembler extends TileEntity implements CanCraft{
             }else{
                 accumulator -= delta;
             }
+            AnimAccumulator += delta;
+            while(AnimAccumulator > 0.628f){
+                AnimAccumulator -= 0.628f;
+            }
+            sprite.setScale(1+0.01f*(float)(Math.sin(3.14f+AnimAccumulator*2f)),1+0.01f*(float)(Math.sin(AnimAccumulator*2f)));
 
             //System.out.println(craftProgress());
+        }else{
+            AnimAccumulator = 0f;
+            sprite.setScale(1,1);
         }
 
     }
@@ -300,16 +311,17 @@ public class Assembler extends TileEntity implements CanCraft{
         Array<Item> items = new Array<>();
         if(itemsIn!=null){
             for (Item item : itemsIn) {
-                if (item.amount > 0 && !item.getname().equals(TypeToString.get(TypeToString.Dictionary.NullItem)))
+                if (item.amount > 0 && !(item instanceof NullItem))
                     items.add(item);
             }
         }
         if(itemsOut!=null){
             for (Item item : itemsOut) {
-                if (item.amount > 0 && !item.getname().equals(TypeToString.get(TypeToString.Dictionary.NullItem)))
+                if (item.amount > 0 && !(item instanceof NullItem))
                     items.add(item);
             }
         }
+        System.out.println(items);
         return items;
     }
 }

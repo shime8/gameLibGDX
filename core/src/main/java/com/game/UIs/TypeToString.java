@@ -66,6 +66,7 @@ public class TypeToString {
         Resume,
         BackToMenu,
         LangSwitch,
+        SaveReset,
         Inventory,
         NullItem,
         MetalOre,

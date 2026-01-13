@@ -20,5 +20,5 @@ public class Plate extends Item{
     public Plate(Item item) {
         super(item);
     }
-    public Item clone(){return new NullItem(this);};
+    public Item clone(){return new Plate(this);};
 }

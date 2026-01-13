@@ -28,6 +28,7 @@ import com.game.mechanics.PlayerInventory;
 import com.game.mechanics.Recipe;
 import com.game.tileenttities.Assembler;
 import com.game.tileenttities.Chest;
+import com.game.tileenttities.Silo;
 import com.game.world.worldManager;
 
 import static com.game.main.Main.recipeManager;
@@ -126,7 +127,8 @@ public class UIManager {
         inventoryUI = new Table();
 
         Label title = new Label(TypeToString.get(TypeToString.Dictionary.Inventory), skin);
-        inventoryUI.add(title).colspan(inventory.getWidth()).padBottom(10);
+        title.setAlignment(Align.center);
+        inventoryUI.add(title).colspan(inventory.getWidth()).padBottom(10).align(Align.center);
         inventoryUI.row();
 
         // Create grid
@@ -214,8 +216,14 @@ public class UIManager {
 
     public void openChest(Chest chest) {
         chestUI = new Table();
+        Label title;
+        if(chest instanceof Silo){
+            title = new Label(TypeToString.get(TypeToString.Dictionary.Silo), skin);
+        }else{
+            title = new Label(TypeToString.get(TypeToString.Dictionary.Chest), skin);
+        }
 
-        Label title = new Label(TypeToString.get(TypeToString.Dictionary.Chest), skin);
+
         chestUI.add(title).colspan(4).padBottom(10);
         chestUI.row();
         currentChest = chest;

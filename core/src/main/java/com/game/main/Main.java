@@ -51,12 +51,13 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
-        uiManager = new UIManager();
+
 
         MainMenu.create();
 
     }
     public void createGameparts(){
+        uiManager = new UIManager();
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(uiManager.stage); // UI input
         multiplexer.addProcessor(new InputAdapter() {
@@ -99,6 +100,9 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(8, new NewItem(50, new LongInserter()));
         stuffAdded = true;
     }
+    void loadSaveFile(){
+        // tu dodać jak zdąrze
+    }
 
     @Override
     public void render() {
@@ -113,7 +117,12 @@ public class Main extends ApplicationAdapter {
         }
         switch (selection) {
             case "PLAY":
-                if (!stuffAdded) createGameparts();
+                if (!stuffAdded) loadSaveFile();
+
+                if (!stuffAdded) {
+                    createGameparts();
+                    resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+                }
                 break;
             case "OPTIONS":
                 System.out.println("hello");
@@ -138,6 +147,11 @@ public class Main extends ApplicationAdapter {
                 MainMenu.createOptions();
                 // lang switch
                 return;
+            case "SAVE_RESET":
+
+                MainMenu.reset();
+                MainMenu.create();
+                // save reset
             case "EXIT":
                 Gdx.app.exit();
                 return;
@@ -182,8 +196,8 @@ public class Main extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         if (MainMenu.isWaiting()) MainMenu.resize(width,height);
-        worldManager.resize(width, height);
-        uiManager.resize(width, height);
+        if(worldManager!=null)worldManager.resize(width, height);
+        if(uiManager!=null)uiManager.resize(width, height);
     }
 
     @Override

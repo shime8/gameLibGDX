@@ -25,3 +25,4 @@ Miner=Miner
 Silo=Silo
 LightHouse=LightHouse
 LangSwitch=Switch to PL
+SaveReset=Reset Save
