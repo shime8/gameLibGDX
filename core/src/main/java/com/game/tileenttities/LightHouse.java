@@ -105,4 +105,7 @@ public class LightHouse extends TileEntity implements CantPickup{
     public TileEntity pickupee() {
         return null;
     }
+    public String getClassName(){
+        return "LightHouse";
+    }
 }

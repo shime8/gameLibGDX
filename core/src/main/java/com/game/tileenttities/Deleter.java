@@ -52,4 +52,7 @@ public class Deleter extends TileEntity implements HasInventory{
     public Array<Item> ItemsOnBreak() {
         return null;
     }
+    public String getClassName(){
+        return "Deleter";
+    }
 }

@@ -15,9 +15,13 @@ import com.game.UIs.TypeToString;
 import com.game.items.*;
 import com.game.mechanics.RecipeManager;
 import com.game.player.Player;
+import com.game.saving.WorldSerializer;
 import com.game.tileenttities.*;
 import com.game.world.worldManager;
 import com.game.UIs.UIManager;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static com.game.world.worldManager.camera;
 
@@ -36,6 +40,8 @@ public class Main extends ApplicationAdapter {
     public static RecipeManager recipeManager;
     public static boolean stuffAdded = false;
     public String Language;
+    public static int AssemblersUnlockingTier = 10;
+    public float SaveAccumulator = 0f;
     @Override
     public void create() {
         TypeToString.init("Languages/PL.txt");
@@ -50,7 +56,6 @@ public class Main extends ApplicationAdapter {
         recipeManager = new RecipeManager();
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-
 
 
         MainMenu.create();
@@ -71,7 +76,6 @@ public class Main extends ApplicationAdapter {
         });
         Gdx.input.setInputProcessor(multiplexer);
 
-        tileEntityManager.addEntity(new Chest(33, 33));
         tileEntityManager.addEntity(new MetalOre(20, 39));
         tileEntityManager.addEntity(new MetalOre(20, 40));
         tileEntityManager.addEntity(new MetalOre(20, 41));
@@ -81,27 +85,26 @@ public class Main extends ApplicationAdapter {
         tileEntityManager.addEntity(new ClayOre(20, 46));
 
         Array<Item> LHrecipe = new Array<>();
-        LHrecipe.add(new Brick(20));
-        LHrecipe.add(new Glass(20));
-        LHrecipe.add(new NewItem(5, new Assembler()));
+        LHrecipe.add(new RoofTile(20));
+        LHrecipe.add(new GlassTile(20));
+        LHrecipe.add(new Motor(10));
+        LHrecipe.add(new Reflector(10));
+        LHrecipe.add(new ReinforcedWall(20));
         BuildPlace LHBP = new BuildPlace(20,54);
         LHBP.setBuild(new LightHouse(20,54));
         LHBP.setRecipe(LHrecipe);
         tileEntityManager.addEntity(LHBP);
         //for testing
-        uiManager.inventory.setItem(0, new NewItem(50, new Chest()));
-        uiManager.inventory.setItem(1, new NewItem(50, new Belt()));
-        uiManager.inventory.setItem(2, new NewItem(50, new Inserter()));
-        uiManager.inventory.setItem(3, new Gear(50));
-        uiManager.inventory.setItem(4, new NewItem(50, new Assembler()));
-        //uiManager.inventory.setItem(5, new NewItem(50, new Creator()));
-        uiManager.inventory.setItem(6, new NewItem(50, new Deleter()));
-        uiManager.inventory.setItem(7, new NewItem(50, new Miner()));
-        uiManager.inventory.setItem(8, new NewItem(50, new LongInserter()));
+        uiManager.inventory.setItem(0, new NewItem(2, new Chest()));
+        uiManager.inventory.setItem(1, new NewItem(5, new Inserter()));
+        uiManager.inventory.setItem(2, new NewItem(3, new Assembler()));
+        uiManager.inventory.setItem(3, new NewItem(1, new Miner()));
+        uiManager.inventory.setItem(4, new NewItem(1, new Deleter()));
+
+
         stuffAdded = true;
     }
     void loadSaveFile(){
-        // tu dodać jak zdąrze
     }
 
     @Override
@@ -117,10 +120,9 @@ public class Main extends ApplicationAdapter {
         }
         switch (selection) {
             case "PLAY":
-                if (!stuffAdded) loadSaveFile();
-
                 if (!stuffAdded) {
                     createGameparts();
+                    loadGame("saves/save.json");
                     resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
                 }
                 break;
@@ -148,7 +150,7 @@ public class Main extends ApplicationAdapter {
                 // lang switch
                 return;
             case "SAVE_RESET":
-
+                createGameparts();
                 MainMenu.reset();
                 MainMenu.create();
                 // save reset
@@ -191,6 +193,16 @@ public class Main extends ApplicationAdapter {
         uiManager.renderMouseItem((SpriteBatch) uiManager.stage.getBatch());
         uiManager.stage.getBatch().end();
 
+        SaveAccumulator += dt;
+        if(SaveAccumulator > 10f){
+            SaveAccumulator = 0;
+            try (FileWriter writer = new FileWriter("world.json")) {
+                saveGame("saves/save.json");
+                System.out.println("World saved successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -207,4 +219,23 @@ public class Main extends ApplicationAdapter {
         uiManager.dispose();
         MainMenu.dispose();
     }
+    public void saveGame(String filePath) {
+        WorldSerializer.saveWorld(
+            tileEntityManager.tileEntityMap,
+            itemEntityManager.itemEntityMap,
+            uiManager.inventory,
+            UIManager.mouseSlot,
+            filePath
+        );
+    }
+    public void loadGame(String filePath) {
+        WorldSerializer.loadWorld(
+            filePath,
+            tileEntityManager,
+            itemEntityManager,
+            uiManager.inventory,
+            UIManager.mouseSlot
+        );
+    }
+
 }

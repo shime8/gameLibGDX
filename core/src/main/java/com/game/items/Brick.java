@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.game.UIs.TypeToString;
 
+import java.beans.Transient;
+
 public class Brick extends Item {
     public Brick(){
         super();
@@ -21,4 +23,7 @@ public class Brick extends Item {
         super(item);
     }
     public Item clone(){return new Brick(this);};
+    public String getClassName(){
+        return "Brick";
+    }
 }

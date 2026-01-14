@@ -112,4 +112,7 @@ public class Miner extends TileEntity implements HasInventory{
         items.add(item);
         return items;
     }
+    public String getClassName(){
+        return "Miner";
+    }
 }

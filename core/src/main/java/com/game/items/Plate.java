@@ -21,4 +21,7 @@ public class Plate extends Item{
         super(item);
     }
     public Item clone(){return new Plate(this);};
+    public String getClassName(){
+        return "Plate";
+    }
 }

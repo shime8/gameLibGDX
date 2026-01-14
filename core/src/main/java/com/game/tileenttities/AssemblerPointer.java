@@ -72,4 +72,7 @@ public class AssemblerPointer extends TileEntity implements CanCraft,CantPickup 
     public TileEntity pickupee(){
         return assembler;
     }
+    public String getClassName(){
+        return "AssemblerPointer";
+    }
 }

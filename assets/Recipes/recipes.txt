@@ -6,8 +6,9 @@ belt 1 ; gear 1, plate 1 ;1.0
 inserter 1 ; gear 2, rod 2;2.0
 chest 1 ; plate 4 ;3.0
 silo 1 ; plate 6, rod 4;4.0
-deleter 1 ; plate 4; 2.0
+miner 1 ; gear 3, rod 3; 2.0;
 assembler 1 ; gear 3, plate 3;4.0
+deleter 1 ; plate 4; 2.0
 wire 2; rod 1; 1.0
 casing 1; wire 3, plate 2; 1.0
 circuitBoard 1; wire 3, glass 2; 1.0

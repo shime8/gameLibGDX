@@ -55,4 +55,7 @@ public class Creator extends TileEntity implements HasInventory{
         items.add(new Gear(1));
         return items;
     }
+    public String getClassName(){
+        return "Creator";
+    }
 }

@@ -21,4 +21,7 @@ public class Casing extends Item {
         super(item);
     }
     public Item clone(){return new Casing(this);};
+    public String getClassName(){
+        return "Casing";
+    }
 }

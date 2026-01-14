@@ -21,4 +21,7 @@ public class CircuitBoard extends Item {
         super(item);
     }
     public Item clone(){return new CircuitBoard(this);};
+    public String getClassName(){
+        return "CircuitBoard";
+    }
 }

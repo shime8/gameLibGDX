@@ -20,4 +20,7 @@ public class AssemblerT2 extends Assembler{
     public TileEntity clone() {
         return new AssemblerT2(this);
     }
+    public String getClassName(){
+        return "AssemblerT2";
+    }
 }

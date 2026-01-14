@@ -39,4 +39,7 @@ public class Silo extends Chest{
     public Rectangle getBounds() {
         return new Rectangle(this.x, this.y, 1, 4);
     }
+    public String getClassName(){
+        return "Silo";
+    }
 }

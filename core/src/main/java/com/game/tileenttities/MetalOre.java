@@ -34,4 +34,7 @@ public class MetalOre extends TileEntity implements Mineable, CantPickup, CantPl
         return null;
     }
     public float getSpriteY() {return y+1;}
+    public String getClassName(){
+        return "MetalOre";
+    }
 }

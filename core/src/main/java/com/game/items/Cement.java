@@ -20,5 +20,8 @@ public class Cement extends Item {
     public Cement(Item item) {
         super(item);
     }
-    public Item clone(){return new Cement(this);};
+    public Item clone(){return new Cement(this);}
+    public String getClassName(){
+        return "Cement";
+    }
 }

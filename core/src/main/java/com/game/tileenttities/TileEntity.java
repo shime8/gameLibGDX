@@ -29,6 +29,7 @@ public abstract class TileEntity {
         this.sprite = new Sprite(other.sprite);
     }
     abstract public String getname();
+    abstract public String getClassName();
     public abstract TileEntity clone();
     public abstract void update(float delta);
     public void placingUpdate(){};
@@ -68,6 +69,13 @@ public abstract class TileEntity {
     }
     public void removeOtherTiles(){
 
+    }
+    public String toJSON() {
+        return "{"
+            + "\"type\":\"" + getClassName() + "\","
+            + "\"x\":" + x + ","
+            + "\"y\":" + y
+            + "}";
     }
 
 

@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.game.tileenttities.TileEntity;
 
 public class ItemEntityManager {
-    private ObjectMap<GridPoint2, Array<ItemEntity>> itemEntityMap;
+    public ObjectMap<GridPoint2, Array<ItemEntity>> itemEntityMap;
 
     public ItemEntityManager(ObjectMap<GridPoint2, Array<ItemEntity>> itemEntityMap) {
         this.itemEntityMap = itemEntityMap;

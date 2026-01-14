@@ -23,5 +23,7 @@ public class Glass extends Item {
         super(item);
     }
     public Item clone(){return new Glass(this);};
-
+    public String getClassName(){
+        return "Glass";
+    }
 }

@@ -22,5 +22,7 @@ public class Gear extends Item {
         super(item);
     }
     public Item clone(){return new Gear(this);};
-
+    public String getClassName(){
+        return "Gear";
+    }
 }
