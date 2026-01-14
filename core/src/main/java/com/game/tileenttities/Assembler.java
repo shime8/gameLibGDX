@@ -54,7 +54,7 @@ public class Assembler extends TileEntity implements CanCraft{
                 CraftIn.add(i.sprite);
             }
         }
-        CraftOut = itemsOut.first().sprite;
+        CraftOut = new Sprite(itemsOut.first().sprite.getTexture());
 
     }
 
@@ -200,8 +200,8 @@ public class Assembler extends TileEntity implements CanCraft{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
-        if(itemsOut!=null && !itemsOut.isEmpty() && itemsOut.first()!=null && itemsIn!=null && !itemsIn.isEmpty() && itemsIn.first()!=null){
-            if(itemsOut.first().Tile != null){CraftOut = itemsOut.first().Tile.sprite;}
+        if(itemsOut!=null && itemsOut.first()!=null && itemsIn!=null && itemsIn.first()!=null){
+            if(itemsOut.first().Tile != null){CraftOut = new Sprite(itemsOut.first().Tile.sprite.getTexture());}
             CraftOut.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
             CraftOut.draw(batch);
             for(int i = 0; i<CraftIn.size; i++){

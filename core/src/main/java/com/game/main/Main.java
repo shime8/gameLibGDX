@@ -87,22 +87,29 @@ public class Main extends ApplicationAdapter {
         tileEntityManager.addEntity(new ClayOre(20, 46));
 
         Array<Item> LHrecipe = new Array<>();
-        LHrecipe.add(new RoofTile(20));
-        LHrecipe.add(new GlassTile(20));
-        LHrecipe.add(new Motor(10));
-        LHrecipe.add(new Reflector(10));
-        LHrecipe.add(new ReinforcedWall(20));
+//        LHrecipe.add(new RoofTile(20));
+//        LHrecipe.add(new GlassTile(20));
+//        LHrecipe.add(new Motor(10));
+//        LHrecipe.add(new Reflector(10));
+//        LHrecipe.add(new ReinforcedWall(20));
+        LHrecipe.add(new NewItem(3,new Assembler()));
         BuildPlace LHBP = new BuildPlace(20,54);
         LHBP.setBuild(new LightHouse(20,54));
         LHBP.setRecipe(LHrecipe);
         tileEntityManager.addEntity(LHBP);
-        //for testing
-        uiManager.inventory.setItem(0, new NewItem(2, new Chest()));
-        uiManager.inventory.setItem(1, new NewItem(5, new Inserter()));
-        uiManager.inventory.setItem(2, new NewItem(3, new Assembler()));
-        uiManager.inventory.setItem(3, new NewItem(1, new Miner()));
-        uiManager.inventory.setItem(4, new NewItem(1, new Deleter()));
-
+        //for gam
+//        uiManager.inventory.setItem(0, new NewItem(2, new Chest()));
+//        uiManager.inventory.setItem(1, new NewItem(5, new Inserter()));
+//        uiManager.inventory.setItem(2, new NewItem(3, new Assembler()));
+//        uiManager.inventory.setItem(3, new NewItem(1, new Miner()));
+//        uiManager.inventory.setItem(4, new NewItem(1, new Deleter()));
+        // for testing
+        uiManager.inventory.setItem(0, new NewItem(20, new Chest()));
+        uiManager.inventory.setItem(1, new NewItem(50, new FastInserter()));
+        uiManager.inventory.setItem(2, new NewItem(30, new AssemblerT2()));
+        uiManager.inventory.setItem(3, new NewItem(10, new Miner()));
+        uiManager.inventory.setItem(4, new NewItem(50, new Belt()));
+        uiManager.inventory.setItem(5, new NewItem(10, new Deleter()));
 
         stuffAdded = true;
     }
