@@ -14,6 +14,7 @@ import com.game.items.Gear;
 import com.game.items.Item;
 import com.game.items.NewItem;
 import com.game.items.NullItem;
+import com.game.main.Main;
 import com.game.mechanics.Recipe;
 
 import java.util.Objects;
@@ -21,7 +22,7 @@ import java.util.Objects;
 import static com.game.main.Main.*;
 
 public class Assembler extends TileEntity implements CanCraft{
-    Recipe recipe;
+    public Recipe recipe;
     public Array<Item> itemsIn;
     public Array<Item> itemsOut;
     public BitmapFont font;
@@ -123,7 +124,7 @@ public class Assembler extends TileEntity implements CanCraft{
     }
 
     public boolean canICraft(){
-        if(itemsIn != null && itemsOut != null){
+        if(itemsIn != null && !itemsIn.isEmpty() && itemsOut != null && !itemsOut.isEmpty()){
             if(itemsOut.first() != null && itemsOut.first().amount>=maxOitems){
                 return false;
             }
@@ -151,6 +152,7 @@ public class Assembler extends TileEntity implements CanCraft{
                     i.amount += recipe.itemsCOut.get(x).amount;
                 }
                 accumulator = recipe.time/speed;
+                if(AssemblersUnlockingTier > 0 && recipe.itemsCOut.first().Tile instanceof Assembler){ AssemblersUnlockingTier--;}
         }
     }
     @Override
@@ -198,7 +200,8 @@ public class Assembler extends TileEntity implements CanCraft{
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
-        if(itemsOut!=null && itemsOut.first()!=null && itemsIn!=null && itemsIn.first()!=null){
+        System.out.println(this.x+" "+this.y);
+        if(itemsOut!=null && !itemsOut.isEmpty() && itemsOut.first()!=null && itemsIn!=null && !itemsIn.isEmpty() && itemsIn.first()!=null){
             if(itemsOut.first().Tile != null){CraftOut = itemsOut.first().Tile.sprite;}
             CraftOut.setBounds(x + 0.2f, y + 0.2f, 0.6f, 0.6f);
             CraftOut.draw(batch);
@@ -322,5 +325,47 @@ public class Assembler extends TileEntity implements CanCraft{
             }
         }
         return items;
+    }
+    public String getClassName(){
+        return "Assembler";
+    }
+    @Override
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("{");
+        sb.append("\"type\":\"").append(getClassName()).append("\",");
+        sb.append("\"x\":").append(x).append(",");
+        sb.append("\"y\":").append(y).append(",");
+
+        // Save recipe
+        if (recipe != null) {
+            sb.append("\"recipe\":").append(recipe.toJSON()).append(",");
+        } else {
+            sb.append("\"recipe\":null,");
+        }
+
+        // Save itemsIn
+        sb.append("\"itemsIn\":[");
+        if (itemsIn != null) {
+            for (int i = 0; i < itemsIn.size; i++) {
+                sb.append(itemsIn.get(i).toJSON());
+                if (i < itemsIn.size - 1) sb.append(",");
+            }
+        }
+        sb.append("],");
+
+        // Save itemsOut
+        sb.append("\"itemsOut\":[");
+        if (itemsOut != null) {
+            for (int i = 0; i < itemsOut.size; i++) {
+                sb.append(itemsOut.get(i).toJSON());
+                if (i < itemsOut.size - 1) sb.append(",");
+            }
+        }
+        sb.append("]");
+
+        sb.append("}");
+        return sb.toString();
     }
 }

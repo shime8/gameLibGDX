@@ -39,4 +39,7 @@ public class LongInserter extends Inserter{
         this.direction = new Vector2(direction.x*2f,direction.y*2f);
         sprite.setRotation(getAngle(this.direction));
     }
+    public String getClassName(){
+        return "LongInserter";
+    }
 }

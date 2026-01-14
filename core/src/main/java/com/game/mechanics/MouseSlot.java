@@ -10,13 +10,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game.items.Item;
 import com.game.items.NewItem;
+import com.game.tileenttities.Assembler;
+import com.game.tileenttities.AssemblerPointer;
 import com.game.tileenttities.Directional;
 import com.game.world.worldManager;
 
 import java.util.Objects;
 
 public class MouseSlot {
-    Item item;
+    public Item item;
     BitmapFont font;
 
     public MouseSlot(){
@@ -40,6 +42,7 @@ public class MouseSlot {
         }else{
             if(this.item==null){
                 this.item = item;
+                mouseTileReset();
                 setDirection();
                 return null;
             }else{
@@ -55,11 +58,20 @@ public class MouseSlot {
 
                 }else{
                     this.item = item;
+                    mouseTileReset();
                     setDirection();
                 }
                 return temp;
             }
 
+        }
+
+    }
+    public void mouseTileReset(){
+        if(item!=null && item.Tile instanceof Assembler a){
+            a.recipe=null;
+            a.itemsIn=null;
+            a.itemsOut=null;
         }
     }
     public void setDirection(){
@@ -91,5 +103,11 @@ public class MouseSlot {
             font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }
     }
-
+    public String toJSON() {
+        if (item != null) {
+            return "{\"item\":" + item.toJSON() + "}";
+        } else {
+            return "{\"item\":null}";
+        }
+    }
 }

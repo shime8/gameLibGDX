@@ -102,4 +102,19 @@ public class Belt extends TileEntity implements Directional{
         }
     }
     public float getSpriteY() {return y+1;}
+    @Override
+    public String toJSON() {
+        String base = super.toJSON(); // {"type":"Belt","x":3,"y":5}
+
+        // Remove the closing brace to add direction
+        base = base.substring(0, base.length() - 1);
+
+        // Add direction
+        base += ",\"direction\": {\"x\":" + direction.x + ",\"y\":" + direction.y + "}}";
+
+        return base;
+    }
+    public String getClassName(){
+        return "Belt";
+    }
 }

@@ -21,4 +21,7 @@ public class RoofTile extends Item {
         super(item);
     }
     public Item clone(){return new RoofTile(this);};
+    public String getClassName(){
+        return "RoofTile";
+    }
 }

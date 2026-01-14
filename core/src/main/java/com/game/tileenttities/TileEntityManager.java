@@ -12,7 +12,7 @@ import java.util.Comparator;
 import static com.game.main.Main.*;
 
 public class TileEntityManager {
-    ObjectMap<GridPoint2, TileEntity> tileEntityMap;
+    public ObjectMap<GridPoint2, TileEntity> tileEntityMap;
     Array<ObjectMap.Entry<GridPoint2, TileEntity>> TemSorted;
     public TileEntityManager(ObjectMap<GridPoint2, TileEntity> tileEntities) {
         this.tileEntityMap = tileEntities;
@@ -23,6 +23,11 @@ public class TileEntityManager {
         TileEntity temp = entity.clone();
         tileEntityMap.put(key, temp);
         temp.placeOtherTiles();
+        for(ObjectMap.Entry<GridPoint2, TileEntity> entry : tileEntityMap){
+            if(entry.value instanceof Assembler){
+                System.out.println(entry.value.x+" "+entry.value.y);
+            }
+        }
         sort();
     }
 
@@ -38,7 +43,7 @@ public class TileEntityManager {
 
     public void update(float delta) {
         for (TileEntity entity : tileEntityMap.values()) {
-            entity.update(delta);
+            if(entity!=null)entity.update(delta);
         }
 
     }

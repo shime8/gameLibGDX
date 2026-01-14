@@ -34,4 +34,31 @@ public class Recipe {
         string.append("T:").append(time);
         return string.toString();
     }
+
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+
+        // Serialize itemsCIn
+        sb.append("\"itemsCIn\":[");
+        for (int i = 0; i < itemsCIn.size; i++) {
+            sb.append(itemsCIn.get(i).toJSON());
+            if (i < itemsCIn.size - 1) sb.append(",");
+        }
+        sb.append("],");
+
+        // Serialize itemsCOut
+        sb.append("\"itemsCOut\":[");
+        for (int i = 0; i < itemsCOut.size; i++) {
+            sb.append(itemsCOut.get(i).toJSON());
+            if (i < itemsCOut.size - 1) sb.append(",");
+        }
+        sb.append("],");
+
+        // Serialize time
+        sb.append("\"time\":").append(time);
+
+        sb.append("}");
+        return sb.toString();
+    }
 }

@@ -32,6 +32,12 @@ public abstract class Item {
         }
 
     }
+    public String toJSON() {
+        return "{"
+            + "\"type\":\"" + getname() + "\","
+            + "\"amount\":" + this.amount
+            + "}";
+    }
 
 
 }

@@ -29,7 +29,7 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
     public Inserter() {
         super();
         sprite = new Sprite(new Texture("tiles/inserter_up.png"));
-        speed = 2f;
+        speed = 5f;
     }
 
     public String getname() {
@@ -203,6 +203,9 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         Array<Item> items = new Array<>();
         if(itemEntity!=null)items.add(itemEntity.item);
         return items;
+    }
+    public String getClassName(){
+        return "Inserter";
     }
 
 }

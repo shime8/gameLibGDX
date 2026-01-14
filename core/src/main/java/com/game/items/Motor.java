@@ -21,4 +21,7 @@ public class Motor extends Item {
         super(item);
     }
     public Item clone(){return new Motor(this);};
+    public String getClassName(){
+        return "Motor";
+    }
 }

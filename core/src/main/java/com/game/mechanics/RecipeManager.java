@@ -94,6 +94,7 @@ public class RecipeManager {
         itemMap.put("fastInserter", new NewItem(0,new FastInserter()));
         itemMap.put("fastBelt", new NewItem(0,new FastBelt()));
         itemMap.put("wire", new Wire(0));
+        itemMap.put("miner", new NewItem(0,new Miner()));
         Item item = itemMap.get(string);
 
         if (item == null) {

@@ -18,4 +18,7 @@ public class FastBelt extends Belt{
     public TileEntity clone() {
         return new FastBelt(this);
     }
+    public String getClassName(){
+        return "FastBelt";
+    }
 }

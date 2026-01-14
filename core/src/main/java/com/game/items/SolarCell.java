@@ -21,4 +21,7 @@ public class SolarCell extends Item {
         super(item);
     }
     public Item clone(){return new SolarCell(this);};
+    public String getClassName(){
+        return "SolarCell";
+    }
 }

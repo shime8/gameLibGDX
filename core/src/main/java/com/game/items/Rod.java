@@ -19,4 +19,7 @@ public class Rod extends Item{
 
     public Rod(Item item) { super(item); }
     public Item clone(){return new Rod(this);};
+    public String getClassName(){
+        return "Rod";
+    }
 }

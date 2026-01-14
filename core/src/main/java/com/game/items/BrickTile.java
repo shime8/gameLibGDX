@@ -20,5 +20,8 @@ public class BrickTile extends Item {
     public BrickTile(Item item) {
         super(item);
     }
-    public Item clone(){return new BrickTile(this);};
+    public Item clone(){return new BrickTile(this);}
+    public String getClassName(){
+        return "BrickTile";
+    }
 }

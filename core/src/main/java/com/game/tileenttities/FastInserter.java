@@ -9,7 +9,7 @@ public class FastInserter extends Inserter{
     public FastInserter(){
         super();
         sprite = new Sprite(new Texture("tiles/FastInserter_up.png"));
-        speed = 4f;
+        speed = 10f;
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.FastInserter);}
     public FastInserter(int x, int y) {
@@ -22,5 +22,7 @@ public class FastInserter extends Inserter{
     public TileEntity clone() {
         return new FastInserter(this);
     }
-
+    public String getClassName(){
+        return "FastInserter";
+    }
 }

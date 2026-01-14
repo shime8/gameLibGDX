@@ -21,4 +21,7 @@ public class ReinforcedWall extends Item {
         super(item);
     }
     public Item clone(){return new ReinforcedWall(this);};
+    public String getClassName(){
+        return "ReinforcedWall";
+    }
 }

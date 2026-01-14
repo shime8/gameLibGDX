@@ -24,6 +24,7 @@ import com.game.items.Item;
 import com.game.items.ItemEntity;
 import com.game.items.ItemEntityManager;
 import com.game.items.NewItem;
+import com.game.main.Main;
 import com.game.mechanics.MouseSlot;
 import com.game.mechanics.PlayerInventory;
 import com.game.mechanics.Recipe;
@@ -66,7 +67,7 @@ public class UIManager {
 
         // You can load a skin from assets if you have one
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        inventory = new PlayerInventory(5, 4);
+        inventory = new PlayerInventory(5, 5);
         mouseSlot = new MouseSlot();
 
 
@@ -188,11 +189,17 @@ public class UIManager {
         assemblerUI.add(title).colspan(4).padBottom(10);
         assemblerUI.row();
 
+        float itemsAllowed;
+        if(Main.AssemblersUnlockingTier<=0){
+            itemsAllowed = recipeManager.length();
+        }else{
+            itemsAllowed = 10;
+        }
         // Create grid
-        for (int y = 0; y < (recipeManager.length()/4)+1; y++) {
+        for (int y = 0; y < (itemsAllowed/4)+1; y++) {
             for (int x = 0; x < 4; x++) {
                 int index = y * 4 + x;
-                if(recipeManager.length()>index) {
+                if(itemsAllowed>index) {
                     SelectorSlot slot = new SelectorSlot(skin);
                     Recipe recipe = recipeManager.getRecipe(index);
                     slot.setItem(recipe.itemsCOut.first());

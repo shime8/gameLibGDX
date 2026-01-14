@@ -71,4 +71,15 @@ public class ItemEntity {
             || worldY%1<0.5 && direction.y>0
             || worldY%1>0.5 && direction.y<0;
     }
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+
+        sb.append("\"item\":").append(item.toJSON()).append(",");
+        sb.append("\"worldX\":").append(worldX).append(",");
+        sb.append("\"worldY\":").append(worldY);
+
+        sb.append("}");
+        return sb.toString();
+    }
 }

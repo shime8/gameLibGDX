@@ -21,5 +21,8 @@ public class Sand extends Item {
         super(item);
     }
     public Item clone(){return new Sand(this);};
+    public String getClassName(){
+        return "Sand";
+    }
 
 }

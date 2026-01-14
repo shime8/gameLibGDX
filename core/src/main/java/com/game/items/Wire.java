@@ -21,4 +21,7 @@ public class Wire extends Item {
         super(item);
     }
     public Item clone(){return new Wire(this);};
+    public String getClassName(){
+        return "Wire";
+    }
 }

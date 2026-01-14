@@ -119,5 +119,8 @@ public class Chest extends TileEntity implements HasInventory{
             return null;
         }
     }
+    public String getClassName(){
+        return "Chest";
+    }
 
 }

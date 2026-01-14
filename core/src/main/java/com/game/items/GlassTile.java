@@ -20,5 +20,8 @@ public class GlassTile extends Item {
     public GlassTile(Item item) {
         super(item);
     }
-    public Item clone(){return new GlassTile(this);};
+    public Item clone(){return new GlassTile(this);}
+    public String getClassName(){
+        return "GlassTile";
+    }
 }
