@@ -329,43 +329,5 @@ public class Assembler extends TileEntity implements CanCraft{
     public String getClassName(){
         return "Assembler";
     }
-    @Override
-    public String toJSON() {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append("{");
-        sb.append("\"type\":\"").append(getClassName()).append("\",");
-        sb.append("\"x\":").append(x).append(",");
-        sb.append("\"y\":").append(y).append(",");
-
-        // Save recipe
-        if (recipe != null) {
-            sb.append("\"recipe\":").append(recipe.toJSON()).append(",");
-        } else {
-            sb.append("\"recipe\":null,");
-        }
-
-        // Save itemsIn
-        sb.append("\"itemsIn\":[");
-        if (itemsIn != null) {
-            for (int i = 0; i < itemsIn.size; i++) {
-                sb.append(itemsIn.get(i).toJSON());
-                if (i < itemsIn.size - 1) sb.append(",");
-            }
-        }
-        sb.append("],");
-
-        // Save itemsOut
-        sb.append("\"itemsOut\":[");
-        if (itemsOut != null) {
-            for (int i = 0; i < itemsOut.size; i++) {
-                sb.append(itemsOut.get(i).toJSON());
-                if (i < itemsOut.size - 1) sb.append(",");
-            }
-        }
-        sb.append("]");
-
-        sb.append("}");
-        return sb.toString();
-    }
 }

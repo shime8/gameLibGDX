@@ -138,39 +138,6 @@ public class BuildPlace extends TileEntity{
         return y+2;
     }
 
-    @Override
-    public String toJSON() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append("\"type\":\"").append(getClassName()).append("\",");
-        sb.append("\"x\":").append(x).append(",");
-        sb.append("\"y\":").append(y).append(",");
-
-        // WhatToBuild (TileEntity)
-        if (WhatToBuild != null) {
-            sb.append("\"WhatToBuild\":").append(WhatToBuild.toJSON()).append(",");
-        } else {
-            sb.append("\"WhatToBuild\":null,");
-        }
-
-        // Recipe (Array<Item>)
-        sb.append("\"Recipe\":[");
-        if (Recipe != null) {
-            for (int i = 0; i < Recipe.size; i++) {
-                Item item = Recipe.get(i);
-                if (item != null) {
-                    sb.append(item.toJSON());
-                } else {
-                    sb.append("null");
-                }
-                if (i < Recipe.size - 1) sb.append(",");
-            }
-        }
-        sb.append("]");
-
-        sb.append("}");
-        return sb.toString();
-    }
     public String getClassName(){
         return "BuildPlace";
     }

@@ -33,22 +33,5 @@ public class NewItem extends Item{
             //return "NameNotSet";
         }
     }
-    @Override
-    public String toJSON() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-
-        // Save type and amount (from Item)
-        sb.append("\"type\":\"").append(getname()).append("\",");
-        sb.append("\"amount\":").append(this.amount);
-
-        // Save TileEntity if it exists
-        if (this.Tile != null) {
-            sb.append(",\"tile\":").append(Tile.toJSON());
-        }
-
-        sb.append("}");
-        return sb.toString();
-    }
 
 }

@@ -15,7 +15,6 @@ import com.game.UIs.TypeToString;
 import com.game.items.*;
 import com.game.mechanics.RecipeManager;
 import com.game.player.Player;
-import com.game.saving.WorldSerializer;
 import com.game.tileenttities.*;
 import com.game.world.worldManager;
 import com.game.UIs.UIManager;
@@ -122,7 +121,6 @@ public class Main extends ApplicationAdapter {
             case "PLAY":
                 if (!stuffAdded) {
                     createGameparts();
-                    loadGame("saves/save.json");
                     resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
                 }
                 break;
@@ -196,12 +194,7 @@ public class Main extends ApplicationAdapter {
         SaveAccumulator += dt;
         if(SaveAccumulator > 10f){
             SaveAccumulator = 0;
-            try (FileWriter writer = new FileWriter("world.json")) {
-                saveGame("saves/save.json");
-                System.out.println("World saved successfully!");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
@@ -218,24 +211,6 @@ public class Main extends ApplicationAdapter {
         worldManager.dispose();
         uiManager.dispose();
         MainMenu.dispose();
-    }
-    public void saveGame(String filePath) {
-        WorldSerializer.saveWorld(
-            tileEntityManager.tileEntityMap,
-            itemEntityManager.itemEntityMap,
-            uiManager.inventory,
-            UIManager.mouseSlot,
-            filePath
-        );
-    }
-    public void loadGame(String filePath) {
-        WorldSerializer.loadWorld(
-            filePath,
-            tileEntityManager,
-            itemEntityManager,
-            uiManager.inventory,
-            UIManager.mouseSlot
-        );
     }
 
 }

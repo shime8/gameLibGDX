@@ -70,13 +70,7 @@ public abstract class TileEntity {
     public void removeOtherTiles(){
 
     }
-    public String toJSON() {
-        return "{"
-            + "\"type\":\"" + getClassName() + "\","
-            + "\"x\":" + x + ","
-            + "\"y\":" + y
-            + "}";
-    }
+
 
 
 }
