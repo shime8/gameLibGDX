@@ -8,7 +8,7 @@ import com.game.UIs.TypeToString;
 public class FastInserter extends Inserter{
     public FastInserter(){
         super();
-        sprite = new Sprite(new Texture("tiles/FastInserter_up.png"));
+        sprite = new Sprite(new Texture("tiles/NewFastInserter.png"));
         speed = 10f;
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.FastInserter);}

@@ -78,13 +78,7 @@ public class Main extends ApplicationAdapter {
 
     }
     void addGameAssets(){
-        tileEntityManager.addEntity(new MetalOre(20, 39));
-        tileEntityManager.addEntity(new MetalOre(20, 40));
-        tileEntityManager.addEntity(new MetalOre(20, 41));
-
-        tileEntityManager.addEntity(new ClayOre(20, 44));
-        tileEntityManager.addEntity(new ClayOre(20, 45));
-        tileEntityManager.addEntity(new ClayOre(20, 46));
+        addOres();
 
         Array<Item> LHrecipe = new Array<>();
 //        LHrecipe.add(new RoofTile(20));
@@ -100,16 +94,19 @@ public class Main extends ApplicationAdapter {
         //for gam
 //        uiManager.inventory.setItem(0, new NewItem(2, new Chest()));
 //        uiManager.inventory.setItem(1, new NewItem(5, new Inserter()));
-//        uiManager.inventory.setItem(2, new NewItem(3, new Assembler()));
-//        uiManager.inventory.setItem(3, new NewItem(1, new Miner()));
-//        uiManager.inventory.setItem(4, new NewItem(1, new Deleter()));
+//        uiManager.inventory.setItem(1, new NewItem(3, new LongInserter()));
+//        uiManager.inventory.setItem(3, new NewItem(3, new Assembler()));
+//        uiManager.inventory.setItem(4, new NewItem(1, new Miner()));
+//        uiManager.inventory.setItem(5, new NewItem(1, new Deleter()));
         // for testing
         uiManager.inventory.setItem(0, new NewItem(20, new Chest()));
         uiManager.inventory.setItem(1, new NewItem(50, new FastInserter()));
-        uiManager.inventory.setItem(2, new NewItem(30, new AssemblerT2()));
-        uiManager.inventory.setItem(3, new NewItem(10, new Miner()));
-        uiManager.inventory.setItem(4, new NewItem(50, new Belt()));
-        uiManager.inventory.setItem(5, new NewItem(10, new Deleter()));
+        uiManager.inventory.setItem(2, new NewItem(40, new LongInserter()));
+        uiManager.inventory.setItem(3, new NewItem(30, new AssemblerT2()));
+        uiManager.inventory.setItem(4, new NewItem(10, new Miner()));
+        uiManager.inventory.setItem(5, new NewItem(50, new Belt()));
+        uiManager.inventory.setItem(6, new NewItem(10, new Deleter()));
+        uiManager.inventory.setItem(7, new NewItem(10, new Inserter()));
 
         stuffAdded = true;
     }
@@ -221,5 +218,48 @@ public class Main extends ApplicationAdapter {
         uiManager.dispose();
         MainMenu.dispose();
     }
+    void addOres(){
+        tileEntityManager.addEntity(new ClayOre(20, 39));
+        tileEntityManager.addEntity(new ClayOre(20, 40));
+        tileEntityManager.addEntity(new ClayOre(21, 40));
+        tileEntityManager.addEntity(new ClayOre(20, 41));
 
+        tileEntityManager.addEntity(new ClayOre(38, 20));
+        tileEntityManager.addEntity(new ClayOre(38, 21));
+        tileEntityManager.addEntity(new ClayOre(39, 21));
+        tileEntityManager.addEntity(new ClayOre(40, 20));
+
+        tileEntityManager.addEntity(new MetalOre(57, 18));
+        tileEntityManager.addEntity(new MetalOre(57, 19));
+        tileEntityManager.addEntity(new MetalOre(58, 19));
+        tileEntityManager.addEntity(new MetalOre(57, 20));
+
+        tileEntityManager.addEntity(new MetalOre(70, 25));
+        tileEntityManager.addEntity(new MetalOre(71, 26));
+        tileEntityManager.addEntity(new MetalOre(69, 26));
+        tileEntityManager.addEntity(new MetalOre(70, 27));
+
+        tileEntityManager.addEntity(new MetalOre(78, 35));
+        tileEntityManager.addEntity(new MetalOre(78, 36));
+        tileEntityManager.addEntity(new MetalOre(79, 37));
+        tileEntityManager.addEntity(new MetalOre(78, 37));
+
+        tileEntityManager.addEntity(new MetalOre(37, 79));
+        tileEntityManager.addEntity(new MetalOre(38, 79));
+
+        tileEntityManager.addEntity(new MetalOre(47, 80));
+        tileEntityManager.addEntity(new MetalOre(47, 79));
+
+        tileEntityManager.addEntity(new MetalOre(58, 81));
+        tileEntityManager.addEntity(new MetalOre(57, 80));
+
+        tileEntityManager.addEntity(new MetalOre(68, 78));
+        tileEntityManager.addEntity(new MetalOre(69, 79));
+
+        tileEntityManager.addEntity(new MetalOre(75, 69));
+        tileEntityManager.addEntity(new MetalOre(74, 69));
+
+        tileEntityManager.addEntity(new MetalOre(80, 55));
+        tileEntityManager.addEntity(new MetalOre(80, 56));
+    }
 }

@@ -2,8 +2,9 @@ null 1 ; null 1 ;0.0
 plate 1 ; metalOre 1;0.5
 rod 2 ; plate 1 ;1.0
 gear 1 ; plate 2 ;2.0
-belt 1 ; gear 1, plate 1 ;1.0
+belt 2 ; gear 1, plate 1 ;1.0
 inserter 1 ; gear 2, rod 2;2.0
+longInserter 1 ; rod 2, inserter 1; 2.0
 chest 1 ; plate 4 ;3.0
 silo 1 ; plate 6, rod 4;4.0
 miner 1 ; gear 3, rod 3; 2.0;

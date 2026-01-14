@@ -92,6 +92,7 @@ public class RecipeManager {
         itemMap.put("brickTile", new BrickTile(0));
         itemMap.put("assemblerT2", new NewItem(0,new AssemblerT2()));
         itemMap.put("fastInserter", new NewItem(0,new FastInserter()));
+        itemMap.put("longInserter", new NewItem(0,new LongInserter()));
         itemMap.put("fastBelt", new NewItem(0,new FastBelt()));
         itemMap.put("wire", new Wire(0));
         itemMap.put("miner", new NewItem(0,new Miner()));

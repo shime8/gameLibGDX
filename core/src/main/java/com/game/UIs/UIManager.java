@@ -193,7 +193,7 @@ public class UIManager {
             itemsAllowed = recipeManager.length();
             System.out.println("unlocked");
         }else{
-            itemsAllowed = 10;
+            itemsAllowed = 11;
         }
         // Create grid
         for (int y = 0; y < (itemsAllowed/4)+1; y++) {

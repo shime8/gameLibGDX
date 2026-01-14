@@ -11,7 +11,7 @@ public class ItemEntity {
     public Item item;
     public float worldX;
     public float worldY;
-    Rectangle bounds;
+    public Rectangle bounds;
     float size;
     public Vector2 direction;
 //    public BitmapFont font;

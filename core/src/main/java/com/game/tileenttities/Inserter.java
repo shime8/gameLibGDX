@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -25,11 +26,14 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
     float swingAccumulator = 0f;
     TileEntity TEfront;
     TileEntity TEback;
-
+    Sprite spriteHandle;
+    float handDistance;
     public Inserter() {
         super();
-        sprite = new Sprite(new Texture("tiles/inserter_up.png"));
+        sprite = new Sprite(new Texture("tiles/NewInserter.png"));
+        spriteHandle = new Sprite(new Texture("tiles/NewInserterHandle.png"));
         speed = 5f;
+        handDistance = 1f;
     }
 
     public String getname() {
@@ -41,8 +45,20 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         set(x, y);
     }
 
+    @Override
+    public void set(int x, int y) {
+        super.set(x, y);
+            if (spriteHandle != null) {
+                spriteHandle.setSize(bounds.width, bounds.height);
+                spriteHandle.setOriginCenter();
+                spriteHandle.setPosition(bounds.x, bounds.y);
+            }
+
+    }
+
     public Inserter(Inserter other) {
         super(other);
+        this.spriteHandle = new Sprite(other.spriteHandle);
         setDirection(other.direction);
         this.speed = other.speed;
         this.font = other.font;
@@ -52,6 +68,7 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         this.TEfront = null;
         accumulator = 0f;
         swingAccumulator = 0f;
+        handDistance = other.handDistance;
     }
 
     @Override
@@ -123,9 +140,9 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         if (this.item != null ^ this.itemEntity != null) {
             //........................ swap
             if (this.itemEntity == null) {
-                this.itemEntity = new ItemEntity(this.item, x + 0.5f, y);
+                this.itemEntity = new ItemEntity(this.item, x + 0.5f, y+0.5f);
             }
-            this.itemEntity = new ItemEntity(this.itemEntity.item, x + 0.5f, y);
+            this.itemEntity = new ItemEntity(this.itemEntity.item, x + 0.5f, y+0.5f);
         }
     }
 
@@ -175,8 +192,28 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
+        float angle = sprite.getRotation() + (swingPercent()*180f);
+        spriteHandle.setRotation(angle);
+        spriteHandle.draw(batch);
+
         if (this.itemEntity != null) {
-            this.itemEntity.render(batch);
+            if(swingPercent()!=0){
+                float radians = angle * MathUtils.degreesToRadians;
+
+                float offsetX = MathUtils.cos(radians) * handDistance;
+                float offsetY = MathUtils.sin(radians) * handDistance;
+
+                float handleX = spriteHandle.getX() + spriteHandle.getOriginX();
+                float handleY = spriteHandle.getY() + spriteHandle.getOriginY();
+
+                itemEntity.worldX = handleX + offsetX + 0.3f - itemEntity.bounds.width / 2f;
+                itemEntity.worldY = handleY + offsetY + 0.3f - itemEntity.bounds.height / 2f;
+            }else{
+                itemEntity.worldX = x + 0.5f;
+                itemEntity.worldY = y + 0.5f;
+            }
+
+            itemEntity.render(batch);
         }
     }
 //    @Override
@@ -206,6 +243,15 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
     }
     public String getClassName(){
         return "Inserter";
+    }
+    public float swingPercent() {
+        float helper1, helper2;
+        if(itemEntity!= null){
+            helper1 = 1; helper2=0;
+        }else{
+            helper1=-1;helper2=1;
+        }
+        return Math.min(1f, Math.max(0f, accumulator * speed * helper1 + helper2));
     }
 
 }

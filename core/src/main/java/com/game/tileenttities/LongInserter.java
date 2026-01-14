@@ -8,8 +8,9 @@ import com.game.UIs.TypeToString;
 public class LongInserter extends Inserter{
     public LongInserter(){
         super();
-        sprite = new Sprite(new Texture("tiles/LongInserter_up.png"));
-        speed = 2f;
+        sprite = new Sprite(new Texture("tiles/NewLongInserter.png"));
+        speed = 8f;
+        handDistance = 1.5f;
     }
     public String getname(){return TypeToString.get(TypeToString.Dictionary.LongInserter);}
     public LongInserter(int x, int y) {
@@ -29,6 +30,17 @@ public class LongInserter extends Inserter{
         this.itemEntity = null;
         accumulator = 0f;
     }
+    @Override
+    public void set(int x, int y) {
+        super.set(x, y);
+        if (spriteHandle != null) {
+            spriteHandle.setSize(bounds.width*2, bounds.height);
+            spriteHandle.setOriginCenter();
+            spriteHandle.setOriginBasedPosition(bounds.x+0.5f, bounds.y+0.5f);
+        }
+
+    }
+
     @Override
     public TileEntity clone() {
         return new LongInserter(this);
