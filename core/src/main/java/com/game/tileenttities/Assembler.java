@@ -152,7 +152,7 @@ public class Assembler extends TileEntity implements CanCraft{
                     i.amount += recipe.itemsCOut.get(x).amount;
                 }
                 accumulator = recipe.time/speed;
-                if(AssemblersUnlockingTier > 0 && recipe.itemsCOut.first().Tile instanceof Assembler){ AssemblersUnlockingTier--;}
+                if(AssemblersUnlockingTier > 0 && recipe.itemsCOut.first().Tile instanceof Assembler){ AssemblersUnlockingTier--; System.out.println(AssemblersUnlockingTier);}
         }
     }
     @Override
@@ -212,6 +212,7 @@ public class Assembler extends TileEntity implements CanCraft{
                 }
                 CraftIn.get(i).setBounds(x + 0.2f - ((CraftIn.size-1)*0.35f) + i*0.7f, y + 1f, 0.6f, 0.6f);
                 CraftIn.get(i).draw(batch);
+                CraftIn.get(i).setColor(1.0f, 1.0f, 1.0f, 1.0f);
                 font.draw(batch, ""+recipe.itemsCIn.get(i).amount,x + 0.7f - ((CraftIn.size-1)*0.35f) + i*0.7f, y + 1.2f);
             }
         }

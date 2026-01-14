@@ -33,8 +33,7 @@ import com.game.tileenttities.Chest;
 import com.game.tileenttities.Silo;
 import com.game.world.worldManager;
 
-import static com.game.main.Main.recipeManager;
-import static com.game.main.Main.tileEntityManager;
+import static com.game.main.Main.*;
 
 public class UIManager {
     public Stage stage;
@@ -190,8 +189,9 @@ public class UIManager {
         assemblerUI.row();
 
         float itemsAllowed;
-        if(Main.AssemblersUnlockingTier<=0){
+        if(AssemblersUnlockingTier<=0){
             itemsAllowed = recipeManager.length();
+            System.out.println("unlocked");
         }else{
             itemsAllowed = 10;
         }
@@ -301,10 +301,11 @@ public class UIManager {
     }
 
     public void openAssembler(Assembler assembler) {
+        createAssemblerUI();
         currentAssembler = assembler;
         inventoryOpen = true;
         assemblerOpen = true;
-        // Update chest UI with click listeners
+        // Update UI with click listeners
         int i = 0;
         for (Actor actor : assemblerUI.getChildren()) {
             if (actor instanceof SelectorSlot && i > 0) { // Skip the title label
