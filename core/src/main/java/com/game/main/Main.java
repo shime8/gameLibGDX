@@ -75,6 +75,9 @@ public class Main extends ApplicationAdapter {
         });
         Gdx.input.setInputProcessor(multiplexer);
 
+
+    }
+    void addGameAssets(){
         tileEntityManager.addEntity(new MetalOre(20, 39));
         tileEntityManager.addEntity(new MetalOre(20, 40));
         tileEntityManager.addEntity(new MetalOre(20, 41));
@@ -103,8 +106,6 @@ public class Main extends ApplicationAdapter {
 
         stuffAdded = true;
     }
-    void loadSaveFile(){
-    }
 
     @Override
     public void render() {
@@ -121,6 +122,7 @@ public class Main extends ApplicationAdapter {
             case "PLAY":
                 if (!stuffAdded) {
                     createGameparts();
+                    addGameAssets();
                     resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
                 }
                 break;

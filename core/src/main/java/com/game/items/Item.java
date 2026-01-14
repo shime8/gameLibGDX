@@ -32,12 +32,14 @@ public abstract class Item {
         }
 
     }
-    public String toJSON() {
-        return "{"
-            + "\"type\":\"" + getname() + "\","
-            + "\"amount\":" + this.amount
-            + "}";
+    public Sprite getSprite(){
+        if(Tile!=null){
+            return Tile.sprite;
+        }else{
+            return sprite;
+        }
     }
+
 
 
 }

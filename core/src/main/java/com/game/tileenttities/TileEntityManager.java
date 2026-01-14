@@ -23,11 +23,6 @@ public class TileEntityManager {
         TileEntity temp = entity.clone();
         tileEntityMap.put(key, temp);
         temp.placeOtherTiles();
-        for(ObjectMap.Entry<GridPoint2, TileEntity> entry : tileEntityMap){
-            if(entry.value instanceof Assembler){
-                System.out.println(entry.value.x+" "+entry.value.y);
-            }
-        }
         sort();
     }
 
@@ -53,15 +48,17 @@ public class TileEntityManager {
 //            tileEntity.render(batch);
 //        }
         boolean PlayerRendered = false;
-        for (ObjectMap.Entry<GridPoint2, TileEntity> entry : TemSorted) {
+        if(TemSorted!=null){
+            for (ObjectMap.Entry<GridPoint2, TileEntity> entry : TemSorted) {
 //            GridPoint2 point = entry.key;
-            TileEntity tile = entry.value;
-            if(!PlayerRendered && tile.getSpriteY()+0.6f<worldManager.player.y){
-                worldManager.player.draw(batch);
-                PlayerRendered = true;
+                TileEntity tile = entry.value;
+                if (!PlayerRendered && tile.getSpriteY() + 0.6f < worldManager.player.y) {
+                    worldManager.player.draw(batch);
+                    PlayerRendered = true;
+                }
+                tile.render(batch);
+                renderItemsOnBelts(batch, tile);
             }
-            tile.render(batch);
-            renderItemsOnBelts(batch, tile);
         }
         if(!PlayerRendered){worldManager.player.draw(batch);}
     }

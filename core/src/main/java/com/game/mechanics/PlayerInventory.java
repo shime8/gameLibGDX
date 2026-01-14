@@ -127,21 +127,4 @@ public class PlayerInventory {
         return new int[] { x, y };
     }
 
-    public String toJSON() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\"items\":[");
-
-        for (int i = 0; i < items.size; i++) {
-            Item item = items.get(i);
-            if (item != null) {
-                sb.append(item.toJSON());
-            } else {
-                sb.append("null"); // preserve empty slots
-            }
-            if (i < items.size - 1) sb.append(",");
-        }
-
-        sb.append("]}");
-        return sb.toString();
-    }
 }

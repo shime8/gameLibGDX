@@ -3,6 +3,7 @@ package com.game.items;
 import com.game.tileenttities.TileEntity;
 
 public class NewItem extends Item{
+    public NewItem(){}
     public NewItem(int amount, TileEntity Tile){
         super();
         this.amount = amount;

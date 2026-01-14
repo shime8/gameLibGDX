@@ -103,11 +103,4 @@ public class MouseSlot {
             font.draw(batch,String.valueOf(item.amount), x+32, y+4);
         }
     }
-    public String toJSON() {
-        if (item != null) {
-            return "{\"item\":" + item.toJSON() + "}";
-        } else {
-            return "{\"item\":null}";
-        }
-    }
 }

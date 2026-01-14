@@ -40,7 +40,7 @@ public class InventorySlot extends Stack {
             return;
         }
 
-        image.setDrawable(new TextureRegionDrawable(item.sprite.getTexture()));  // item.icon
+        image.setDrawable(new TextureRegionDrawable(item.getSprite()));  // item.icon
         amountLabel.setText(String.valueOf(item.amount));
     }
 }
