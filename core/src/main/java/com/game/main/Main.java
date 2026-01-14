@@ -75,7 +75,8 @@ public class Main extends ApplicationAdapter {
             }
         });
         Gdx.input.setInputProcessor(multiplexer);
-
+    }
+    void addGameAssets(){
         tileEntityManager.addEntity(new MetalOre(20, 39));
         tileEntityManager.addEntity(new MetalOre(20, 40));
         tileEntityManager.addEntity(new MetalOre(20, 41));
@@ -95,13 +96,12 @@ public class Main extends ApplicationAdapter {
         LHBP.setRecipe(LHrecipe);
         tileEntityManager.addEntity(LHBP);
         //for testing
+        uiManager.inventory.setItem(5, new NewItem(2, new Belt()));
         uiManager.inventory.setItem(0, new NewItem(2, new Chest()));
         uiManager.inventory.setItem(1, new NewItem(5, new Inserter()));
         uiManager.inventory.setItem(2, new NewItem(3, new Assembler()));
         uiManager.inventory.setItem(3, new NewItem(1, new Miner()));
         uiManager.inventory.setItem(4, new NewItem(1, new Deleter()));
-
-
         stuffAdded = true;
     }
     void loadSaveFile(){
@@ -123,6 +123,7 @@ public class Main extends ApplicationAdapter {
                 if (!stuffAdded) {
                     createGameparts();
                     loadGame("saves/save.json");
+                    if(!stuffAdded){addGameAssets();}
                     resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
                 }
                 break;
@@ -229,13 +230,14 @@ public class Main extends ApplicationAdapter {
         );
     }
     public void loadGame(String filePath) {
-        WorldSerializer.loadWorld(
+        stuffAdded = WorldSerializer.loadWorld(
             filePath,
             tileEntityManager,
             itemEntityManager,
             uiManager.inventory,
             UIManager.mouseSlot
         );
+
     }
 
 }

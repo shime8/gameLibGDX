@@ -110,7 +110,19 @@ public class Belt extends TileEntity implements Directional{
         base = base.substring(0, base.length() - 1);
 
         // Add direction
-        base += ",\"direction\": {\"x\":" + direction.x + ",\"y\":" + direction.y + "}}";
+        base += ",\"direction\": {\"x\":";
+        if(direction!=null) {
+            base += ""+direction.x;
+        }else {
+            base+= ""+1;
+        }
+            base+= ",\"y\":";
+        if(direction!=null) {
+            base += ""+direction.x;
+        }else {
+            base+= ""+0;
+        }
+         base+= "}}";
 
         return base;
     }

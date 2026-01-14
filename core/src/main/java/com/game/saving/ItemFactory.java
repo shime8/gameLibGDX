@@ -24,6 +24,7 @@ public class ItemFactory {
         }
 
         // Otherwise, normal item
+        System.out.println(type);
         return StringToItem(type, amount); // You must implement this
     }
 
@@ -33,30 +34,31 @@ public class ItemFactory {
         for (JsonValue i : arrayJson) {
             items.add(createItemFromJSON(i));
         }
+
         return items;
     }
 
     public static Item StringToItem(String string, int amount){
         Map<String, Item> itemMap = new HashMap<>();
 
-        itemMap.put("gear", new Gear(0));
-        itemMap.put("plate", new Plate(0));
-        itemMap.put("rod", new Rod(0));
-        itemMap.put("brick", new Brick(0));
-        itemMap.put("sand", new Sand(0));
-        itemMap.put("glass", new Glass(0));
-        itemMap.put("casing", new Casing(0));
-        itemMap.put("cement", new Cement(0));
-        itemMap.put("circuitBoard", new CircuitBoard(0));
-        itemMap.put("glassTile", new GlassTile(0));
-        itemMap.put("motorPart", new MotorPart(0));
-        itemMap.put("motor", new Motor(0));
-        itemMap.put("reflector", new Reflector(0));
-        itemMap.put("reinforcedWall", new ReinforcedWall(0));
-        itemMap.put("roofTile", new RoofTile(0));
-        itemMap.put("solarCell", new SolarCell(0));
-        itemMap.put("brickTile", new BrickTile(0));
-        itemMap.put("wire", new Wire(0));
+        itemMap.put("Gear", new Gear(0));
+        itemMap.put("Plate", new Plate(0));
+        itemMap.put("Rod", new Rod(0));
+        itemMap.put("Brick", new Brick(0));
+        itemMap.put("Sand", new Sand(0));
+        itemMap.put("Glass", new Glass(0));
+        itemMap.put("Casing", new Casing(0));
+        itemMap.put("Cement", new Cement(0));
+        itemMap.put("CircuitBoard", new CircuitBoard(0));
+        itemMap.put("GlassTile", new GlassTile(0));
+        itemMap.put("MotorPart", new MotorPart(0));
+        itemMap.put("Motor", new Motor(0));
+        itemMap.put("Reflector", new Reflector(0));
+        itemMap.put("ReinforcedWall", new ReinforcedWall(0));
+        itemMap.put("RoofTile", new RoofTile(0));
+        itemMap.put("SolarCell", new SolarCell(0));
+        itemMap.put("BrickTile", new BrickTile(0));
+        itemMap.put("Wire", new Wire(0));
         Item item = itemMap.get(string);
 
         if (item == null) {

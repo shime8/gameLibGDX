@@ -106,7 +106,7 @@ public class WorldSerializer {
     }
 
     // ---------------- Load ----------------
-    public static void loadWorld(
+    public static boolean loadWorld(
         String filePath,
         TileEntityManager tileEntityManager,
         ItemEntityManager itemEntityManager,
@@ -118,7 +118,7 @@ public class WorldSerializer {
             JsonValue root = reader.parse(new FileReader(filePath));
 
             // --- TileEntities ---
-            tileEntityManager = new TileEntityManager(new ObjectMap<>());
+            //tileEntityManager = new TileEntityManager(new ObjectMap<>());
             for (JsonValue tileJson : root.get("tileEntities")) {
                 //JsonValue pos = tileJson.get("pos");
                 //int x = pos.getInt("x");
@@ -130,7 +130,7 @@ public class WorldSerializer {
             }
 
             // --- ItemEntities ---
-            itemEntityManager = new ItemEntityManager(new ObjectMap<>());
+            //itemEntityManager = new ItemEntityManager(new ObjectMap<>());
             for (JsonValue itemJson : root.get("itemEntities")) {
                 //JsonValue pos = itemJson.get("pos");
                 //int x = pos.getInt("x");
@@ -154,9 +154,10 @@ public class WorldSerializer {
             mouseSlot.item = loadedMouse.item;
 
             System.out.println("World loaded from " + filePath);
-
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

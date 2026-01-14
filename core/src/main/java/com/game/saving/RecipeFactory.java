@@ -13,7 +13,6 @@ public class RecipeFactory {
         Array<Item> itemsOut = ItemFactory.createItemArrayFromJSON(json.get("itemsCOut"));
 
         float time = json.getFloat("time");
-        System.out.println(new Recipe(itemsIn, itemsOut, time));
         if(itemsOut.isEmpty() && itemsIn.isEmpty() && time!=0){
             for(Item item : itemsIn){
                 if(item==null){return null;}

@@ -30,10 +30,13 @@ public class TileEntityFactory {
                 }
 
                 if (json.has("itemsIn") && !json.get("itemsIn").isNull()) {
-                    if(json.get("itemsIn").isEmpty())assembler.itemsIn = ItemFactory.createItemArrayFromJSON(json.get("itemsIn"));
+                    if(!json.get("itemsIn").isEmpty())assembler.itemsIn = ItemFactory.createItemArrayFromJSON(json.get("itemsIn"));
+                    System.out.println("itemsin"+assembler.itemsIn);
                 }
                 if (json.has("itemsOut") && !json.get("itemsOut").isNull()) {
-                    if(json.get("itemsOut").isEmpty())assembler.itemsOut = ItemFactory.createItemArrayFromJSON(json.get("itemsOut"));
+                    if(!json.get("itemsOut").isEmpty())assembler.itemsOut = ItemFactory.createItemArrayFromJSON(json.get("itemsOut"));
+                    System.out.println("itemsout"+assembler.itemsOut);
+
                 }
                 return assembler;
             }
@@ -69,6 +72,9 @@ public class TileEntityFactory {
                 }
 
                 return bp;
+            }
+            case "MetalOre":{
+
             }
             case "AssemblerPointer":{return null;}
             default:
