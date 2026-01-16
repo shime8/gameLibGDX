@@ -107,6 +107,8 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(5, new NewItem(50, new Belt()));
         uiManager.inventory.setItem(6, new NewItem(10, new Deleter()));
         uiManager.inventory.setItem(7, new NewItem(10, new Inserter()));
+        uiManager.inventory.setItem(8, new NewItem(10, new Assembler()));
+        uiManager.inventory.setItem(9, new NewItem(10, new FastBelt()));
 
         stuffAdded = true;
     }
@@ -219,10 +221,10 @@ public class Main extends ApplicationAdapter {
         MainMenu.dispose();
     }
     void addOres(){
-        tileEntityManager.addEntity(new ClayOre(20, 39));
-        tileEntityManager.addEntity(new ClayOre(20, 40));
-        tileEntityManager.addEntity(new ClayOre(21, 40));
-        tileEntityManager.addEntity(new ClayOre(20, 41));
+        tileEntityManager.addEntity(new MetalOre(20, 39));
+        tileEntityManager.addEntity(new MetalOre(20, 40));
+        tileEntityManager.addEntity(new MetalOre(21, 40));
+        tileEntityManager.addEntity(new MetalOre(20, 41));
 
         tileEntityManager.addEntity(new ClayOre(38, 20));
         tileEntityManager.addEntity(new ClayOre(38, 21));

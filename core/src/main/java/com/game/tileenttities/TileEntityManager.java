@@ -22,7 +22,6 @@ public class TileEntityManager {
         GridPoint2 key = new GridPoint2(entity.x, entity.y);
         TileEntity temp = entity.clone();
         tileEntityMap.put(key, temp);
-        System.out.println(key);
         temp.placeOtherTiles();
         sort();
     }
