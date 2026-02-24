@@ -124,7 +124,7 @@ public class MainMenu {
         bg.setSize(width, height);
         stage.addActor(bg);
 
-        // Create Play button with text
+        // Create Back button with text
         TextButton backBtn = createTextButton(TypeToString.get(TypeToString.Dictionary.BackToMenu), buttonTexture, buttonPressedTexture);
         backBtn.setWidth(backBtn.getWidth()*1.2f);
         backBtn.setPosition(
@@ -140,7 +140,7 @@ public class MainMenu {
         });
         stage.addActor(backBtn);
 
-        // Create Options button with text
+        // Create Lang button with text
         TextButton langBtn = createTextButton(TypeToString.get(TypeToString.Dictionary.LangSwitch), buttonTexture, buttonPressedTexture);
         langBtn.setWidth(langBtn.getWidth()*1.5f);
         langBtn.setPosition(
@@ -157,22 +157,22 @@ public class MainMenu {
         });
         stage.addActor(langBtn);
 
-        // Create Options button with text
-        TextButton saveResetBtn = createTextButton(TypeToString.get(TypeToString.Dictionary.SaveReset), buttonTexture, buttonPressedTexture);
-        saveResetBtn.setWidth(saveResetBtn.getWidth()*1.5f);
-        saveResetBtn.setPosition(
-            Gdx.graphics.getWidth() / 2f - langBtn.getWidth() / 2f,
-            Gdx.graphics.getHeight() / 2f - 100f
-        );
-
-        saveResetBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                selectedOption = "SAVE_RESET";
-                waiting = false;
-            }
-        });
-        stage.addActor(saveResetBtn);
+        // Create  SaveReset with text
+//        TextButton saveResetBtn = createTextButton(TypeToString.get(TypeToString.Dictionary.SaveReset), buttonTexture, buttonPressedTexture);
+//        saveResetBtn.setWidth(saveResetBtn.getWidth()*1.5f);
+//        saveResetBtn.setPosition(
+//            Gdx.graphics.getWidth() / 2f - langBtn.getWidth() / 2f,
+//            Gdx.graphics.getHeight() / 2f - 100f
+//        );
+//
+//        saveResetBtn.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                selectedOption = "SAVE_RESET";
+//                waiting = false;
+//            }
+//        });
+//        stage.addActor(saveResetBtn);
 
         waiting = true;
         selectedOption = null;

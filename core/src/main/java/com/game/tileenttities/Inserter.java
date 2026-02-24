@@ -1,6 +1,8 @@
 package com.game.tileenttities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
@@ -28,12 +30,20 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
     TileEntity TEback;
     Sprite spriteHandle;
     float handDistance;
+    boolean displayItem;
+    float displayAccum;
+    public BitmapFont font;
     public Inserter() {
         super();
         sprite = new Sprite(new Texture("tiles/NewInserter.png"));
         spriteHandle = new Sprite(new Texture("tiles/NewInserterHandle.png"));
         speed = 5f;
         handDistance = 1f;
+        displayItem = false;
+
+//        font = new BitmapFont();
+//        font.setColor(Color.BLACK);
+//        font.getData().setScale(0.1f);
     }
 
     public String getname() {
@@ -69,6 +79,11 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         accumulator = 0f;
         swingAccumulator = 0f;
         handDistance = other.handDistance;
+        displayItem = false;
+        displayAccum = 0f;
+//        font = new BitmapFont();
+//        font.setColor(Color.BLACK);
+//        font.getData().setScale(0.1f);
     }
 
     @Override
@@ -95,6 +110,11 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
 
         if (this.itemEntity != null) {
             this.itemEntity.update();
+        }
+        if(displayAccum >= 1.0){
+            displayAccum = 1.1f;
+        }else{
+            displayAccum+= delta;
         }
     }
 
@@ -140,9 +160,11 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         if (this.item != null ^ this.itemEntity != null) {
             //........................ swap
             if (this.itemEntity == null) {
-                this.itemEntity = new ItemEntity(this.item, x + 0.5f, y+0.5f);
+                this.itemEntity = new ItemEntity(this.item, 0, 0);
             }
-            this.itemEntity = new ItemEntity(this.itemEntity.item, x + 0.5f, y+0.5f);
+
+            this.itemEntity = new ItemEntity(this.itemEntity.item, 0, 0);
+            this.item = this.itemEntity.item.clone();
         }
     }
 
@@ -197,7 +219,7 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
         spriteHandle.draw(batch);
 
         if (this.itemEntity != null) {
-            if(swingPercent()!=0){
+            if(swingPercent()!=0 && swingPercent()!=1){
                 float radians = angle * MathUtils.degreesToRadians;
 
                 float offsetX = MathUtils.cos(radians) * handDistance;
@@ -208,12 +230,24 @@ public class Inserter extends TileEntity implements Directional, HasInventory {
 
                 itemEntity.worldX = handleX + offsetX + 0.3f - itemEntity.bounds.width / 2f;
                 itemEntity.worldY = handleY + offsetY + 0.3f - itemEntity.bounds.height / 2f;
+                displayItem = true;
+                displayAccum = 0;
             }else{
-                itemEntity.worldX = x + 0.5f;
-                itemEntity.worldY = y + 0.5f;
+                itemEntity.worldX = x+ 0.5f;
+                itemEntity.worldY = y+ 0.5f;
+                if(displayAccum >= 1.0f){
+                    displayItem = true;
+                }else{
+                    displayItem = false;
+                }
+
             }
 
-            itemEntity.render(batch);
+            if(displayItem) {
+                itemEntity.render(batch);
+            }
+
+//            font.draw(batch, String.valueOf(displayAccum), x, y-1);
         }
     }
 //    @Override

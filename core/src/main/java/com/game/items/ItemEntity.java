@@ -59,7 +59,9 @@ public class ItemEntity {
         if(item!=null) {
 
 //            batch.disableBlending();
-            item.sprite.draw(batch);
+            if(item.sprite.getX()>0 && item.sprite.getY()>0){
+                item.sprite.draw(batch);
+            }
 //            batch.enableBlending();
 //            font.draw(batch,String.valueOf((int)worldX), worldX, worldY);
 //            font.draw(batch,String.valueOf((int)worldY), worldX+2f, worldY);

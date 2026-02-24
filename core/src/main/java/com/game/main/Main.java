@@ -93,11 +93,13 @@ public class Main extends ApplicationAdapter {
         tileEntityManager.addEntity(LHBP);
         //for gam
 //        uiManager.inventory.setItem(0, new NewItem(2, new Chest()));
-//        uiManager.inventory.setItem(1, new NewItem(5, new Inserter()));
-//        uiManager.inventory.setItem(1, new NewItem(3, new LongInserter()));
-//        uiManager.inventory.setItem(3, new NewItem(3, new Assembler()));
-//        uiManager.inventory.setItem(4, new NewItem(1, new Miner()));
-//        uiManager.inventory.setItem(5, new NewItem(1, new Deleter()));
+//        uiManager.inventory.setItem(1, new NewItem(8, new Inserter()));
+//        uiManager.inventory.setItem(2, new NewItem(4, new LongInserter()));
+//        uiManager.inventory.setItem(3, new NewItem(5, new Assembler()));
+//        uiManager.inventory.setItem(4, new NewItem(15, new Belt()));
+//        uiManager.inventory.setItem(5, new NewItem(2, new Miner()));
+//        uiManager.inventory.setItem(6, new NewItem(1, new Deleter()));
+
         // for testing
         uiManager.inventory.setItem(0, new NewItem(20, new Chest()));
         uiManager.inventory.setItem(1, new NewItem(50, new FastInserter()));
@@ -109,6 +111,7 @@ public class Main extends ApplicationAdapter {
         uiManager.inventory.setItem(7, new NewItem(10, new Inserter()));
         uiManager.inventory.setItem(8, new NewItem(10, new Assembler()));
         uiManager.inventory.setItem(9, new NewItem(10, new FastBelt()));
+        uiManager.inventory.setItem(10, new NewItem(10, new Silo()));
 
         stuffAdded = true;
     }
@@ -255,11 +258,11 @@ public class Main extends ApplicationAdapter {
         tileEntityManager.addEntity(new MetalOre(58, 81));
         tileEntityManager.addEntity(new MetalOre(57, 80));
 
-        tileEntityManager.addEntity(new MetalOre(68, 78));
-        tileEntityManager.addEntity(new MetalOre(69, 79));
+        tileEntityManager.addEntity(new ClayOre(68, 78));
+        tileEntityManager.addEntity(new ClayOre(69, 79));
 
-        tileEntityManager.addEntity(new MetalOre(75, 69));
-        tileEntityManager.addEntity(new MetalOre(74, 69));
+        tileEntityManager.addEntity(new ClayOre(75, 69));
+        tileEntityManager.addEntity(new ClayOre(74, 69));
 
         tileEntityManager.addEntity(new MetalOre(80, 55));
         tileEntityManager.addEntity(new MetalOre(80, 56));
